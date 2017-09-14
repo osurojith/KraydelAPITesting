@@ -1,4 +1,4 @@
-View unassigned API
+View Assigned API
 =====================
 Created by OsuraL on 9/6/2017
 
@@ -14,12 +14,12 @@ LogIn API
         *User send refresh token <response_code>
 
 
-View unassigned API
+View Assigned API
 ----------------
- * User Enter View unassigned API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders/unassigned/partial"
- * User Call View unassigned API
+ * User Enter View Assigned API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders/unassigned/partial"
+ * User Call View Assigned API
  * Validate Status Code <status_code>
- * Validate Content View unassigned API
+ * Validate Content View Assigned API
 
 LogOut API
 ----------------

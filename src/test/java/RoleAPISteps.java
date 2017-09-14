@@ -1,10 +1,13 @@
+import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
+import utils.DBConn;
 import utils.HttpMethods;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,33 +30,24 @@ public class RoleAPISteps extends BaseClass {
 
 
     @Step("Validate Content")
-    public void Validate_Content() {
-        if (status_code.equals("20000")) {
-            Assert.assertEquals(true, !jsonPath.getString("content").isEmpty());
-        }
-    }
+    public void Validate_Content() throws SQLException, ClassNotFoundException {
 
-    @Step("Validate Role Data Id")
-    public void Validate_Role_Data_Id() {
-        if (status_code.equals("20000")) {
             for (int i = 1; i <= jsonPath.getList("content.roles").size(); i++) {
                 String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.roles[" + val + "].id").isEmpty());
-            }
-        }
+                String roleid=jsonPath.getString("content.roles[" + val + "].id");
+                String rolename=jsonPath.getString("content.roles[" + val + "].roleName");
 
+                Assert.assertEquals(true, !roleid.isEmpty());
+                Assert.assertEquals(true, !rolename.isEmpty());
+
+                String sqlrole="select * from main.role where id="+ EncryptionServiceImpl.decryptToLong(roleid)+" and role_name='"+rolename+"'";
+                Assert.assertEquals("Validate Role id and name :"+sqlrole,1, DBConn.getRowCount(sqlrole));
+
+
+        }
     }
 
-    @Step("Validate Role Data Name")
-    public void Validate_Role_Data_Name() {
-        if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.roles").size(); i++) {
-                String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.roles[" + val + "].roleName").isEmpty());
-            }
-        }
 
-    }
 
 
 }

@@ -24,8 +24,7 @@ Role API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
     * Validate Content
-    * Validate Role Data Id
-    * Validate Role Data Name
+
 
 LogOut API
 ----------------

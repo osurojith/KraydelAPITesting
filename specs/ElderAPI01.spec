@@ -5,9 +5,8 @@ Created by OsuraL on 9/4/2017
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
      
-     | elder-ID   |version|status_code |request_code|status  |username |password	|logout_status|response_code|role_name|
-        |   yFecTdW2_6HTyVhzHaNVIw==     |   v1    |    20000 |    200     | Success  |darshana |letmein	|OK           | 200         |null     |
-
+    |elder-ID                |version|status_code|request_code|status |username|password|logout_status|response_code|role_name|
+    |A0dOVlgwZJJpRh7E2QPj6w==|v1     |20000      |200         |Success|darshana|letmein |OK           |200          |null     |
 
 
 

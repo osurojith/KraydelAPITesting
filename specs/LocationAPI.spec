@@ -23,8 +23,7 @@ Location API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
     * Validate Location Content
-    * Validate Location Data Id
-    * Validate Location Data Name
+
 
 LogOut API
 ----------------

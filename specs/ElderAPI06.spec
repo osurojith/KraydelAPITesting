@@ -6,7 +6,7 @@ This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
      
 |elderid                    |username	|password|logout_status|response_code|userID                   |userRoleID                |status_code|version|
-| FRNFFf8mHNU5Lwva5RaJ-A==  |darshana	|letmein |OK           | 200         |TEXB76f0aS2d4aJ1FpzmCw== |  MKacoUo0nAB6neZVhIHutw==|   20000   |v1|
+| A0dOVlgwZJJpRh7E2QPj6w==  |darshana	|letmein |OK           | 200         |8LAw7a7AEa-GBwZKH7l9Ng== |  MKacoUo0nAB6neZVhIHutw==|   20000   |v1|
 
 LogIn API
    ----------------
@@ -20,6 +20,7 @@ Assign-carer API
  * User enter Elder Details Assign-carer API <userID> <userRoleID>
  * User Call Assign-carer API
  * Validate Status Code <status_code>
+ * Validate back end Assign-carer API <userID> <elderid> <userRoleID>
 
 LogOut API
 ----------------

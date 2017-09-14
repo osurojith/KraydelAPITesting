@@ -1,10 +1,13 @@
+import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
+import utils.DBConn;
 import utils.HttpMethods;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,32 +30,22 @@ public class TVBrandAPISteps extends BaseClass {
 
 
     @Step("Validate TVBrand Content")
-    public void Validate_TVBrand_Content() {
-        if (status_code.equals("2000")) {
+    public void Validate_TVBrand_Content() throws SQLException, ClassNotFoundException {
 
-            Assert.assertEquals(true, !jsonPath.getString("content").isEmpty());
-        }
-    }
-
-    @Step("Validate TVBrand Data Id")
-    public void Validate_TVBrand_Data_Id() {
-        if (status_code.equals("2000")) {
             for (int i = 1; i <= jsonPath.getList("content.tvsBrands").size(); i++) {
                 String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.tvsBrands[" + val + "].id").isEmpty());
-            }
+                String tvbrandid=jsonPath.getString("content.tvsBrands[" + val + "].id");
+               String tvbrandname=jsonPath.getString("content.tvsBrands[" + val + "].name");
+
+                Assert.assertEquals(true, !tvbrandid.isEmpty());
+                Assert.assertEquals(true, !tvbrandname.isEmpty());
+
+                String sqltvbrand="select * from main.tv_brand where id="+ EncryptionServiceImpl.decryptToLong(tvbrandid)+" and name='"+tvbrandname+"'";
+                Assert.assertEquals("Validate Role id and name :"+sqltvbrand,1, DBConn.getRowCount(sqltvbrand));
+                System.out.println(sqltvbrand);
+
+
         }
     }
-
-    @Step("Validate TVBrand Data Name")
-    public void Validate_TVBrand_Data_Name() {
-        if (status_code.equals("2000")) {
-            for (int i = 1; i <= jsonPath.getList("content.tvsBrands").size(); i++) {
-                String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.tvsBrands[" + val + "].name").isEmpty());
-            }
-        }
-    }
-
 
 }

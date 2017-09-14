@@ -1,10 +1,13 @@
+import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
+import utils.DBConn;
 import utils.HttpMethods;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,31 +30,25 @@ public class ReligionAPISeteps extends BaseClass {
 
 
     @Step("Validate Religions Content")
-    public void Validate_Religions_Content() {
-        if (status_code.equals("20000")) {
-            Assert.assertEquals(true, !jsonPath.getString("content").isEmpty());
+    public void Validate_Religions_Content() throws SQLException, ClassNotFoundException {
+
+            for (int i = 1; i <= jsonPath.getList("content.religions").size(); i++) {
+                String val = Integer.toString(i - 1);
+                String religionid=jsonPath.getString("content.religions[" + val + "].id");
+                String religionname=jsonPath.getString("content.religions[" + val + "].name");
+
+                Assert.assertEquals(true, !religionid.isEmpty());
+                Assert.assertEquals(true, !religionname.isEmpty());
+
+                String sqlreligion="select * from main.religion where id="+ EncryptionServiceImpl.decryptToLong(religionid)+" and name='"+religionname+"'";
+                Assert.assertEquals("Validate Religion id and name :"+sqlreligion,1, DBConn.getRowCount(sqlreligion));
+
+
         }
     }
 
-    @Step("Validate Religions Data Id")
-    public void Validate_Religions_Data_Id() {
-        if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.religions").size(); i++) {
-                String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.religions[" + val + "].id").isEmpty());
-            }
-        }
-    }
 
-    @Step("Validate Religions Data Name")
-    public void Validate_Religions_Data_Name() {
-        if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.religions").size(); i++) {
-                String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.religions[" + val + "].name").isEmpty());
-            }
-        }
-    }
+
 
 
 }

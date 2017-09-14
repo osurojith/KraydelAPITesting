@@ -1,18 +1,18 @@
+import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
+import utils.BaseClass;
+import utils.DBConn;
 import utils.HttpMethods;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HealthIssueSteps {
-    public String api = null;
-    public String token = null;
-    Response response;
-    JsonPath jsonPath;
-    String status_code;
+public class HealthIssueSteps extends BaseClass {
+
 
     @Step("User enter HealthIssue API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></healthissues/partial>")
     public void User_enter_HealthIssue_API(String part1, String version, String part2) {
@@ -30,31 +30,21 @@ public class HealthIssueSteps {
 
 
     @Step("Validate HealthIssue Content")
-    public void Validate_HealthIssue_Content() {
-        if (status_code.equals("20000")) {
-            Assert.assertEquals(true, !jsonPath.getString("content").isEmpty());
-        }
-    }
+    public void Validate_HealthIssue_Content() throws SQLException, ClassNotFoundException {
 
-    @Step("Validate HealthIssue Data Id")
-    public void Validate_HealthIssue_Data_Id() {
-        if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.health-issues").size(); i++) {
+            for (int i = 1; i <= jsonPath.getList("content.healthIssues").size(); i++) {
                 String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.health-issues[" + val + "].id").isEmpty());
-            }
+                String healthid=jsonPath.getString("content.healthIssues[" + val + "].id");
+                String issue=jsonPath.getString("content.healthIssues[" + val + "].issue");
+
+
+                Assert.assertEquals(true, !healthid.isEmpty());
+                Assert.assertEquals(true, !issue.isEmpty());
+
+                String sqlhealthissue="select * from main.health_issues where id="+ EncryptionServiceImpl.decryptToLong(healthid)+" and issue='"+issue+"'";
+                Assert.assertEquals("Validate HealthIssue id and Issue :"+sqlhealthissue,1, DBConn.getRowCount(sqlhealthissue));
+
+
         }
     }
-
-    @Step("Validate HealthIssue Data Issue")
-    public void Validate_HealthIssue_Data_Issue() {
-        if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.health-issues").size(); i++) {
-                String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.health-issues[" + val + "].issue").isEmpty());
-            }
-        }
-    }
-
-
 }

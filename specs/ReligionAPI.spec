@@ -22,8 +22,7 @@ Religions API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
     * Validate Religions Content
-    * Validate Religions Data Id
-    * Validate Religions Data Name
+
 
 
 LogOut API

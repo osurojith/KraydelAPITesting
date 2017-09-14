@@ -1,10 +1,13 @@
+import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
+import utils.DBConn;
 import utils.HttpMethods;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,32 +30,22 @@ public class LocationAPISteps extends BaseClass {
 
 
     @Step("Validate Location Content")
-    public void Validate_Location_Content() {
-        if (status_code.equals("20000")) {
-            Assert.assertEquals(true, !jsonPath.getString("content").isEmpty());
-        }
-    }
+    public void Validate_Location_Content() throws SQLException, ClassNotFoundException {
 
-    @Step("Validate Location Data Id")
-    public void Validate_Location_Data_Id() {
-        if (status_code.equals("20000")) {
 
             for (int i = 1; i <= jsonPath.getList("content.locations").size(); i++) {
                 String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.locations[" + val + "].id").isEmpty());
-            }
+                String locationid=jsonPath.getString("content.locations[" + val + "].id");
+                String name=jsonPath.getString("content.locations[" + val + "].name");
+
+                Assert.assertEquals(true, !locationid.isEmpty());
+                Assert.assertEquals(true, !name.isEmpty());
+
+
+                String sqllocation="select * from main.location where id="+ EncryptionServiceImpl.decryptToLong(locationid)+" and name='"+name+"'";
+                Assert.assertEquals("Validate Ethanacity id and name :"+sqllocation,1, DBConn.getRowCount(sqllocation));
+
+
         }
     }
-
-    @Step("Validate Location Data Name")
-    public void Validate_Location_Data_Name() {
-        if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.locations").size(); i++) {
-                String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.locations[" + val + "].name").isEmpty());
-            }
-        }
-    }
-
-
 }

@@ -1,10 +1,13 @@
+import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
+import utils.DBConn;
 import utils.HttpMethods;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +35,11 @@ public class ElderAPI07Steps extends BaseClass {
         this.response = HttpMethods.putMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+    @Step("Validate back end Unassign-carer API <userID> <elderid> <userRoleID>")
+    public void Validate_backend(String userID, String elderid, String userRoleID) throws SQLException, ClassNotFoundException {
+        String sqlusergrampa="select * from main.grampa_user where grampa_id="+ EncryptionServiceImpl.decryptToLong(elderid)+" and user_id="+ EncryptionServiceImpl.decryptToLong(userID)+" and grampa_role_id="+ EncryptionServiceImpl.decryptToLong(userRoleID)+"";
+        Assert.assertEquals("Validate USER table: " + sqlusergrampa, 0, DBConn.getRowCount(sqlusergrampa));
 
+    }
 
 }

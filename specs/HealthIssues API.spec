@@ -20,8 +20,7 @@ HealthIssue API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
     * Validate HealthIssue Content
-    * Validate HealthIssue Data Id
-    * Validate HealthIssue Data Issue
+
 
 LogOut API
 ----------------

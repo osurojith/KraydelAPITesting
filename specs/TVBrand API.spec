@@ -24,8 +24,7 @@ TVBrand API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
     * Validate TVBrand Content
-    * Validate TVBrand Data Id
-    * Validate TVBrand Data Name
+
 
 LogOut API
 ----------------
