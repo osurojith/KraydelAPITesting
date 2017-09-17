@@ -84,4 +84,26 @@ return count;
         return value;
 
     }
+
+
+    public static ResultSet getDBData(String quary) throws SQLException, ClassNotFoundException {
+        int count=0;
+        Class.forName("org.postgresql.Driver");
+
+        Connection connection = null;
+        ResultSet rs=null;
+        connection = DriverManager.getConnection(
+                "jdbc:postgresql://ec2-52-30-64-220.eu-west-1.compute.amazonaws.com:5432/kraydel", "kraydel",
+                "M!tr@!Kr@ydelQa");
+        if (connection != null) {
+            Statement stmt = connection.createStatement();
+            rs = stmt.executeQuery(quary);
+        } else {
+            System.out.println("Failed to make connection!");
+        }
+
+        connection.close();
+        return rs;
+
+    }
 }

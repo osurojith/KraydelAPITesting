@@ -26,42 +26,43 @@ public class ElderAPI02Steps extends BaseClass {
         this.response = HttpMethods.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+    @Step("User gets data from kraydel database Elder Search API view carers <elder-ID>")
+    public void get_data_from_database(String elderid) throws SQLException, ClassNotFoundException {
+        String sql = "Select person.id as id, person.first_name AS fname, person.last_name as lname, person.email as email, grampa_user.grampa_role_id as roleId, grampa_role.role_name as rolename, main.user.username as username from main.grampa_user join main.person on grampa_user.user_id=person.id and grampa_user.grampa_id="+EncryptionServiceImpl.decryptToLong(elderid)+" join main.grampa_role on grampa_user.grampa_role_id=grampa_role.role_id join main.user on grampa_user.user_id=main.user.id";
+        results=DBConn.getDBData(sql);
 
+    }
 
     @Step("Validate Elder Search API view carers Content <elder-ID>")
     public void Validate_content(String elderId) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
+            while (results.next()) {
             for (int i = 1; i <= jsonPath.getList("content.carers").size(); i++) {
                 String val = Integer.toString(i - 1);
 
-                String id=jsonPath.getString("content.carers[" + val + "].id");
-                String fname=jsonPath.getString("content.carers[" + val + "].firstName");
-                String lname=jsonPath.getString("content.carers[" + val + "].lastName");
-                String email=jsonPath.getString("content.carers[" + val + "].email");
-                int roleid=jsonPath.getInt("content.carers[" + val + "].roleID");
-                String rolename=jsonPath.getString("content.carers[" + val + "].roleName");
-                String username=jsonPath.getString("content.carers[" + val + "].username");
+                String id = jsonPath.getString("content.carers[" + val + "].id");
+                String fname = jsonPath.getString("content.carers[" + val + "].firstName");
+                String lname = jsonPath.getString("content.carers[" + val + "].lastName");
+                String email = jsonPath.getString("content.carers[" + val + "].email");
+                String roleid = jsonPath.getString("content.carers[" + val + "].roleID");
+                String rolename = jsonPath.getString("content.carers[" + val + "].roleName");
+                String username = jsonPath.getString("content.carers[" + val + "].username");
 
+            if(EncryptionServiceImpl.decryptToLong(id).toString().equalsIgnoreCase(results.getString("id"))) {
+                Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                Assert.assertEquals("Validate person.id", results.getString("fname"), fname);
+                Assert.assertEquals("Validate person.id", results.getString("lname"), lname);
+                Assert.assertEquals("Validate person.id", results.getString("email"), email);
+                Assert.assertEquals("Validate person.id", results.getString("roleid"), roleid);
+                Assert.assertEquals("Validate person.id", results.getString("rolename"), rolename);
+                Assert.assertEquals("Validate person.id", results.getString("username"), username);
+                System.out.println(results.getString("fname")+"    "+fname);
+            }
 
-                Assert.assertEquals(true, !id.isEmpty());
-                Assert.assertEquals(true, !fname.isEmpty());
-                Assert.assertEquals(true, !lname.isEmpty());
-                Assert.assertEquals(true, !email.isEmpty());
-                //Assert.assertEquals(true, !roleid.isEmpty());
-                Assert.assertEquals(true, !rolename.isEmpty());
-                Assert.assertEquals(true, !username.isEmpty());
-
-
-                String sqlperson="select * from main.person where id="+ EncryptionServiceImpl.decryptToLong(id)+" and first_name='"+fname+"' and last_name='"+lname+"' and email='"+email+"'";
-                Assert.assertEquals("Validate PERSON table: "+sqlperson,1, DBConn.getRowCount(sqlperson));
-
-                String sqluser="select * from main.user where id="+EncryptionServiceImpl.decryptToLong(id)+" and username='"+username+"'";
-                Assert.assertEquals("Validate USER table: "+sqluser,1,DBConn.getRowCount(sqluser));
-
-
-                String sqlgramparole="select * from main.grampa_user where grampa_id='"+EncryptionServiceImpl.decryptToLong(elderId)+"' and user_id='"+EncryptionServiceImpl.decryptToLong(id)+"' and grampa_role_id="+roleid+"";
-                Assert.assertEquals("Validate grampa_user table: "+sqlgramparole,1,DBConn.getRowCount(sqlgramparole));
+            }
             }
         }
     }
+
+
 }

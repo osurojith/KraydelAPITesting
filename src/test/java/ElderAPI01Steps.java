@@ -27,6 +27,27 @@ public class ElderAPI01Steps extends BaseClass {
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
+    @Step("User gets data from kraydel database Search API By ID <elder-ID>")
+    public void get_data_from_database(String elderid) throws SQLException, ClassNotFoundException {
+        String sql=null;
+        String basestationid=jsonPath.getString("content.elder.baseStation.id");
+        String healthissueid=jsonPath.getString("content.elder.healthIssues");
+
+        System.out.println("xxx  "+basestationid);
+        System.out.println("xxx  "+healthissueid);
+        if (!(basestationid == null) && !(healthissueid == null)) {
+            sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId, grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename from main.person join main.address on person.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " and address.person_id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.grampa on grampa.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.base_station on grampa.base_station_id=base_station.id join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id";
+        } else if ((basestationid == null) && !(healthissueid == null)) {
+            sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum,grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " and address.person_id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.grampa on grampa.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id";
+        } else if (!(basestationid == null) && (healthissueid == null)) {
+            sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum,grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " and address.person_id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.grampa on grampa.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.city on address.city= city.id join main.base_station on grampa.base_station_id=base_station.id";
+        } else if ((basestationid == null) && (healthissueid == null)) {
+            sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " and address.person_id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.grampa on grampa.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.city on address.city= city.id";
+        }
+        System.out.println(sql);
+        results=DBConn.getDBData(sql);
+
+    }
     @Step("Validate Elder Search API By ID Users")
     public void Validate_Search_API_Users() throws SQLException, ClassNotFoundException {
 
@@ -42,43 +63,25 @@ public class ElderAPI01Steps extends BaseClass {
         String devicebrandid = jsonPath.getString("content.elder.baseStation.tvBrandId");
         String locationid = jsonPath.getString("content.elder.locationId");
 
-
-        Assert.assertEquals(true, !id.isEmpty());
-        Assert.assertEquals(true, !lname.isEmpty());
-        Assert.assertEquals(true, !fname.isEmpty());
-        Assert.assertEquals(true, !status.isEmpty());
-        Assert.assertEquals(true, !dob.isEmpty());
-        Assert.assertEquals(true, !email.isEmpty());
-        Assert.assertEquals(true, !gender.isEmpty());
-
-
-        String sqlperson = "select * from main.person where id=" + EncryptionServiceImpl.decryptToLong(id) + " and first_name='" + fname + "' and last_name='" + lname + "' and email='" + email + "' and gender='" + gender + "'";
-        Assert.assertEquals("Validate PERSON table: " + sqlperson, 1, DBConn.getRowCount(sqlperson));
-
-
-        if ((jsonPath.getString("content.elder.baseStation.id") == null) && !(jsonPath.getString("content.elder.locationId") == null)) {
-            String sqluser = "select * from main.grampa where id=" + EncryptionServiceImpl.decryptToLong(id) + " and status='" + status + "' and base_station_id IS " + EncryptionServiceImpl.decryptToLong(deviceid) + " and location_id=" + EncryptionServiceImpl.decryptToLong(locationid) + " and date_of_birth='" + dob + "'";
-            Assert.assertEquals("Validate USER table: " + sqluser, 1, DBConn.getRowCount(sqluser));
-
+        while (results.next()) {
+        Assert.assertEquals("Validate person.id",results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+        Assert.assertEquals("Validate person.last_name",results.getString("lname"),lname);
+        Assert.assertEquals("Validate person.first_name",results.getString("fname"),fname);
+        Assert.assertEquals("Validate person.status",results.getString("status"), status);
+        Assert.assertEquals("Validate grampa.date_of_birth",results.getString("dob"),dob);
+        Assert.assertEquals("Validate person.email",results.getString("email"), email);
+        Assert.assertEquals("Validate person.gender",results.getString("gender"),gender);
         }
-        if ((jsonPath.getString("content.elder.locationId") == null) && !(jsonPath.getString("content.elder.baseStation.id") == null)) {
-            String sqluser = "select * from main.grampa where id=" + EncryptionServiceImpl.decryptToLong(id) + " and status='" + status + "' and base_station_id=" + EncryptionServiceImpl.decryptToLong(deviceid) + " and location_id IS " + EncryptionServiceImpl.decryptToLong(locationid) + " and date_of_birth='" + dob + "'";
-            Assert.assertEquals("Validate USER table: " + sqluser, 1, DBConn.getRowCount(sqluser));
 
-        }
-        if ((jsonPath.getString("content.elder.locationId") == null) && (jsonPath.getString("content.elder.baseStation.id") == null)) {
-            String sqluser = "select * from main.grampa where id=" + EncryptionServiceImpl.decryptToLong(id) + " and status='" + status + "' and base_station_id IS " + EncryptionServiceImpl.decryptToLong(deviceid) + " and location_id IS " + EncryptionServiceImpl.decryptToLong(locationid) + " and date_of_birth='" + dob + "'";
-            Assert.assertEquals("Validate USER table: " + sqluser, 1, DBConn.getRowCount(sqluser));
 
+        if (!(jsonPath.getString("content.elder.baseStation.id") == null)) {
+            while (results.next()) {
+                Assert.assertEquals("Validate grampa.base_station_id", results.getString("deviceid"), EncryptionServiceImpl.decryptToLong(deviceid));
+                Assert.assertEquals("Validate base_station.device_key", results.getString("devicekey"), devicekey);
+                Assert.assertEquals("Validate base_station.tv_brand_id", results.getString("devicebrandid"), EncryptionServiceImpl.decryptToLong(devicebrandid));
+            }
         }
-        if (!(jsonPath.getString("content.elder.baseStation.deviceKey") == null)) {
-            Assert.assertEquals(true, !devicekey.isEmpty());
-        }
-        if (!(jsonPath.getString("content.elder.baseStation.tvBrandId") == null)) {
-            Assert.assertEquals(true, !devicebrandid.isEmpty());
-        }
-        // Assert.assertEquals(true, !jsonPath.getString("content.elder.ethnicityId").isEmpty());
-        // Assert.assertEquals(true, !jsonPath.getString("content.elder.religionId").isEmpty());
+
     }
 
 
@@ -95,30 +98,33 @@ public class ElderAPI01Steps extends BaseClass {
                 String cityId = jsonPath.getString("content.elder.addresses[" + val + "].cityId");
                 String cointryId = jsonPath.getString("content.elder.addresses[" + val + "].countryId");
 
-                Assert.assertEquals(true, !addressid.isEmpty());
-                Assert.assertEquals(true, !postalcode.isEmpty());
-                Assert.assertEquals(true, !doornum.isEmpty());
-                Assert.assertEquals(true, !street.isEmpty());
-                Assert.assertEquals(true, !addresstype.isEmpty());
-                Assert.assertEquals(true, !cityId.isEmpty());
-                Assert.assertEquals(true, !cointryId.isEmpty());
-
-
-                String sqladdress = "select * from main.address where id=" + EncryptionServiceImpl.decryptToLong(addressid) + " and person_id='" + EncryptionServiceImpl.decryptToLong(id) + "' and door_number='" + doornum + "' and street='" + street + "' and postal_code='" + postalcode + "' and address_type='" + addresstype + "'";
-                Assert.assertEquals("Validate Address Table" + sqladdress, 1, DBConn.getRowCount(sqladdress));
-
+                while (results.next()) {
+                    Assert.assertEquals("Validate address.id", results.getString("addressid"), EncryptionServiceImpl.decryptToLong(addressid));
+                    Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalcode);
+                    Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doornum);
+                    Assert.assertEquals("Validate address.street", results.getString("street"), street);
+                    Assert.assertEquals("Validate address.address_type", results.getString("addresstype"), addresstype);
+                    Assert.assertEquals("Validate address.city", results.getString("cityId"), EncryptionServiceImpl.decryptToLong(cityId));
+                    Assert.assertEquals("Validate city.county_id", results.getString("cointryId"), EncryptionServiceImpl.decryptToLong(cointryId));
+                }
 
             }
         }
     }
 
     @Step("Validate Health Issues")
-    public void Validate_health_issues() {
+    public void Validate_health_issues() throws SQLException {
         if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.elder.addresses").size(); i++) {
-                String val = Integer.toString(i - 1);
-                Assert.assertEquals(true, !jsonPath.getString("content.elder.healthIssues[" + val + "].id").isEmpty());
-                Assert.assertEquals(true, !jsonPath.getString("content.elder.healthIssues[" + val + "].issue").isEmpty());
+            if (!(jsonPath.getString("content.elder.healthIssues") == null)) {
+                for (int i = 1; i <= jsonPath.getList("content.elder.healthIssues").size(); i++) {
+                    String val = Integer.toString(i - 1);
+                    String healthissueid = jsonPath.getString("content.elder.healthIssues[" + val + "].id");
+                    String healthissuename = jsonPath.getString("content.elder.healthIssues[" + val + "].issue");
+                    while (results.next()) {
+                        Assert.assertEquals("Validate grampa_health_issues.health_issue_id", results.getString("healthissueid"), EncryptionServiceImpl.decryptToLong(healthissueid));
+                        Assert.assertEquals("Validate health_issues.issue", results.getString("healthissuename"), healthissuename);
+                    }
+                }
             }
         }
     }
