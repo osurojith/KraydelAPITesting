@@ -35,10 +35,21 @@ public class ElderAPI07Steps extends BaseClass {
         this.response = HttpMethods.putMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+    @Step("User gets data from kraydel database Unassign-carer API <userID> <elderid> <userRoleID>")
+    public void get_db_data(String userID, String elderid, String userRoleID) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
+        String sql = null;
+
+        sql="select count(*) as status from main.grampa_user where grampa_id="+ EncryptionServiceImpl.decryptToLong(elderid)+" and user_id="+ EncryptionServiceImpl.decryptToLong(userID)+" and grampa_role_id="+ EncryptionServiceImpl.decryptToLong(userRoleID)+"";
+
+        System.out.println(sql);
+        results = DBConn.getDBData(sql);
+    }
+
     @Step("Validate back end Unassign-carer API <userID> <elderid> <userRoleID>")
     public void Validate_backend(String userID, String elderid, String userRoleID) throws SQLException, ClassNotFoundException {
-        String sqlusergrampa="select * from main.grampa_user where grampa_id="+ EncryptionServiceImpl.decryptToLong(elderid)+" and user_id="+ EncryptionServiceImpl.decryptToLong(userID)+" and grampa_role_id="+ EncryptionServiceImpl.decryptToLong(userRoleID)+"";
-        Assert.assertEquals("Validate USER table: " + sqlusergrampa, 0, DBConn.getRowCount(sqlusergrampa));
+        while (results.next()) {
+            Assert.assertEquals("Validate elder_user",results.getString("status"),"0");
+        }
 
     }
 

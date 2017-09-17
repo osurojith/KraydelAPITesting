@@ -18,6 +18,7 @@ Unassign-carer API
  * User Enter Unassign-carer API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders/"<elderid>"/unassign-carer"
  * User enter Elder Details Unassign-carer API <userID> <userRoleID>
  * User Call Unassign-carer API
+ * User gets data from kraydel database Unassign-carer API <userID> <elderid> <userRoleID>
  * Validate Status Code <status_code>
  * Validate back end Unassign-carer API <userID> <elderid> <userRoleID>
 

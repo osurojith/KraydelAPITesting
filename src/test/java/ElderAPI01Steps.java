@@ -63,7 +63,9 @@ public class ElderAPI01Steps extends BaseClass {
         String devicebrandid = jsonPath.getString("content.elder.baseStation.tvBrandId");
         String locationid = jsonPath.getString("content.elder.locationId");
 
+
         while (results.next()) {
+            System.out.println("xxxxxxxxxxxxxxxxxxxxxx "+results.getString("id"));
         Assert.assertEquals("Validate person.id",results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
         Assert.assertEquals("Validate person.last_name",results.getString("lname"),lname);
         Assert.assertEquals("Validate person.first_name",results.getString("fname"),fname);
@@ -74,11 +76,13 @@ public class ElderAPI01Steps extends BaseClass {
         }
 
 
-        if (!(jsonPath.getString("content.elder.baseStation.id") == null)) {
-            while (results.next()) {
-                Assert.assertEquals("Validate grampa.base_station_id", results.getString("deviceid"), EncryptionServiceImpl.decryptToLong(deviceid));
+        if (!(deviceid == null)) {
+
+            while (results.previous()) {
+                Assert.assertEquals("Validate grampa.base_station_id", results.getString("deviceid"), EncryptionServiceImpl.decryptToLong(deviceid).toString());
                 Assert.assertEquals("Validate base_station.device_key", results.getString("devicekey"), devicekey);
-                Assert.assertEquals("Validate base_station.tv_brand_id", results.getString("devicebrandid"), EncryptionServiceImpl.decryptToLong(devicebrandid));
+                Assert.assertEquals("Validate base_station.tv_brand_id", results.getString("devicebrandid"), EncryptionServiceImpl.decryptToLong(devicebrandid).toString());
+
             }
         }
 
@@ -89,6 +93,7 @@ public class ElderAPI01Steps extends BaseClass {
     public void Validate_address() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             for (int i = 1; i <= jsonPath.getList("content.elder.addresses").size(); i++) {
+
                 String val = Integer.toString(i - 1);
                 String addressid = jsonPath.getString("content.elder.addresses[" + val + "].id");
                 String postalcode = jsonPath.getString("content.elder.addresses[" + val + "].postalCode");
@@ -98,15 +103,17 @@ public class ElderAPI01Steps extends BaseClass {
                 String cityId = jsonPath.getString("content.elder.addresses[" + val + "].cityId");
                 String cointryId = jsonPath.getString("content.elder.addresses[" + val + "].countryId");
 
-                while (results.next()) {
-                    Assert.assertEquals("Validate address.id", results.getString("addressid"), EncryptionServiceImpl.decryptToLong(addressid));
-                    Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalcode);
-                    Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doornum);
-                    Assert.assertEquals("Validate address.street", results.getString("street"), street);
-                    Assert.assertEquals("Validate address.address_type", results.getString("addresstype"), addresstype);
-                    Assert.assertEquals("Validate address.city", results.getString("cityId"), EncryptionServiceImpl.decryptToLong(cityId));
-                    Assert.assertEquals("Validate city.county_id", results.getString("cointryId"), EncryptionServiceImpl.decryptToLong(cointryId));
-                }
+                    while (results.next()) {
+                        System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyy " + results.getString("addressid"));
+                        Assert.assertEquals("Validate address.id", results.getString("addressid"), EncryptionServiceImpl.decryptToLong(addressid).toString());
+                        Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalcode);
+                        Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doornum);
+                        Assert.assertEquals("Validate address.street", results.getString("street"), street);
+                        Assert.assertEquals("Validate address.address_type", results.getString("addresstype"), addresstype);
+                        Assert.assertEquals("Validate address.city", results.getString("cityId"), EncryptionServiceImpl.decryptToLong(cityId).toString());
+                        Assert.assertEquals("Validate city.county_id", results.getString("cointryId"), EncryptionServiceImpl.decryptToLong(cointryId).toString());
+                    }
+
 
             }
         }
@@ -120,8 +127,8 @@ public class ElderAPI01Steps extends BaseClass {
                     String val = Integer.toString(i - 1);
                     String healthissueid = jsonPath.getString("content.elder.healthIssues[" + val + "].id");
                     String healthissuename = jsonPath.getString("content.elder.healthIssues[" + val + "].issue");
-                    while (results.next()) {
-                        Assert.assertEquals("Validate grampa_health_issues.health_issue_id", results.getString("healthissueid"), EncryptionServiceImpl.decryptToLong(healthissueid));
+                    while (results.previous()) {
+                        Assert.assertEquals("Validate grampa_health_issues.health_issue_id", results.getString("healthissueid"), EncryptionServiceImpl.decryptToLong(healthissueid).toString());
                         Assert.assertEquals("Validate health_issues.issue", results.getString("healthissuename"), healthissuename);
                     }
                 }

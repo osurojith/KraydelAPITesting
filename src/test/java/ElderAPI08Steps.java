@@ -27,33 +27,34 @@ public class ElderAPI08Steps extends BaseClass {
         this.response = HttpMethods.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+    @Step("User gets data from kraydel database View Assigned API")
+    public void get_db_data() throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
+        String sql = null;
 
-    @Step("Validate Status Code View Assigned API <status_code>")
-    public void Validate_status_code(String status_code) {
-        this.status_code = status_code;
-        Assert.assertEquals(status_code, jsonPath.getString("statusCode"));
+        sql="select person.id as id , person.last_name as lname , person.first_name as fname,grampa.location_id as locationid from main.person join main.grampa on grampa.id=person.id and grampa.base_station_id is null";
+        System.out.println(sql);
+        results = DBConn.getDBData(sql);
     }
 
     @Step("Validate Content View Assigned API")
     public void Validate_content() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
+            while (results.next()) {
             for (int i = 1; i <= jsonPath.getList("content.elders").size(); i++) {
+
                 String val = Integer.toString(i - 1);
-                String id=jsonPath.getString("content.elders[" + val + "].id");
-                String lname=jsonPath.getString("content.elders[" + val + "].lastName");
-                String fname=jsonPath.getString("content.elders[" + val + "].firstName");
-                String locationid=jsonPath.getString("content.elders[" + val + "].location.id");
-
-
-                Assert.assertEquals(true, !id.isEmpty());
-                Assert.assertEquals(true, !fname.isEmpty());
-                Assert.assertEquals(true, !lname.isEmpty());
-                Assert.assertEquals(true, !locationid.isEmpty());
-
-
-                String sqlusergrampa="select * from main.grampa where id="+ EncryptionServiceImpl.decryptToLong(id)+" and base_station_id IS NULL";
-                Assert.assertEquals("Validate grampa_user table "+sqlusergrampa,1, DBConn.getRowCount(sqlusergrampa));
-
+                String id = jsonPath.getString("content.elders[" + val + "].id");
+                String lname = jsonPath.getString("content.elders[" + val + "].lastName");
+                String fname = jsonPath.getString("content.elders[" + val + "].firstName");
+                String locationid = jsonPath.getString("content.elders[" + val + "].location.id");
+                if (id.equalsIgnoreCase(results.getString("id"))) {
+                    System.out.println(fname);
+                    Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
+                    Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
+                    Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                    Assert.assertEquals("Validate grampa.locationId", results.getString("locationid"), EncryptionServiceImpl.decryptToLong(locationid).toString());
+                }
+            }
             }
         }
     }

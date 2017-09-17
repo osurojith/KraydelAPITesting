@@ -96,7 +96,7 @@ return count;
                 "jdbc:postgresql://ec2-52-30-64-220.eu-west-1.compute.amazonaws.com:5432/kraydel", "kraydel",
                 "M!tr@!Kr@ydelQa");
         if (connection != null) {
-            Statement stmt = connection.createStatement();
+            Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = stmt.executeQuery(quary);
         } else {
             System.out.println("Failed to make connection!");

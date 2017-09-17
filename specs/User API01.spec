@@ -22,6 +22,7 @@ User API
 
     * User enter User API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/users/"<userid>
     * User call the User API
+    * Get data from database and Validate User API <userid>
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
     * Validate User Content
