@@ -50,9 +50,10 @@ public class EncryptionServiceImpl{
 	}
 
 
-	public String encryptToString(Long id) throws Exception {
+	public static String encryptToString(Long id) throws Exception {
 		try {
-			return encode(getEncryptCipher().doFinal(id.toString().getBytes(UTF8)));
+			EncryptionServiceImpl ency=new EncryptionServiceImpl();
+			return ency.encode(ency.getEncryptCipher().doFinal(id.toString().getBytes(UTF8)));
 		} catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException
 				| NoSuchAlgorithmException | NoSuchPaddingException e) {
 			throw new Exception(e);

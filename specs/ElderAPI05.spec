@@ -3,8 +3,8 @@ Update Elder API
 Created by OsuraL on 9/1/2017
 
 
-|elderid                 |username|password|logout_status|response_code|role_name|firstName       |lastName|email          |gender|ethnicityId             |religionId              |dateOfBirth|countryId               |addressID                |postalCode|doorNumber|street|cityId                  |addressType|locationId              |status_code|version|status|phoneID                 |phoneNumber|phoneType|baseStationid           |tvBrandId               |elderstatus|healthIssueid|
-|A0dOVlgwZJJpRh7E2QPj6w==|darshana|letmein |OK           |200          |null     |TestFirstUpdated|TestLast|test6@gmail.com|M     |MKacoUo0nAB6neZVhIHutw==|MKacoUo0nAB6neZVhIHutw==|2017-12-07 |MKacoUo0nAB6neZVhIHutw==|PWSFC9y_IHGlEsoBf9U4uQ==|10524     |456       |AAA   |MKacoUo0nAB6neZVhIHutw==|PRIMARY    |MKacoUo0nAB6neZVhIHutw==|20000      |v1     |ACTIVE|sH6DRWoKl4yrby5zbd_q5A==|0112654659 |PRIMARY  |MKacoUo0nAB6neZVhIHutw==|MKacoUo0nAB6neZVhIHutw==|ACTIVE     |MKacoUo0nAB6neZVhIHutw==|
+     |elderid|username|password|logout_status|response_code|role_name|firstName       |lastName|email          |gender|ethnicityId|religionId|dateOfBirth|countryId|addressID|postalCode|doorNumber|street|cityId|addressType|locationId|status_code|version|status|phoneID|phoneNumber|phoneType|baseStationid|tvBrandId|elderstatus|healthIssueid|
+     |160    |darshana|letmein |OK           |200          |null     |TestFirstUpdated|TestLast|test6@gmail.com|M     |1          |1         |2017-12-07 |1        |301      |10524     |456       |AAA   |1     |PRIMARY    |1         |20000      |v1     |ACTIVE|12     |0112654659 |PRIMARY  |1            |1        |ACTIVE     |1            |
 
 
 

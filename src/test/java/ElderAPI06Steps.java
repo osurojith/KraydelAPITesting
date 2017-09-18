@@ -15,15 +15,15 @@ public class ElderAPI06Steps extends BaseClass {
 
 
     @Step("User Enter Assign-carer API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></elders/><elderid></assign-carer>")
-    public void Call_API(String arg0, String arg1, String arg2, String arg3, String arg4) {
-        this.api = arg0 + arg1 + arg2 + arg3 + arg4;
+    public void Call_API(String arg0, String arg1, String arg2, long arg3, String arg4) throws Exception {
+        this.api = arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
     }
 
     @Step("User enter Elder Details Assign-carer API <userID> <userRoleID>")
-    public void Enter_details(String userID, String userRoleID) {
+    public void Enter_details(long userID, long userRoleID) throws Exception {
         body = "{\n" +
-                " \"user\": {\"id\": \"" + userID + "\"},\n" +
-                "    \"grampaRole\": {\"id\": \"" + userRoleID + "\"}\n" +
+                " \"user\": {\"id\": \"" + EncryptionServiceImpl.encryptToString(userID) + "\"},\n" +
+                "    \"grampaRole\": {\"id\": \"" + EncryptionServiceImpl.encryptToString(userRoleID) + "\"}\n" +
                 "}";
     }
 
@@ -37,19 +37,23 @@ public class ElderAPI06Steps extends BaseClass {
     }
     @Step("User gets data from kraydel database Assign-carer API <userID> <elderid> <userRoleID>")
     public void get_db_data(String userID, String elderid, String userRoleID) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
-        String sql = null;
+        if (status_code.equals("20000")) {
+            String sql = null;
 
-        sql="select count(*) as status from main.grampa_user where grampa_id="+ EncryptionServiceImpl.decryptToLong(elderid)+" and user_id="+ EncryptionServiceImpl.decryptToLong(userID)+" and grampa_role_id="+ EncryptionServiceImpl.decryptToLong(userRoleID)+"";
+            sql = "select count(*) as status from main.grampa_user where grampa_id=" + (elderid) + " and user_id=" + (userID) + " and grampa_role_id=" + (userRoleID) + "";
 
-        System.out.println(sql);
-        results = DBConn.getDBData(sql);
+            System.out.println(sql);
+            results = DBConn.getDBData(sql);
+
+        }
     }
 
     @Step("Validate back end Assign-carer API <userID> <elderid> <userRoleID>")
     public void Validate_backend(String userID, String elderid, String userRoleID) throws SQLException, ClassNotFoundException {
-        while (results.next()) {
-            Assert.assertEquals("Validate elder_user",results.getString("status"),"1");
-              }
-
+        if (status_code.equals("20000")) {
+            while (results.next()) {
+                Assert.assertEquals("Validate elder_user", results.getString("status"), "1");
+            }
+        }
     }
 }

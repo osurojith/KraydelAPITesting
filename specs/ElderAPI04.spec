@@ -7,8 +7,8 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
 "healthIssues":[{"id":""}],
 "baseStation":{"id":"","tvBrandId":"","status":""},
 
-   |username|password|logout_status|response_code|role_name|firstName   |lastName|email          |gender|ethnicityId             |religionId              |dateOfBirth|postalCode|doorNumber|street|cityId                  |addressType|locationId              |status_code|version|status|phoneNumber|phoneType|healthIssueid           |baseStationid           |tvBrandId               |baseStationstatus|elderstatus|
-   |darshana|letmein |OK           |200          |null     |TestFirstNew|TestLast|test12@gmail.com|M     |MKacoUo0nAB6neZVhIHutw==|MKacoUo0nAB6neZVhIHutw==|2017-12-07 |10524     |456       |AAA   |MKacoUo0nAB6neZVhIHutw==|PRIMARY    |MKacoUo0nAB6neZVhIHutw==|20000      |v1     |ACTIVE|0112654659 |PRIMARY  |MKacoUo0nAB6neZVhIHutw==|MKacoUo0nAB6neZVhIHutw==|MKacoUo0nAB6neZVhIHutw==|ASSIGNED         |ACTIVE     |
+    |username|password|logout_status|response_code|role_name|firstName   |lastName|email           |gender|ethnicityId|religionId|dateOfBirth|postalCode|doorNumber|street|cityId|addressType|locationId|status_code|version|status|phoneNumber|phoneType|healthIssueid|baseStationid|tvBrandId|baseStationstatus|elderstatus|
+    |darshana|letmein |OK           |200          |null     |TestFirstDDD|TestLast|test36@gmail.com|M     |1          |1         |2017-12-07 |10524     |456       |AAA   |1     |PRIMARY    |1         |20000      |v1     |ACTIVE|0112654659 |PRIMARY  |0            |0            |1        |ASSIGNED         |ACTIVE     |
 
 
 

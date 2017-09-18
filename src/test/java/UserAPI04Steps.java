@@ -1,3 +1,4 @@
+import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -32,32 +33,32 @@ public class UserAPI04Steps extends BaseClass {
 
 
     @Step("User enter List: addresses Create User API <postalCode> <doorNumber> <street> <cityId> <addressType>")
-    public void Enter_Address_Details(String postalCode, String doorNumber, String street, String cityId, String addressType) {
+    public void Enter_Address_Details(String postalCode, String doorNumber, String street, long cityId, String addressType) throws Exception {
         body = body + "\"addresses\": [\n" +
                 "    {\n" +
                 "      \"doorNumber\": \"" + doorNumber + "\",\n" +
                 "      \"street\": \"" + street + "\",\n" +
                 "      \"postalCode\": \"" + postalCode + "\",\n" +
-                "      \"cityId\": \"" + cityId + "\",\n" +
+                "      \"cityId\": \"" + EncryptionServiceImpl.encryptToString(cityId) + "\",\n" +
                 "      \"addressType\": \"" + addressType + "\"\n" +
                 " }\n" +
                 "  ],";
     }
 
     @Step("User enter locations: id Create User API <locationId>")
-    public void Enter_Location_Id(String locationId) {
+    public void Enter_Location_Id(long locationId) throws Exception {
         body = body + "\n" +
                 "  \"locations\": [\n" +
                 "    {\n" +
-                "      \"id\": \"" + locationId + "\"\n" +
+                "      \"id\": \"" + EncryptionServiceImpl.encryptToString(locationId) + "\"\n" +
                 " }\n" +
                 "  ],";
     }
 
     @Step("User enter roles: Create User API <roleId>")
-    public void Enter_Role_Id(String roleId) {
+    public void Enter_Role_Id(long roleId) throws Exception {
         body = body + "\"roles\":[{\n" +
-                "    \"id\": \"" + roleId + "\"\n" +
+                "    \"id\": \"" + EncryptionServiceImpl.encryptToString(roleId) + "\"\n" +
                 " }]\n" +
                 "}";
     }
@@ -70,25 +71,96 @@ public class UserAPI04Steps extends BaseClass {
         this.response = HttpMethods.postMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+    @Step("User gets data from kraydel database Create User API <email>")
+    public void get_data_from_database(String email) throws SQLException, ClassNotFoundException {
+        if (status_code.equals("20000")) {
+            String sql = null;
 
+            sql = "select person.id as id,user_role.role_id as roleid,user_location.location_id as locationid,main.user.username as username , person.last_name as lname , person.first_name as fname, main.user.status as status, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.email='" + email + "' and address.person_id=person.id join main.city on address.city= city.id join main.user on main.user.id=person.id join main.user_location on user_location.user_id=person.id join main.user_role on user_role.user_id=person.id";
+            System.out.println(sql);
+            results = DBConn.getDBData(sql);
 
-    @Step("Validate Backend Data Create User API <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender> <postalCode> <doorNumber> <street> <addressType>")
-    public void Validate_backend(String usernameC, String passwordC, String firstname, String lastname, String email, String status, String gender, String postalCode, String doorNumber, String street, String addressType) throws SQLException, ClassNotFoundException {
-        status=status.replace("INACTIVE","3").replace("ACTIVE","1");
-        addressType=addressType.replace("PRIMARY","1");
+            if (!results.next()) {
+                sql = "select * from main.person where email='" + email + "'";
+                results = DBConn.getDBData(sql);
 
-        String sqlperson="select * from main.person where first_name='"+firstname+"' and last_name='"+lastname+"' and email='"+email+"' and gender='"+gender+"'";
-        Assert.assertEquals("Validate PERSON table: "+sqlperson,1, DBConn.getRowCount(sqlperson));
+                Assert.assertEquals("No record found: main.person. User Email : " + email, true, results.next());
 
-        String sqluser="select * from main.user where id="+DBConn.getValueInt(sqlperson,"id")+" and username='"+usernameC+"' and status='"+status+"'";
-        Assert.assertEquals("Validate USER table: "+sqluser,1,DBConn.getRowCount(sqluser));
+                sql = "select * from main.address where person_id=(select * from main.person where email='" + email + "')";
+                results = DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.address Email : " + email, true, results.next());
 
+                sql = "select * from main.user where id=(select * from main.person where email='" + email + "')";
+                results = DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.user Email : " + email, true, results.next());
 
-        String sqladdress="select * from main.address where person_id='"+DBConn.getValueInt(sqlperson,"id")+"' and door_number='"+doorNumber+"' and street='"+street+"' and postal_code='"+postalCode+"' and address_type='"+addressType+"'";
-        Assert.assertEquals("Validate Address Table"+sqladdress,1,DBConn.getRowCount(sqladdress));
+                sql = "select * from main.user_location where user_id=(select * from main.person where email='" + email + "')";
+                results = DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.user_location Email : " + email, true, results.next());
 
-
-
-
+                sql = "select * from main.user_role where user_id=(select * from main.person where email='" + email + "')";
+                results = DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.user_role Email : " + email, true, results.next());
+            } else {
+                results.previous();
+            }
+        }
     }
+
+
+    @Step("User Validate User Details Create User API <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>")
+    public void Validate_user_details(String username, String password, String firstname, String lastname, String email, String status, String gender) throws SQLException {
+        if (status_code.equals("20000")) {
+            while (results.next()) {
+                status = status.replace("ACTIVE", "1").replace("INACTIVE", "3");
+                System.out.println("acb");
+                Assert.assertEquals("Validate person.last_name", results.getString("lname"), lastname);
+                Assert.assertEquals("Validate user.username", results.getString("username"), username);
+                Assert.assertEquals("Validate person.first_name", results.getString("fname"), firstname);
+                Assert.assertEquals("Validate person.status", results.getString("status"), status);
+                Assert.assertEquals("Validate person.email", results.getString("email"), email);
+                Assert.assertEquals("Validate person.gender", results.getString("gender"), gender);
+            }
+        }
+    }
+
+
+    @Step("User Validate List: addresses Create User API <postalCode> <doorNumber> <street> <cityId> <addressType>")
+    public void Validate_Address_Details(String postalCode, String doorNumber, String street, String cityId, String addressType) throws SQLException {
+        if (status_code.equals("20000")) {
+            while (results.previous()) {
+                addressType = addressType.replace("PRIMARY", "1");
+                System.out.println("acb");
+                Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalCode);
+                Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doorNumber);
+                Assert.assertEquals("Validate address.street", results.getString("street"), street);
+                Assert.assertEquals("Validate address.address_type", results.getString("addresstype"), addressType);
+                Assert.assertEquals("Validate address.city", results.getString("cityId"), cityId);
+            }
+        }
+    }
+
+    @Step("User Validate locations: id Create User API <locationId>")
+    public void Validate_Location_Id(String locationId) throws SQLException {
+        if (status_code.equals("20000")) {
+            while (results.next()) {
+                System.out.println("acb");
+                Assert.assertEquals("Validate user_location.location_id", results.getString("locationid"), locationId);
+            }
+        }
+    }
+
+    @Step("User Validate roles: Create User API <roleId>")
+    public void Validate_Role_Id(String roleId) throws SQLException {
+        if (status_code.equals("20000")) {
+            while (results.previous()) {
+                System.out.println("acb");
+                Assert.assertEquals("Validate user_role.role_id", results.getString("roleid"), roleId);
+
+            }
+        }
+    }
+
+
+
 }

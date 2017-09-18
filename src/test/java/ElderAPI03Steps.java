@@ -30,8 +30,9 @@ public class ElderAPI03Steps extends BaseClass {
 
 
     public void get_db_data(String elderid, String basestationid, String healthissueid) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
-        String sql = null;
 
+        String sql = null;
+        long id=EncryptionServiceImpl.decryptToLong(elderid);
         System.out.println("xxx  " + basestationid);
         System.out.println("xxx  " + healthissueid);
         if (!(basestationid == null) && !(healthissueid == null)) {
@@ -46,12 +47,44 @@ public class ElderAPI03Steps extends BaseClass {
         System.out.println(sql);
         results = DBConn.getDBData(sql);
 
+        if(!results.next()){
+            sql="select * from main.person where id="+EncryptionServiceImpl.decryptToLong(elderid)+"";
+            results=DBConn.getDBData(sql);
+
+            Assert.assertEquals("No record found: main.person. User ID: "+id ,true,results.next());
+
+            sql="select * from main.address where person_id="+EncryptionServiceImpl.decryptToLong(elderid)+"";
+            results=DBConn.getDBData(sql);
+            Assert.assertEquals("No record found: main.address User ID: "+id,true,results.next());
+
+
+            sql="select * from main.grampa where id="+EncryptionServiceImpl.decryptToLong(elderid)+"";
+            results=DBConn.getDBData(sql);
+            Assert.assertEquals("No record found: main.grampa User ID: "+id,true,results.next());
+
+            if (!(basestationid == "")){
+                sql="select * from main.base_station where base_station.id= (select base_station_id from main.grampa where id="+EncryptionServiceImpl.decryptToLong(elderid)+")";
+                results=DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.BaseStation User ID: "+id,true,results.next());
+            }
+            if (!(healthissueid == "")){
+                sql="select * from main.health_issues where health_issues.id= (select health_issue_id from main.grampa_health_issues where grampa_id="+EncryptionServiceImpl.decryptToLong(elderid)+")";
+                results=DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.health_issues ID: "+id,true,results.next());
+            }
+
+
+        }else{
+            results.previous();
+        }
 
     }
 
     @Step("Get data from database and Validate Elder Search API Users")
     public void Validate_Search_API_Users() throws Exception {
         if (status_code.equals("20000")) {
+
+            Assert.assertEquals("No elders found",true,jsonPath.getList("content.elders").size()>=1);
             for (int i = 1; i <= jsonPath.getList("content.elders").size(); i++) {
                 String val = Integer.toString(i - 1);
 
@@ -69,6 +102,7 @@ public class ElderAPI03Steps extends BaseClass {
                 System.out.println("dddd  "+EncryptionServiceImpl.decryptToLong(id));
                 get_db_data(id, deviceid, null);
                 while (results.next()) {
+
                     Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
                     Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
                     Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);

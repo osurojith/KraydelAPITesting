@@ -1,4 +1,4 @@
-View Assigned API
+View Elders who isnt Assigned to a device API
 =====================
 Created by OsuraL on 9/6/2017
 

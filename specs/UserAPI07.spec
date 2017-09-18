@@ -22,9 +22,10 @@ View elders assigned to a given  carer
 
     * User enter View Elders Assigned API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/user/elders"
     * User call the View Elders Assigned API
+    *User gets data from kraydel database View Elders Assigned API <username>
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
-    * Validate View Elders Assigned Content
+    * Validate Content View Elders Assigned API
 
 
 LogOut API

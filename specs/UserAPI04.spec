@@ -5,8 +5,8 @@ Created by OsuraL on 9/1/2017
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
- |username	|password|logout_status|response_code|role_name|usernameC| passwordC| firstname|lastname|email            |status|gender|postalCode|doorNumber|street|cityId                  |addressType|locationId                 |roleId                  |status_code|version|
- |darshana	|letmein |OK           | 200         |null     |TestingAPI01 |Test@12 |Testfirst|Testlast|test01@gmail.com|ACTIVE  |M     |10524    |456        |AAA|MKacoUo0nAB6neZVhIHutw==   |PRIMARY    |MKacoUo0nAB6neZVhIHutw==   |MKacoUo0nAB6neZVhIHutw==|20000|v1|
+      |username|password|logout_status|response_code|role_name|usernameC   |passwordC|firstname|lastname|email           |status|gender|postalCode|doorNumber|street|cityId|addressType|locationId|roleId|status_code|version|
+      |darshana|letmein |OK           |200          |null     |TestingAPI07|Test@12  |Testfirst|Testlast|test23@gmail.com|ACTIVE|M     |10524     |456       |AAA   |1     |PRIMARY    |1         |1     |20000      |v1     |
 
 
 
@@ -25,9 +25,12 @@ Create User API
  *User enter locations: id Create User API <locationId>
  *User enter roles: Create User API <roleId>
  * User Call Create User API
+ * User gets data from kraydel database Create User API <email>
  * Validate Status Code <status_code>
- * Validate Backend Data Create User API <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender> <postalCode> <doorNumber> <street> <addressType>
-
+ *User Validate User Details Create User API <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>
+  *User Validate List: addresses Create User API <postalCode> <doorNumber> <street> <cityId> <addressType>
+  *User Validate locations: id Create User API <locationId>
+  *User Validate roles: Create User API <roleId>
  LogOut API
  ----------------
   *User logout from kraydel <logout_status>

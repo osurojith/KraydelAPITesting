@@ -29,16 +29,22 @@ public class ElderAPI08Steps extends BaseClass {
     }
     @Step("User gets data from kraydel database View Assigned API")
     public void get_db_data() throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
-        String sql = null;
+        if (status_code.equals("20000")) {
+            String sql = null;
 
-        sql="select person.id as id , person.last_name as lname , person.first_name as fname,grampa.location_id as locationid from main.person join main.grampa on grampa.id=person.id and grampa.base_station_id is null";
-        System.out.println(sql);
-        results = DBConn.getDBData(sql);
+            sql = "select person.id as id , person.last_name as lname , person.first_name as fname,grampa.location_id as locationid from main.person join main.grampa on grampa.id=person.id and grampa.base_station_id is null";
+            System.out.println(sql);
+            results = DBConn.getDBData(sql);
+            Assert.assertEquals("No Elder found for given elder.", true, results.next());
+            results.previous();
+        }
     }
 
     @Step("Validate Content View Assigned API")
     public void Validate_content() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
+            int count=0;
+            Assert.assertEquals("No elders found",true,jsonPath.getList("content.elders").size()>=1);
             while (results.next()) {
             for (int i = 1; i <= jsonPath.getList("content.elders").size(); i++) {
 
@@ -47,7 +53,8 @@ public class ElderAPI08Steps extends BaseClass {
                 String lname = jsonPath.getString("content.elders[" + val + "].lastName");
                 String fname = jsonPath.getString("content.elders[" + val + "].firstName");
                 String locationid = jsonPath.getString("content.elders[" + val + "].location.id");
-                if (id.equalsIgnoreCase(results.getString("id"))) {
+                if (EncryptionServiceImpl.decryptToLong(id).toString().equalsIgnoreCase(results.getString("id"))) {
+                    count++;
                     System.out.println(fname);
                     Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
                     Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
@@ -56,6 +63,7 @@ public class ElderAPI08Steps extends BaseClass {
                 }
             }
             }
+            Assert.assertEquals("Data miss match API:DB",jsonPath.getList("content.elders").size(),count);
         }
     }
 

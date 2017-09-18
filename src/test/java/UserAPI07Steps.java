@@ -27,35 +27,48 @@ public class UserAPI07Steps extends BaseClass {
         this.response = HttpMethods.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
-
-
-
-    @Step("Validate View Elders Assigned Content")
-    public void Validate_content() throws Exception {
+    @Step("User gets data from kraydel database View Elders Assigned API <username>")
+    public void get_db_data(String username) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
         if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.elders").size(); i++) {
-                    String val = Integer.toString(i - 1);
+            String sql = null;
 
-
-                String id=jsonPath.getString("content.elders[" + val + "].id");
-                String firstname=jsonPath.getString("content.elders[" + val + "].firstName");
-                String lastname=jsonPath.getString("content.elders[" + val + "].lastName");
-                String gender=jsonPath.getString("content.elders[" + val + "].gender");
-
-
-
-                Assert.assertEquals(true, !id.isEmpty());
-                Assert.assertEquals(true, !firstname.isEmpty());
-                Assert.assertEquals(true, !lastname.isEmpty());
-                Assert.assertEquals(true, !gender.isEmpty());
-
-                String sqlperson="select * from main.person where id="+ EncryptionServiceImpl.decryptToLong(id)+" and first_name='"+firstname+"' and last_name='"+lastname+"' and gender='"+gender+"'";
-                Assert.assertEquals("Validate PERSON table: "+sqlperson,1, DBConn.getRowCount(sqlperson));
-
-
-            }
+            sql = "select person.id as id,person.gender as gender , person.last_name as lname , person.first_name as fname,grampa.location_id as locationid from main.person join main.grampa on grampa.id=person.id join main.grampa_user on grampa_user.grampa_id=person.id and grampa_user.user_id=(select id from main.user where main.user.username='" + username + "')";
+            System.out.println(sql);
+            results = DBConn.getDBData(sql);
+            Assert.assertEquals("No Elder found for given carer.", true, results.next());
+            results.previous();
         }
     }
+
+
+    @Step("Validate Content View Elders Assigned API")
+    public void Validate_content() throws SQLException, ClassNotFoundException {
+        if (status_code.equals("20000")) {
+            int count=0;
+            Assert.assertEquals("No elders found",true,jsonPath.getList("content.elders").size()>=1);
+            while (results.next()) {
+               count++;
+                for (int i = 1; i <= jsonPath.getList("content.elders").size(); i++) {
+
+                    String val = Integer.toString(i - 1);
+                    String id = jsonPath.getString("content.elders[" + val + "].id");
+                    String lname = jsonPath.getString("content.elders[" + val + "].lastName");
+                    String fname = jsonPath.getString("content.elders[" + val + "].firstName");
+                    String gender = jsonPath.getString("content.elders[" + val + "].gender");
+                    if (EncryptionServiceImpl.decryptToLong(id).toString().equalsIgnoreCase(results.getString("id"))) {
+                        System.out.println(fname);
+                        Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
+                        Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
+                        Assert.assertEquals("Validate person.gender", results.getString("gender"), gender);
+                        Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                        }
+                }
+            }
+            Assert.assertEquals("Data miss match API:DB",jsonPath.getList("content.elders").size(),count);
+
+        }
+    }
+
 
 
 }

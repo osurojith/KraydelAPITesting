@@ -25,11 +25,47 @@ public class UserAPI02Steps extends BaseClass {
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
+    public void get_DB_data(String personid) throws SQLException, ClassNotFoundException {
+        if (status_code.equals("20000")) {
+            String sql = null;
+            long id = EncryptionServiceImpl.decryptToLong(personid);
+            sql = "select person.id as id,role.role_name as rolename,user_role.role_id as roleid,user_location.location_id as locationid,main.user.username as username , person.last_name as lname , person.first_name as fname, main.user.status as status, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + EncryptionServiceImpl.decryptToLong(personid) + " and address.person_id=" + EncryptionServiceImpl.decryptToLong(personid) + " join main.city on address.city= city.id join main.user on main.user.id=person.id join main.user_location on user_location.user_id=person.id join main.user_role on user_role.user_id=person.id join main.role on role.id=main.user_role.role_id";
+            System.out.println(sql);
+            results = DBConn.getDBData(sql);
 
+            if (!results.next()) {
+                sql = "select * from main.person where id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
+                results = DBConn.getDBData(sql);
+
+                Assert.assertEquals("No record found: main.person. User ID: " + id, true, results.next());
+
+                sql = "select * from main.address where person_id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
+                results = DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.address User ID: " + id, true, results.next());
+
+                sql = "select * from main.user where id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
+                results = DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.user User ID: " + id, true, results.next());
+
+                sql = "select * from main.user_location where user_id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
+                results = DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.user_location User ID: " + id, true, results.next());
+
+                sql = "select * from main.user_role where user_id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
+                results = DBConn.getDBData(sql);
+                Assert.assertEquals("No record found: main.user_role User ID: " + id, true, results.next());
+            } else {
+                results.previous();
+            }
+        }
+    }
     @Step("Validate Search API Users")
     public void Validate_Search_API_Users() throws Exception {
         if (status_code.equals("20000")) {
+            int count=0;
+            Assert.assertEquals("No users found",true,jsonPath.getList("content.users").size()>=1);
             for (int i = 1; i <= jsonPath.getList("content.users").size(); i++) {
+
                 String val = Integer.toString(i - 1);
                 String id=jsonPath.getString("content.users[" + val + "].id");
                 String username=jsonPath.getString("content.users[" + val + "].username");
@@ -39,39 +75,32 @@ public class UserAPI02Steps extends BaseClass {
                 String gender=jsonPath.getString("content.users[" + val + "].gender");
                 String status=jsonPath.getString("content.users[" + val + "].status").replace("INACTIVE","3").replace("ACTIVE","1");
 
+                get_DB_data(id);
 
-                Assert.assertEquals(true, !id.isEmpty());
-                Assert.assertEquals(true, !username.isEmpty());
-                Assert.assertEquals(true, !lname.isEmpty());
-                Assert.assertEquals(true, !fname.isEmpty());
-                Assert.assertEquals(true, !email.isEmpty());
-                Assert.assertEquals(true, !gender.isEmpty());
-                Assert.assertEquals(true, !status.isEmpty());
+                while (results.next()) {
 
+                    Assert.assertEquals("Validate person.id",results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                    Assert.assertEquals("Validate person.last_name",results.getString("lname"),lname);
+                    Assert.assertEquals("Validate user.username",results.getString("username"),username);
+                    Assert.assertEquals("Validate person.first_name",results.getString("fname"),fname);
+                    Assert.assertEquals("Validate person.status",results.getString("status"), status);
+                    Assert.assertEquals("Validate person.email",results.getString("email"), email);
+                    Assert.assertEquals("Validate person.gender",results.getString("gender"),gender);
 
-                String sqlperson="select * from main.person where id="+ EncryptionServiceImpl.decryptToLong(id)+" and first_name='"+fname+"' and last_name='"+lname+"' and email='"+email+"' and gender='"+gender+"'";
-                Assert.assertEquals("Validate PERSON table: "+sqlperson,1,DBConn.getRowCount(sqlperson));
+                    for (int x = 1; x <= jsonPath.getList("content.users[" + val + "].roleNames").size(); x++) {
+                        String val1 = Integer.toString(x - 1);
+                        String roleName=jsonPath.getString("content.users[" + val + "].roleNames[" + val1 + "]");
 
+                        System.out.println("bbb");
+                        Assert.assertEquals("Validate user_role.role_id", results.getString("rolename"), roleName);
 
-                String sqluser="select * from main.user where id="+EncryptionServiceImpl.decryptToLong(id)+" and username='"+username+"' and status='"+status+"'";
-                Assert.assertEquals("Validate USER table: "+sqluser,1,DBConn.getRowCount(sqluser));
-
-
-                for (int x = 1; i <= jsonPath.getList("content.users[" + val + "].roleNames").size(); i++) {
-                    String val1 = Integer.toString(x - 1);
-                    String roleName=jsonPath.getString("content.users[" + val + "].roleNames[" + val1 + "]");
-
-
-                    Assert.assertEquals(true, !roleName.isEmpty());
-
-
-                    String sqlrole="select * from main.role where role_name='"+roleName+"'";
-                    String sqluserrole="select * from main.user_role where user_id="+EncryptionServiceImpl.decryptToLong(id)+" and role_id='"+DBConn.getValueInt(sqlrole,"id")+"'";
-
-
-                    Assert.assertEquals("Validate User_role table: "+sqluserrole,1,DBConn.getRowCount(sqluserrole));
-
+                    }
                 }
+
+
+
+
+
             }
         }
     }

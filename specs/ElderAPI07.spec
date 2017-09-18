@@ -5,8 +5,8 @@ Created by OsuraL on 9/6/2017
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
      
-|elderid                    |username	|password|logout_status|response_code|userID                   |userRoleID                |status_code|version|
-| A0dOVlgwZJJpRh7E2QPj6w==  |darshana	|letmein |OK           | 200         |8LAw7a7AEa-GBwZKH7l9Ng== |  MKacoUo0nAB6neZVhIHutw==|   20000   |v1|
+     |elderid|username|password|logout_status|response_code|userID|userRoleID|status_code|version|
+     |160    |darshana|letmein |OK           |200          |140   |1         |20000      |v1     |
 
 LogIn API
    ----------------
