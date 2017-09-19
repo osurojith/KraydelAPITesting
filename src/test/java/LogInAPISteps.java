@@ -45,7 +45,7 @@ public class LogInAPISteps extends BaseClass {
     @Step("Get refresh token")
     public void Get_refresh_token() {
         token = jsonPath.getString("refresh_token");
-        System.out.println(token);
+        System.out.println("xxxxx   "+token);
     }
 
 

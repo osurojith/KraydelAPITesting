@@ -13,8 +13,7 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
 LogIn API (Get refresh token)
 ----------------
  *User get refresh token <username>,<password> and <response_code>
- *User send refresh token <response_code>
-*User logout from kraydel <logout_status>
+
 LogIn API (Send refresh token)
 ----------------
  *User send refresh token <response_code>
