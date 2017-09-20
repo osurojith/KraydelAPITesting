@@ -1,11 +1,12 @@
-Country API
+City API
 =====================
 Created by OsuraL on 8/30/2017
 
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
-  |country-id  	|version|status_code|status       |contentCountry|CountryDataid|CountryDataName|username |password	|logout_status|response_code|role_name|
-  |MKacoUo0nAB6neZVhIHutw== |v1       |    20000   | Success                   |   Yes       |  Yes     | Yes                  |darshana |letmein	|OK           | 200         |null     |
+      |country-id|version|status_code|status |username|password|logout_status|response_code|role_name|
+      |----------|-------|-----------|-------|--------|--------|-------------|-------------|---------|
+      |1         |v1     |20000      |Success|darshana|letmein |OK           |200          |null     |
 
 LogIn API
    ----------------
@@ -23,9 +24,8 @@ Country API
     * User call the Country API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
-    * Validate City Content <contentCountry>
-    * Validate City Data Id <CountryDataid>
-    * Validate City Data Name <CountryDataName>
+    * Validate City Content
+
 
 LogOut API
 ----------------

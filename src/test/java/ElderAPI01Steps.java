@@ -142,7 +142,6 @@ public class ElderAPI01Steps extends BaseClass {
                 String cointryId = jsonPath.getString("content.elder.addresses[" + val + "].countryId");
 
 
-                        System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyy " + results.getString("addressid"));
                         Assert.assertEquals("Validate address.id", results.getString("addressid"), EncryptionServiceImpl.decryptToLong(addressid).toString());
                         Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalcode);
                         Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doornum);

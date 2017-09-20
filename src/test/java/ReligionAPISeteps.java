@@ -27,21 +27,35 @@ public class ReligionAPISeteps extends BaseClass {
         this.response = HttpMethods.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+    public void get_db_data(String id) throws SQLException, ClassNotFoundException {
+        String sql="select * from main.religion where id="+ EncryptionServiceImpl.decryptToLong(id)+"";
+        System.out.println(sql);
+        results = DBConn.getDBData(sql);
+        Assert.assertEquals("No record found  main.religion. ID:"+EncryptionServiceImpl.decryptToLong(id), true, results.next());
+        results.previous();
+    }
 
 
     @Step("Validate Religions Content")
     public void Validate_Religions_Content() throws SQLException, ClassNotFoundException {
 
             for (int i = 1; i <= jsonPath.getList("content.religions").size(); i++) {
+                int count=0;
                 String val = Integer.toString(i - 1);
                 String religionid=jsonPath.getString("content.religions[" + val + "].id");
                 String religionname=jsonPath.getString("content.religions[" + val + "].name");
 
-                Assert.assertEquals(true, !religionid.isEmpty());
-                Assert.assertEquals(true, !religionname.isEmpty());
+                get_db_data(religionid);
+                while (results.next()) {
+                    count++;
+                    Assert.assertEquals(results.getString("id"), EncryptionServiceImpl.decryptToLong(religionid).toString());
+                    Assert.assertEquals(results.getString("name"), religionname);
 
-                String sqlreligion="select * from main.religion where id="+ EncryptionServiceImpl.decryptToLong(religionid)+" and name='"+religionname+"'";
-                Assert.assertEquals("Validate Religion id and name :"+sqlreligion,1, DBConn.getRowCount(sqlreligion));
+                }
+
+                Assert.assertEquals("Data miss match API:DB",1,count);
+
+
 
 
         }

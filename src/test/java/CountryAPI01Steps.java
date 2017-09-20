@@ -1,10 +1,13 @@
+import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
+import utils.DBConn;
 import utils.HttpMethods;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,63 +28,73 @@ public class CountryAPI01Steps extends BaseClass {
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
-
-    @Step("Validate Country Content <contentCountry>")
-    public void Validate_Country_Content(String status) {
-        if (status_code.equals("20000")) {
-            Assert.assertEquals(status.equals("Yes"), !jsonPath.getString("content").isEmpty());
+    public void get_db_data(String id,String tableName) throws SQLException, ClassNotFoundException {
+        String sql=null;
+        if(tableName.equalsIgnoreCase("country")) {
+            sql = "select * from main.country where id=" + EncryptionServiceImpl.decryptToLong(id) + "";
+            results = DBConn.getDBData(sql);
+            System.out.println(sql);
+            Assert.assertEquals("No record found  main.Country ID:" + id, true, results.next());
+            results.previous();
         }
+         if(tableName.equalsIgnoreCase("city")){
+             sql = "select * from main.city where country_id=" + EncryptionServiceImpl.decryptToLong(id) + "";
+             results = DBConn.getDBData(sql);
+             System.out.println(sql);
+             Assert.assertEquals("No record found  main.City ID:" + id, true, results.next());
+             results.previous();
+         }
+
     }
 
-    @Step("Validate Country Data Id <CountryDataid>")
-    public void Validate_Country_Data_Id(String status) {
+    @Step("Validate Country Content")
+    public void Validate_Country_Content() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             for (int i = 1; i <= jsonPath.getList("content.countries").size(); i++) {
+                int count=0;
                 String val = Integer.toString(i - 1);
-                Assert.assertEquals(status.equals("Yes"), !jsonPath.getString("content.countries[" + val + "].id").isEmpty());
+
+               String id=jsonPath.getString("content.countries[" + val + "].id");
+               String name=jsonPath.getString("content.countries[" + val + "].name");
+
+                get_db_data(id,"country");
+                while(results.next()) {
+                    count++;
+                    Assert.assertEquals("Validate main.Country.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                    Assert.assertEquals("Validate main.Country.name", results.getString("name"), name);
+                }
+                Assert.assertEquals("Data miss match",1,count);
             }
+
         }
     }
 
-    @Step("Validate Country Data Name <CountryDataName>")
-    public void Validate_Country_Data_Name(String status) {
-        if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.countries").size(); i++) {
-                String val = Integer.toString(i - 1);
-                Assert.assertEquals(status.equals("Yes"), !jsonPath.getString("content.countries[" + val + "].name").isEmpty());
-            }
-        }
-    }
 
-    @Step("Validate City Content <contentCountry>")
-    public void Validate_City_Content(String status) {
-        if (status_code.equals("20000")) {
-            Assert.assertEquals(status.equals("Yes"), !jsonPath.getString("content").isEmpty());
-        }
-    }
 
-    @Step("Validate City Data Id <CountryDataid>")
-    public void Validate_City_Data_Id(String status) {
+    @Step("Validate City Content")
+    public void Validate_City_Content() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             for (int i = 1; i <= jsonPath.getList("content.cities").size(); i++) {
+                int count=0;
                 String val = Integer.toString(i - 1);
-                Assert.assertEquals(status.equals("Yes"), !jsonPath.getString("content.cities[" + val + "].id").isEmpty());
+
+                String id=jsonPath.getString("content.cities[" + val + "].id");
+                String name=jsonPath.getString("content.cities[" + val + "].name");
+
+                get_db_data(id,"city");
+                while(results.next()) {
+                    count++;
+                    Assert.assertEquals("Validate main.City.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                    Assert.assertEquals("Validate main.City.name", results.getString("name"), name);
+                }
+                Assert.assertEquals("Data miss match",1,count);
             }
-        }
+          }
     }
 
-    @Step("Validate City Data Name <CountryDataName>")
-    public void Validate_City_Data_Name(String status) {
-        if (status_code.equals("20000")) {
-            for (int i = 1; i <= jsonPath.getList("content.cities").size(); i++) {
-                String val = Integer.toString(i - 1);
-                Assert.assertEquals(status.equals("Yes"), !jsonPath.getString("content.cities[" + val + "].name").isEmpty());
-            }
-        }
-    }
 
     @Step("User enter Country API2 <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></countries/><country-id></cities/partial>")
-    public void User_enter_Country_API2(String part1, String part2, String part3, String part4, String part5) {
-        this.api = part1 + part2 + part3 + part4 + part5;
+    public void User_enter_Country_API2(String part1, String part2, String part3, long part4, String part5) throws Exception {
+        this.api = part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4) + part5;
     }
 }

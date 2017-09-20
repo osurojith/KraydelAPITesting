@@ -27,24 +27,32 @@ public class HealthIssueSteps extends BaseClass {
         this.response = HttpMethods.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
-
+    public void get_db_data(String id) throws SQLException, ClassNotFoundException {
+        String sql="select * from main.health_issues where id="+ EncryptionServiceImpl.decryptToLong(id)+"";
+        System.out.println(sql);
+        results = DBConn.getDBData(sql);
+        Assert.assertEquals("No record found  main.health_issues. ID:"+EncryptionServiceImpl.decryptToLong(id), true, results.next());
+        results.previous();
+    }
 
     @Step("Validate HealthIssue Content")
     public void Validate_HealthIssue_Content() throws SQLException, ClassNotFoundException {
 
             for (int i = 1; i <= jsonPath.getList("content.healthIssues").size(); i++) {
+                int count=0;
                 String val = Integer.toString(i - 1);
                 String healthid=jsonPath.getString("content.healthIssues[" + val + "].id");
                 String issue=jsonPath.getString("content.healthIssues[" + val + "].issue");
 
+                get_db_data(healthid);
+                while (results.next()) {
+                    count++;
+                    Assert.assertEquals(results.getString("id"), EncryptionServiceImpl.decryptToLong(healthid).toString());
+                    Assert.assertEquals(results.getString("issue"), issue);
 
-                Assert.assertEquals(true, !healthid.isEmpty());
-                Assert.assertEquals(true, !issue.isEmpty());
+                }
 
-                String sqlhealthissue="select * from main.health_issues where id="+ EncryptionServiceImpl.decryptToLong(healthid)+" and issue='"+issue+"'";
-                Assert.assertEquals("Validate HealthIssue id and Issue :"+sqlhealthissue,1, DBConn.getRowCount(sqlhealthissue));
-
-
+                Assert.assertEquals("Data miss match API:DB",1,count);
         }
     }
 }
