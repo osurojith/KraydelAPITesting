@@ -18,6 +18,7 @@ public class CommonUtils extends BaseClass{
     @Step("Validate Status Code <status_code>")
     public void Validate_status_code(String code) {
         status_code=jsonPath.getString("statusCode");
+        System.out.println(status_code);
         Assert.assertEquals(code, jsonPath.getString("statusCode"));
     }
 

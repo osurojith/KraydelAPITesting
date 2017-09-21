@@ -73,7 +73,8 @@ public class UserAPI04Steps extends BaseClass {
     }
     @Step("User gets data from kraydel database Create User API <email>")
     public void get_data_from_database(String email) throws SQLException, ClassNotFoundException {
-        if (status_code.equals("20000")) {
+        System.out.println(status_code);
+        if (status_code.equalsIgnoreCase("20000")) {
             String sql = null;
 
             sql = "select person.id as id,user_role.role_id as roleid,user_location.location_id as locationid,main.user.username as username , person.last_name as lname , person.first_name as fname, main.user.status as status, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.email='" + email + "' and address.person_id=person.id join main.city on address.city= city.id join main.user on main.user.id=person.id join main.user_location on user_location.user_id=person.id join main.user_role on user_role.user_id=person.id";

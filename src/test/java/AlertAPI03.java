@@ -1,3 +1,4 @@
+import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -17,13 +18,14 @@ public class AlertAPI03 extends BaseClass {
     }
 
     @Step("User enter Alert Details Alert API POST <alertMessage> <alertSubject> <subEventType> <grampaId>")
-    public void Enter_Alert_details(String alertMessage, String alertSubject, String subEventType, String grampaId) {
+    public void Enter_Alert_details(String alertMessage, String alertSubject, String subEventType, long grampaId) throws Exception {
         body = "{\n" +
                 "\"alertMessage\": \"" + alertMessage + "\",\n" +
                 "\"alertSubject\": \"" + alertSubject + "\",\n" +
                 "\"subEventType\": \"" + subEventType + "\",\n" +
-                "\"grampaId\": " + grampaId + "\n" +
+                "\"grampaId\": " + EncryptionServiceImpl.encryptToString(grampaId) + "\n" +
                 "}";
+        System.out.println(body);
     }
 
     @Step("User Call Alert API POST")
