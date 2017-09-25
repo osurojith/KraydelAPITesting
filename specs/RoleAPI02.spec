@@ -1,4 +1,4 @@
-Role API
+Role API Get Elder Roles
 =====================
 Created by OsuraL on 8/30/2017
 
@@ -19,11 +19,11 @@ LogIn API
 
 Role API
 ----------------
-    * User enter Role API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/roles/partial"
-    * User call the Role API
+    * User enter Role API Get Elder Roles "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/roles/elder-roles/partial"
+    * User call the Role API Get Elder Roles
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
-    * Validate Content
+    * Validate Content Get Elder Roles
 
 
 LogOut API
