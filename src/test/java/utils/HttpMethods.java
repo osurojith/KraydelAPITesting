@@ -26,10 +26,17 @@ public class HttpMethods {
 
     }
     public static Response getMethod(String api,Map<String,String> header) {
-        Response r = given().header(header.get("headername"), header.get("headervalue")).when().get(api);
-        String body = r.getBody().asString();
-        System.out.println(body);
-        return r;
+        if(header.size()==0){
+            Response r = given().get(api);
+            String body = r.getBody().asString();
+            System.out.println(body);
+            return r;
+        }else {
+            Response r = given().header(header.get("headername"), header.get("headervalue")).when().get(api);
+            String body = r.getBody().asString();
+            System.out.println(body);
+            return r;
+        }
     }
     public static Response postMethodBody(String api,Map<String,String> header, String body) {
         RestAssured.baseURI = api;
