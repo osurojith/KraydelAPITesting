@@ -28,23 +28,31 @@ public class TVBrandAPISteps extends BaseClass {
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
-
+    public void get_db_data(String id) throws SQLException, ClassNotFoundException {
+        String sql="select * from main.tv_brand where id="+ EncryptionServiceImpl.decryptToLong(id)+"";
+        System.out.println(sql);
+        results = DBConn.getDBData(sql);
+        Assert.assertEquals("No record found  main.tv_brand. ID:"+EncryptionServiceImpl.decryptToLong(id), true, results.next());
+        results.previous();
+    }
     @Step("Validate TVBrand Content")
     public void Validate_TVBrand_Content() throws SQLException, ClassNotFoundException {
 
             for (int i = 1; i <= jsonPath.getList("content.tvsBrands").size(); i++) {
+                int count=0;
                 String val = Integer.toString(i - 1);
                 String tvbrandid=jsonPath.getString("content.tvsBrands[" + val + "].id");
                String tvbrandname=jsonPath.getString("content.tvsBrands[" + val + "].name");
+                get_db_data(tvbrandid);
 
-                Assert.assertEquals(true, !tvbrandid.isEmpty());
-                Assert.assertEquals(true, !tvbrandname.isEmpty());
+                while (results.next()) {
+                    count++;
+                    Assert.assertEquals(results.getString("id"), EncryptionServiceImpl.decryptToLong(tvbrandid).toString());
+                    Assert.assertEquals(results.getString("name"), tvbrandname);
 
-                String sqltvbrand="select * from main.tv_brand where id="+ EncryptionServiceImpl.decryptToLong(tvbrandid)+" and name='"+tvbrandname+"'";
-                Assert.assertEquals("Validate Role id and name :"+sqltvbrand,1, DBConn.getRowCount(sqltvbrand));
-                System.out.println(sqltvbrand);
+                }
 
-
+                Assert.assertEquals("Data miss match API:DB",1,count);
         }
     }
 
