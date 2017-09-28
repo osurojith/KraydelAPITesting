@@ -6,7 +6,7 @@ This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
         | userid                     |version|status_code |request_code|status  |username |password	|logout_status|response_code|role_name|
-        |   212                      |   v1    |    20000 |    200     | Success  |darshana |letmein	|OK           | 200         |null     |
+        |   187                      |   v1    |    20000 |    200     | Success  |darshana |letmein	|OK           | 200         |null     |
 
 
 
@@ -20,7 +20,7 @@ LogIn API
 User API
 ----------------
 
-    * User enter User API view Picture by id "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/user/"<id>"/picture"
+    * User enter User API view Picture by id "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/user/"<userid>"/picture"
     * User call the User API view Picture by id
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

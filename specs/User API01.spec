@@ -8,7 +8,7 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
         | userid                     |version|status_code |request_code|status  |username |password	|logout_status|response_code|role_name|
         |   185                      |   v1    |    20000 |    200     | Success  |darshana |letmein	|OK           | 200         |null     |
         |   185                      |   v1    |    20000 |    200     | Success  |apit@gmail.com |letmein	|OK           | 200         |null     |
-        |   20                      |   v1    |    40000 |    200     | Success  |apit@gmail.com |letmein	|OK           | 200         |null     |
+        |   20                      |   v1    |    40000 |    400     | Success  |apit@gmail.com |letmein	|OK           | 200         |null     |
 
 
 

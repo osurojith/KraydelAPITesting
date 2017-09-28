@@ -5,8 +5,9 @@ Created by OsuraL on 9/1/2017
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
-    |username|password|logout_status|response_code|role_name|usernameC   |passwordC|firstname         |lastname|email           |status|gender|postalCode|doorNumber|street|cityId                  |addressType|locationId              |roleId                  |status_code|version|userid                  |addressid               |
-    |darshana|letmein |OK           |200          |null     |TestingAPI01|Test@12  |TestAccountUpdated|Testlast|test01@gmail.com|ACTIVE|M     |10524     |456       |FFF   |1|PRIMARY    |1|1|20000      |v1     |149|40|
+           |username      |password|logout_status|response_code|role_name|usernameC   |passwordC|firstname         |lastname|email           |status|gender|postalCode|doorNumber|street|cityId|addressType|locationId|roleId|status_code|version|userid|addressid|
+           |--------------|--------|-------------|-------------|---------|------------|---------|------------------|--------|----------------|------|------|----------|----------|------|------|-----------|----------|------|-----------|-------|------|---------|
+           |apit@gmail.com|letmein |OK           |200          |null     |TestingAPI01|Test@12  |TestAccountUpdated|Testlast|test01@gmail.com|ACTIVE|M     |10524     |456       |FFF   |1     |PRIMARY    |1         |1     |20000      |v1     |5   |397       |
 
 
 
@@ -24,9 +25,10 @@ Update User API
  *User enter List: addresses Update User API <addressid> <postalCode> <doorNumber> <street> <cityId> <addressType>
  *User enter locations: id Update User API <locationId>
  *User enter roles: Update User API <roleId>
- * User Call Update User API
- * User gets data from kraydel database Update User API <userid>
- * Validate Status Code <status_code>
+ *User Call Update User API
+ *Validate Status Code <status_code>
+ *Validate HTTP Response <response_code>
+ *User gets data from kraydel database Update User API <userid>
  *User Validate User Details Update User API <userid> <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>
  *User Validate List: addresses Update User API <addressid> <postalCode> <doorNumber> <street> <cityId> <addressType>
  *User Validate locations: id Update User API <locationId>

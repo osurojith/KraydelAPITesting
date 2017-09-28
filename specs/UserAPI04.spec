@@ -5,8 +5,9 @@ Created by OsuraL on 9/1/2017
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
-      |username|password|logout_status|response_code|role_name|usernameC   |passwordC|firstname|lastname|email           |status|gender|postalCode|doorNumber|street|cityId|addressType|locationId|roleId|status_code|version|
-      |darshana|letmein |OK           |200          |null     |TestingAPI047|Test@12  |Testfirst|Testlast|test28@gmail.com|ACTIVE|M     |10524     |456       |AAA   |1     |PRIMARY    |1         |1     |20000      |v1     |
+      |username      |password|logout_status|response_code|role_name|usernameC    |passwordC|firstname|lastname|email            |status|gender|postalCode|doorNumber|street|cityId|addressType|locationId|roleId|status_code|version|
+      |--------------|--------|-------------|-------------|---------|-------------|---------|---------|--------|-----------------|------|------|----------|----------|------|------|-----------|----------|------|-----------|-------|
+      |darshana      |letmein |OK           |201          |null     |TestingAPI003|Test@12  |Testfirst|Testlast|test001@gmail.com|ACTIVE|M     |10524     |456       |AAA   |1     |PRIMARY    |1         |1     |20000      |v1     |
 
 
 

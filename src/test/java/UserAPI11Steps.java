@@ -1,6 +1,7 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
+import org.junit.Assert;
 import utils.BaseClass;
 import utils.DBConn;
 import utils.HttpMethods;
@@ -33,7 +34,8 @@ public class UserAPI11Steps extends BaseClass {
     }
 
     @Step("Validate view Picture by id API")
-    public void validate_picture_details() {
-
+    public void validate_picture_details() throws SQLException {
+        results.next();
+        Assert.assertEquals("Validate image DB:API",(results.getString("picture")==null),(jsonPath.getString("content.picture")==null));
     }
 }

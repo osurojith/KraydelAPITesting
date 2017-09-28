@@ -64,6 +64,7 @@ public class UserAPI02Steps extends BaseClass {
         if (status_code.equals("20000")) {
             int count=0;
             Assert.assertEquals("No users found",true,jsonPath.getList("content.users").size()>=1);
+            System.out.println(jsonPath.getList("content.users").size());
             for (int i = 1; i <= jsonPath.getList("content.users").size(); i++) {
 
                 String val = Integer.toString(i - 1);

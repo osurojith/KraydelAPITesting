@@ -64,6 +64,7 @@ public class UserAPI05Steps extends BaseClass {
 
     @Step("User Call Update User API")
     public void Call_create_user_API() {
+        System.out.println(body);
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
