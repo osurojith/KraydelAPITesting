@@ -27,6 +27,7 @@ public class UserAPI08Steps extends BaseClass {
 
     @Step("User call the Update Status API")
     public void User_call_the_Update_status_API() {
+        System.out.println(body);
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);

@@ -7,8 +7,9 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
 "healthIssues":[{"id":""}],
 "baseStation":{"id":"","tvBrandId":"","status":""},
 
-    |username|password|logout_status|response_code|role_name|firstName   |lastName|email           |gender|ethnicityId|religionId|dateOfBirth|postalCode|doorNumber|street|cityId|addressType|locationId|status_code|version|status|phoneNumber|phoneType|healthIssueid|baseStationid|tvBrandId|baseStationstatus|elderstatus|
-    |darshana|letmein |OK           |200          |null     |TestFirstDUPLICATE|TestLast|test38@gmail.com|M     |1          |1         |2017-12-07 |10524     |456       |AAA   |1     |PRIMARY    |1         |20000      |v1     |ACTIVE|0112654659 |PRIMARY  |0            |0            |1        |ASSIGNED         |ACTIVE     |
+         |username|password|logout_status|response_code|role_name|firstName         |lastName|email           |gender|ethnicityId|religionId|dateOfBirth|postalCode|doorNumber|street|cityId|addressType|locationId|status_code|version|status|phoneNumber|phoneType|healthIssueid|baseStationid|tvBrandId|baseStationstatus|elderstatus|
+         |--------|--------|-------------|-------------|---------|------------------|--------|----------------|------|-----------|----------|-----------|----------|----------|------|------|-----------|----------|-----------|-------|------|-----------|---------|-------------|-------------|---------|-----------------|-----------|
+         |apit@gmail.com|letmein |OK           |200          |null     |TestFirstDUPLICATE|TestLast|test88@gmail.com|M     |1          |1         |2017-12-07 |10524     |456       |AAA   |1     |PRIMARY    |1         |20000      |v1     |ACTIVE|0112654659 |PRIMARY  |0            |0            |1        |ASSIGNED         |ACTIVE     |
 
 
 LogIn API
@@ -26,8 +27,9 @@ Create Elder API
  *User enter healthIssues: Create Elder API <healthIssueid>
   *User enter baseStation: Create Elder API <baseStationid> <tvBrandId> <baseStationstatus>
  * User Call Create Elder API
- * User gets data from kraydel database Create Elder API <baseStationid><healthIssueid><email>
  * Validate Status Code <status_code>
+ * Validate HTTP Response <response_code>
+ * User gets data from kraydel database Create Elder API <baseStationid><healthIssueid><email>
 *User enter Elder Details Create Elder API validating <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>
  *User enter List: addresses Create Elder API validating <postalCode> <doorNumber> <street> <cityId> <addressType>
  *User enter phoneNumber: Create Elder API validating <phoneNumber> <phoneType>

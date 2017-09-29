@@ -8,6 +8,7 @@ import utils.HttpMethods;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ElderAPI01Steps extends BaseClass {
@@ -33,17 +34,21 @@ public class ElderAPI01Steps extends BaseClass {
         String sql=null;
 
         String basestationid=jsonPath.getString("content.elder.baseStation.id");
-        String healthissueid=jsonPath.getString("content.elder.healthIssues");
+        int healthissueid=jsonPath.getList("content.elder.healthIssues").size();
 
         System.out.println("xxx  "+basestationid);
         System.out.println("xxx  "+healthissueid);
-        if (!(basestationid == null) && !(healthissueid == null)) {
+        if (!(basestationid == null) && (healthissueid >0)) {
+            System.out.println("A");
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId, grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename from main.person join main.address on person.id=" + elderid + " and address.person_id=" + elderid + " join main.grampa on grampa.id=" + elderid + " join main.base_station on grampa.base_station_id=base_station.id join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id";
-        } else if ((basestationid == null) && !(healthissueid == null)) {
+        } else if (!(basestationid == null) && (healthissueid >0)) {
+            System.out.println("B");
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum,grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + elderid + " and address.person_id=" + elderid + " join main.grampa on grampa.id=" + elderid + " join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id";
-        } else if (!(basestationid == null) && (healthissueid == null)) {
+        } else if (!(basestationid == null) && !(healthissueid >0)) {
+            System.out.println("C");
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum,grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + elderid + " and address.person_id=" + elderid + " join main.grampa on grampa.id=" + elderid + " join main.city on address.city= city.id join main.base_station on grampa.base_station_id=base_station.id";
-        } else if ((basestationid == null) && (healthissueid == null)) {
+        } else if ((basestationid == null) && !(healthissueid >0)) {
+            System.out.println("D");
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + elderid + " and address.person_id=" + elderid + " join main.grampa on grampa.id=" + elderid + " join main.city on address.city= city.id";
         }
         System.out.println(sql);
@@ -64,12 +69,12 @@ public class ElderAPI01Steps extends BaseClass {
             results=DBConn.getDBData(sql);
             Assert.assertEquals("No record found: main.grampa User ID: "+elderid,true,results.next());
 
-            if (!(basestationid == "")){
+            if (!(basestationid == null)){
                 sql="select * from main.base_station where base_station.id= (select base_station_id from main.grampa where id="+elderid+")";
                 results=DBConn.getDBData(sql);
                 Assert.assertEquals("No record found: main.BaseStation User ID: "+elderid,true,results.next());
             }
-            if (!(healthissueid == "")){
+            if ((healthissueid >0)){
                 sql="select * from main.health_issues where health_issues.id= (select health_issue_id from main.grampa_health_issues where grampa_id="+elderid+")";
                 results=DBConn.getDBData(sql);
                 Assert.assertEquals("No record found: main.health_issues ID: "+elderid,true,results.next());
@@ -78,8 +83,14 @@ public class ElderAPI01Steps extends BaseClass {
             }else{
             results.previous();
         }}
-
     }
+
+    public void resetDB() throws SQLException {
+        while (results.previous()){
+            System.out.println();
+        }
+    }
+
     @Step("Validate Elder Search API By ID Users")
     public void Validate_Search_API_Users() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
@@ -96,7 +107,7 @@ public class ElderAPI01Steps extends BaseClass {
             String devicebrandid = jsonPath.getString("content.elder.baseStation.tvBrandId");
             String locationid = jsonPath.getString("content.elder.locationId");
 
-
+            resetDB();
             while (results.next()) {
                 count++;
                 System.out.println("xxxxxxxxxxxxxxxxxxxxxx " + results.getString("id"));
@@ -111,8 +122,8 @@ public class ElderAPI01Steps extends BaseClass {
             Assert.assertEquals("Invalid data count", 1, count);
 
             if (!(deviceid == null)) {
-
-                while (results.previous()) {
+                resetDB();
+                while (results.next()) {
                     Assert.assertEquals("Validate grampa.base_station_id", results.getString("deviceid"), EncryptionServiceImpl.decryptToLong(deviceid).toString());
                     Assert.assertEquals("Validate base_station.device_key", results.getString("devicekey"), devicekey);
                     Assert.assertEquals("Validate base_station.tv_brand_id", results.getString("devicebrandid"), EncryptionServiceImpl.decryptToLong(devicebrandid).toString());
@@ -128,10 +139,11 @@ public class ElderAPI01Steps extends BaseClass {
         if (status_code.equals("20000")) {
             int count=0;
             Assert.assertEquals("No elders found",true,jsonPath.getList("content.elder.addresses").size()>=1);
+            resetDB();
             while (results.next()) {
                 count++;
             for (int i = 1; i <= jsonPath.getList("content.elder.addresses").size(); i++) {
-
+                System.out.println("PPPPPPPPPPPPPPPPPPPPPPP");
                 String val = Integer.toString(i - 1);
                 String addressid = jsonPath.getString("content.elder.addresses[" + val + "].id");
                 String postalcode = jsonPath.getString("content.elder.addresses[" + val + "].postalCode");
@@ -162,11 +174,11 @@ public class ElderAPI01Steps extends BaseClass {
         if (status_code.equals("20000")) {
 
 
-            if (!(jsonPath.getString("content.elder.healthIssues") == null)) {
+            if ((jsonPath.getList("content.elder.healthIssues").size()>0)) {
                 int count=0;
                 Assert.assertEquals("No healthIssues found",true,jsonPath.getList("content.elder.healthIssues").size()>=1);
-
-                while (results.previous()) {
+                resetDB();
+                while (results.next()) {
                 count++;
                 for (int i = 1; i <= jsonPath.getList("content.elder.healthIssues").size(); i++) {
                     String val = Integer.toString(i - 1);

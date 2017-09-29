@@ -53,7 +53,11 @@ long elder_id;
         body = body + ",\"baseStation\":{\"id\":\"" + EncryptionServiceImpl.encryptToString(baseStationid) + "\",\"tvBrandId\":\"" + EncryptionServiceImpl.encryptToString(tvBrandId) + "\"";
         body = body +"}}";
     }
-
+    public void resetDB() throws SQLException {
+        while (results.previous()){
+            System.out.println();
+        }
+}
     @Step("User Call Update Elder API")
     public void Call_create_user_API() {
         System.out.println(body);
@@ -67,7 +71,7 @@ long elder_id;
     public void get_db_data(long basestationid, long healthissueid, String email) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
         if (status_code.equals("20000")) {
             String sql = null;
-
+            System.out.println(email);
             if (!(basestationid == 0) && !(healthissueid == 0)) {
                 sql = "select person.id as id,phone_number.phone_number as phonenumber, phone_number.phone_type as phonenumbertype,person.ethnicity_id as ethnicityid,person.religion_id as religionid, person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId, grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename from main.person join main.address on person.id= address.person_id and person.email='" + email + "' join main.grampa on grampa.id=person.id join main.base_station on grampa.base_station_id=base_station.id join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id join main.phone_number on phone_number.person_id=grampa.id";
             } else if ((basestationid == 0) && !(healthissueid == 0)) {
@@ -82,17 +86,19 @@ long elder_id;
             results = DBConn.getDBData(sql);
 
             if (!results.next()) {
-                sql = "select * from main.person where email=" + email + "";
+                sql = "select * from main.person where email='" + email + "'";
+
                 results = DBConn.getDBData(sql);
 
                 Assert.assertEquals("No record found: main.person. User email: " + email, true, results.next());
 
-                sql = "select * from main.address where person_id='(select id from main.person where email=" + email + ")'";
+                sql = "select * from main.address where person_id=(select id from main.person where email='" + email + "')";
+                System.out.println(sql);
                 results = DBConn.getDBData(sql);
                 Assert.assertEquals("No record found: main.address User email: " + email, true, results.next());
 
 
-                sql = "select * from main.grampa where id='(select id from main.person where email=" + email + ")'";
+                sql = "select * from main.grampa where id=(select id from main.person where email='" + email + "')";
                 results = DBConn.getDBData(sql);
                 Assert.assertEquals("No record found: main.grampa User email: " + email, true, results.next());
 
@@ -115,6 +121,7 @@ long elder_id;
     @Step("User enter Elder Details Update Elder API validating <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
     public void Enter_user_details_validating(String firstName, String lastName, String email, String gender, String ethnicityId, String religionId, String dateOfBirth, String locationId, String elderstatus) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
+            resetDB();
             while (results.next()) {
                 Assert.assertEquals("Validate person.last_name", results.getString("lname"), lastName);
                 Assert.assertEquals("Validate person.first_name", results.getString("fname"), firstName);
@@ -135,7 +142,8 @@ long elder_id;
     @Step("User enter List: addresses Update Elder API validating <postalCode> <doorNumber> <street> <cityId> <addressType>")
     public void Enter_Address_Details_validating(String postalCode, String doorNumber, String street, String cityId, String addressType) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
-            while (results.previous()) {
+            resetDB();
+            while (results.next()) {
                 Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalCode);
                 Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doorNumber);
                 Assert.assertEquals("Validate address.street", results.getString("street"), street);
@@ -149,6 +157,7 @@ long elder_id;
     @Step("User enter phoneNumber: Update Elder API validating <phoneNumber> <phoneType>")
     public void Enter_phoneNumber_validating(String phoneNumber, String phoneType) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
+            resetDB();
             while (results.next()) {
                 Assert.assertEquals("Validate phone_number.number", results.getString("phonenumber"), phoneNumber);
                 Assert.assertEquals("Validate phone_number.type", results.getString("phonenumbertype"), phoneType);
@@ -160,7 +169,8 @@ long elder_id;
     public void Enter_healthIssues_validating(String healthIssueid) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             if (!(healthIssueid == null)) {
-                while (results.previous()) {
+                resetDB();
+                while (results.next()) {
                     Assert.assertEquals("Validate grampa_health_issues.health_issue_id", results.getString("healthissueid"), (healthIssueid).toString());
                 }
             }
@@ -171,6 +181,7 @@ long elder_id;
     public void Enter_baseStation_validating(String baseStationid, String tvBrandId) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             if (!(baseStationid == null)) {
+                resetDB();
                 while (results.next()) {
                     Assert.assertEquals("Validate grampa.base_station_id", results.getString("deviceid"), (baseStationid).toString());
                     Assert.assertEquals("Validate base_station.tv_brand_id", results.getString("devicebrandid"), (tvBrandId).toString());
