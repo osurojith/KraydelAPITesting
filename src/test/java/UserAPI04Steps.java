@@ -110,7 +110,7 @@ public class UserAPI04Steps extends BaseClass {
     }
 
 
-    @Step("User Validate User Details Create User API <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>")
+    @Step("Validate User Details Create User API <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>")
     public void Validate_user_details(String username, String password, String firstname, String lastname, String email, String status, String gender) throws SQLException {
         if (status_code.equals("20000")) {
             while (results.next()) {
@@ -127,7 +127,7 @@ public class UserAPI04Steps extends BaseClass {
     }
 
 
-    @Step("User Validate List: addresses Create User API <postalCode> <doorNumber> <street> <cityId> <addressType>")
+    @Step("Validate List: addresses Create User API <postalCode> <doorNumber> <street> <cityId> <addressType>")
     public void Validate_Address_Details(String postalCode, String doorNumber, String street, String cityId, String addressType) throws SQLException {
         if (status_code.equals("20000")) {
             while (results.previous()) {
@@ -142,7 +142,7 @@ public class UserAPI04Steps extends BaseClass {
         }
     }
 
-    @Step("User Validate locations: id Create User API <locationId>")
+    @Step("Validate locations: id Create User API <locationId>")
     public void Validate_Location_Id(String locationId) throws SQLException {
         if (status_code.equals("20000")) {
             while (results.next()) {
@@ -152,7 +152,7 @@ public class UserAPI04Steps extends BaseClass {
         }
     }
 
-    @Step("User Validate roles: Create User API <roleId>")
+    @Step("Validate roles: Create User API <roleId>")
     public void Validate_Role_Id(String roleId) throws SQLException {
         if (status_code.equals("20000")) {
             while (results.previous()) {

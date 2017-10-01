@@ -14,19 +14,18 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
 
 LogIn API
 ----------------
-    *User get refresh token <username>,<password> and <response_code>
-    *User send refresh token <response_code>
+    * User get refresh token <username>,<password> and <response_code>
+    * User send refresh token <response_code>
 
 User API
 ----------------
-
-    *User enter User API view Picture by id "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/user/"<userid>"/picture"
-    *User call the User API view Picture by id
-    *Validate Status Code <status_code>
-    *Validate HTTP Response <response_code>
-    *Get data from kraydel database <userid>
-    *Validate view Picture by id API
+    * User enter User API view Picture by id "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/user/"<userid>"/picture"
+    * User call the User API view Picture by id
+    * Validate Status Code <status_code>
+    * Validate HTTP Response <response_code>
+    * Get data from kraydel database <userid>
+    * Validate view Picture by id API
 
 LogOut API
 ----------------
-    *User logout from kraydel <logout_status>
+    * User logout from kraydel <logout_status>

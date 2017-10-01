@@ -15,27 +15,24 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
 
 LogIn API
 ----------------
-    *User get refresh token <username>,<password> and <response_code>
-    *User send refresh token <response_code>
-
-
+    * User get refresh token <username>,<password> and <response_code>
+    * User send refresh token <response_code>
 
 Update User API
 ----------------
-    *User Enter Update User API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/users/"<userid>
-    *User enter User Details Update User API <userid> <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>
-    *User enter List: addresses Update User API <addressid> <postalCode> <doorNumber> <street> <cityId> <addressType>
-    *User enter locations: id Update User API <locationId>
-    *User enter roles: Update User API <roleId>
-    *User Call Update User API
-    *Validate Status Code <status_code>
-    *Validate HTTP Response <response_code>
-    *User gets data from kraydel database Update User API <userid>
-    *User Validate User Details Update User API <userid> <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>
-    *User Validate List: addresses Update User API <addressid> <postalCode> <doorNumber> <street> <cityId> <addressType>
-    *User Validate locations: id Update User API <locationId>
-    *User Validate roles: Update User API <roleId>
-
+    * User Enter Update User API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/users/"<userid>
+    * User enter User Details Update User API <userid> <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>
+    * User enter List: addresses Update User API <addressid> <postalCode> <doorNumber> <street> <cityId> <addressType>
+    * User enter locations: id Update User API <locationId>
+    * User enter roles: Update User API <roleId>
+    * User Call Update User API
+    * Validate Status Code <status_code>
+    * Validate HTTP Response <response_code>
+    * User gets data from kraydel database Update User API <userid>
+    * Validate User Details Update User API <userid> <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>
+    * Validate List: addresses Update User API <addressid> <postalCode> <doorNumber> <street> <cityId> <addressType>
+    * Validate locations: id Update User API <locationId>
+    * Validate roles: Update User API <roleId>
 
 LogOut API
 ----------------
