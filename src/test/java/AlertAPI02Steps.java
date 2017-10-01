@@ -21,6 +21,7 @@ public class AlertAPI02Steps extends BaseClass {
         body="{\n" +
                 " \"alertStatus\": \""+status+"\"\n" +
                 "}";
+        System.out.println("Body: "+body);
     }
 
     @Step("User Call Alert Update Status API")

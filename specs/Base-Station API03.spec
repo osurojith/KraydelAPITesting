@@ -1,4 +1,4 @@
-Update Base Station Status API
+Update Base station status
 =====================
 Created by OsuraL on 9/4/2017
 

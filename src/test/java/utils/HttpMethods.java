@@ -21,7 +21,7 @@ public class HttpMethods {
                 post("");
 
         String bodyContent = r.getBody().asString();
-        System.out.println(bodyContent);
+        System.out.println("content: "+bodyContent);
        return r;
 
     }
@@ -29,12 +29,12 @@ public class HttpMethods {
         if(header.size()==0){
             Response r = given().get(api);
             String body = r.getBody().asString();
-            System.out.println(body);
+            System.out.println("aaaa"+body);
             return r;
         }else {
             Response r = given().header(header.get("headername"), header.get("headervalue")).when().get(api);
             String body = r.getBody().asString();
-            System.out.println(body);
+            System.out.println("bbb"+body);
             return r;
         }
     }
@@ -57,7 +57,7 @@ if(header.size()==0){
             post("");
 }
         String Contentbody = r.getBody().asString();
-        System.out.println(Contentbody);
+        System.out.println("ttt   "+Contentbody);
         return r;
 
     }
@@ -73,7 +73,7 @@ if(header.size()==0){
                 put("");
 
         String Contentbody = r.getBody().asString();
-        System.out.println(Contentbody);
+        System.out.println("tttt    "+Contentbody);
         return r;
 
     }

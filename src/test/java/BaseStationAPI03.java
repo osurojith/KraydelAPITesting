@@ -24,7 +24,7 @@ public class BaseStationAPI03 extends BaseClass {
         body = "{\n" +
                 " \"status\":\"" + status + "\"\n" +
                 "}";
-
+        System.out.println("Body: "+body);
     }
 
     @Step("User call the Update Base Station API")

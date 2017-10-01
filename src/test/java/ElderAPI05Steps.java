@@ -168,7 +168,7 @@ long elder_id;
     @Step("User enter healthIssues: Update Elder API validating <healthIssueid>")
     public void Enter_healthIssues_validating(String healthIssueid) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
-            if (!(healthIssueid == null)) {
+            if (!(healthIssueid.equalsIgnoreCase("0"))) {
                 resetDB();
                 while (results.next()) {
                     Assert.assertEquals("Validate grampa_health_issues.health_issue_id", results.getString("healthissueid"), (healthIssueid).toString());
@@ -180,7 +180,7 @@ long elder_id;
     @Step("User enter baseStation: Update Elder API validating <baseStationid> <tvBrandId>")
     public void Enter_baseStation_validating(String baseStationid, String tvBrandId) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
-            if (!(baseStationid == null)) {
+            if (!(baseStationid.equalsIgnoreCase("0"))) {
                 resetDB();
                 while (results.next()) {
                     Assert.assertEquals("Validate grampa.base_station_id", results.getString("deviceid"), (baseStationid).toString());

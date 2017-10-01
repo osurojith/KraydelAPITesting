@@ -5,23 +5,23 @@ Created by OsuraL on 8/31/2017
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
-        | userid                     |version|status_code |request_code|status  |username |password	|logout_status|response_code|role_name|
-        |   185                      |   v1    |    20000 |    200     | Success  |darshana |letmein	|OK           | 200         |null     |
-        |   185                      |   v1    |    20000 |    200     | Success  |apit@gmail.com |letmein	|OK           | 200         |null     |
-        |   20                      |   v1    |    40000 |    400     | Success  |apit@gmail.com |letmein	|OK           | 200         |null     |
+          |TestCaseId|userid|version|status_code|request_code|status |username      |password|logout_status|response_code|
+          |----------|------|-------|-----------|------------|-------|--------------|--------|-------------|-------------|
+          |USER-01/03|185   |v1     |20000      |200         |Success|darshana      |letmein |OK           |200          |
+          |USER-02   |185   |v1     |20000      |200         |Success|apit@gmail.com|letmein |OK           |200          |
+          |USER-04   |011   |v1     |20000      |200         |Success|darshana      |letmein |OK           |200          |
 
 
 
 
-LogIn API
-   ----------------
-       *User get refresh token <username>,<password> and <response_code>
-        *User send refresh token <response_code>
-
-
-User API
+ LogIn API
 ----------------
+    *User get refresh token <username>,<password> and <response_code>
+    *User send refresh token <response_code>
 
+
+ User API
+----------------
     * User enter User API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/users/"<userid>
     * User call the User API
     * Validate Status Code <status_code>
@@ -33,6 +33,6 @@ User API
     * Validate Locations
     * Validate Roles
 
-LogOut API
+ LogOut API
 ----------------
-   *User logout from kraydel <logout_status>
+     *User logout from kraydel <logout_status>

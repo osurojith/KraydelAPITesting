@@ -1,4 +1,4 @@
-Update Base Station API
+Assigned to a elder Base Station API
 =====================
 Created by OsuraL on 9/4/2017
 

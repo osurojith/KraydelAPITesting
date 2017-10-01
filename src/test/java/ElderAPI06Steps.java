@@ -29,6 +29,7 @@ public class ElderAPI06Steps extends BaseClass {
 
     @Step("User Call Assign-carer API")
     public void Call_API() {
+        System.out.printf(body);
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);

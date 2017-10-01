@@ -24,7 +24,7 @@ public class BaseStationAPI04 extends BaseClass {
         body = "{\n" +
                 " \"elderId\":\"" + EncryptionServiceImpl.encryptToString(elderID) + "\"\n" +
                 "}";
-
+        System.out.println("Body: "+body);
     }
 
     @Step("User call the Update Base Station API by ID")

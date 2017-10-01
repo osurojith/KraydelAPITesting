@@ -4,8 +4,7 @@ Created by OsuraL on 9/1/2017
 
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
-"healthIssues":[{"id":""}],
-"baseStation":{"id":"","tvBrandId":"","status":""},
+
 
          |username|password|logout_status|response_code|role_name|firstName         |lastName|email           |gender|ethnicityId|religionId|dateOfBirth|postalCode|doorNumber|street|cityId|addressType|locationId|status_code|version|status|phoneNumber|phoneType|healthIssueid|baseStationid|tvBrandId|baseStationstatus|elderstatus|
          |--------|--------|-------------|-------------|---------|------------------|--------|----------------|------|-----------|----------|-----------|----------|----------|------|------|-----------|----------|-----------|-------|------|-----------|---------|-------------|-------------|---------|-----------------|-----------|

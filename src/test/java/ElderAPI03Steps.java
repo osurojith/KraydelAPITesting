@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class ElderAPI03Steps extends BaseClass {
 
-
+    int totalRecords=0;
     @Step("User enter Elder Search API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></elders/search>")
     public void implementation1(String part1, String version, String part2) {
         this.api = part1 + version + part2;
@@ -62,12 +62,17 @@ public class ElderAPI03Steps extends BaseClass {
             results=DBConn.getDBData(sql);
             Assert.assertEquals("No record found: main.grampa User ID: "+id,true,results.next());
 
-            if (!(basestationid == "")){
+            sql="select * from main.city where id=(select main.address.city from main.address where person_id="+EncryptionServiceImpl.decryptToLong(elderid)+")";
+            results=DBConn.getDBData(sql);
+            Assert.assertEquals("No record found: main.city User ID: "+id,true,results.next());
+
+
+            if (!(basestationid == null)){
                 sql="select * from main.base_station where base_station.id= (select base_station_id from main.grampa where id="+EncryptionServiceImpl.decryptToLong(elderid)+")";
                 results=DBConn.getDBData(sql);
                 Assert.assertEquals("No record found: main.BaseStation User ID: "+id,true,results.next());
             }
-            if (!(healthissueid == "")){
+            if (!(healthissueid == null)){
                 sql="select * from main.health_issues where health_issues.id= (select health_issue_id from main.grampa_health_issues where grampa_id="+EncryptionServiceImpl.decryptToLong(elderid)+")";
                 results=DBConn.getDBData(sql);
                 Assert.assertEquals("No record found: main.health_issues ID: "+id,true,results.next());
@@ -86,6 +91,7 @@ public class ElderAPI03Steps extends BaseClass {
 
             Assert.assertEquals("No elders found",true,jsonPath.getList("content.elders").size()>=1);
             for (int i = 1; i <= jsonPath.getList("content.elders").size(); i++) {
+
                 String val = Integer.toString(i - 1);
 
                 String id = jsonPath.getString("content.elders[" + val + "].id");
@@ -99,10 +105,9 @@ public class ElderAPI03Steps extends BaseClass {
                 String devicekey = jsonPath.getString("content.elders[" + val + "].baseStation.deviceKey");
                 String devicebrandid = jsonPath.getString("content.elders[" + val + "].baseStation.tvBrandId");
                 String locationid = jsonPath.getString("content.elders[" + val + "].location.id");
-                System.out.println("dddd  "+EncryptionServiceImpl.decryptToLong(id));
                 get_db_data(id, deviceid, null);
                 while (results.next()) {
-
+                  totalRecords++;
                     Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
                     Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
                     Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
@@ -129,10 +134,10 @@ public class ElderAPI03Steps extends BaseClass {
     @Step("Validate Elder Search API Pagination")
     public void Validate_Search_API_Pagination() {
         if (status_code.equals("20000")) {
-            Assert.assertEquals(true, !jsonPath.getString("pagination.pageNumber").isEmpty());
+            Assert.assertEquals( true, !jsonPath.getString("pagination.pageNumber").isEmpty());
             Assert.assertEquals(true, !jsonPath.getString("pagination.pageSize").isEmpty());
             Assert.assertEquals(true, !jsonPath.getString("pagination.totalPages").isEmpty());
-            Assert.assertEquals(true, !jsonPath.getString("pagination.totalRecords").isEmpty());
+            Assert.assertEquals("Data Missmatch:",Integer.toString(totalRecords), jsonPath.getString("pagination.totalRecords"));
         }
     }
 
