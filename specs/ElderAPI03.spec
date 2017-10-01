@@ -5,8 +5,10 @@ Created by OsuraL on 9/4/2017
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
      
-|version|status_code |status  |username |password	|logout_status|response_code|role_name|
-     |   v1    |    20000 |Success| darshana |letmein	|OK           | 200         |null     |
+    |TestCaseId |version|username      |password|logout_status|response_code|status_code|status |
+    |-----------|-------|--------------|--------|-------------|-------------|-----------|-------|
+    |ELDER-07/09|v1     |darshana      |letmein |OK           |200          |20000      |Success|
+    |ELDER-08/09|v1     |apit@gmail.com|letmein |OK           |200          |20000      |Success|
 
 
 

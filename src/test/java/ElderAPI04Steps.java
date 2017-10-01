@@ -119,7 +119,7 @@ public class ElderAPI04Steps extends BaseClass {
             }
         }
     }
-    @Step("User enter Elder Details Create Elder API validating <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
+    @Step("Validate Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
     public void Enter_user_details_validating(String firstName, String lastName, String email, String gender, String ethnicityId, String religionId, String dateOfBirth, String locationId, String elderstatus) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             while (results.next()) {
@@ -140,7 +140,7 @@ public class ElderAPI04Steps extends BaseClass {
     }
 
 
-    @Step("User enter List: addresses Create Elder API validating <postalCode> <doorNumber> <street> <cityId> <addressType>")
+    @Step("Validate addresses Create Elder API <postalCode> <doorNumber> <street> <cityId> <addressType>")
     public void Enter_Address_Details_validating(String postalCode, String doorNumber, String street, String cityId, String addressType) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             while (results.previous()) {
@@ -155,7 +155,7 @@ public class ElderAPI04Steps extends BaseClass {
     }
 
 
-    @Step("User enter phoneNumber: Create Elder API validating <phoneNumber> <phoneType>")
+    @Step("Validate phoneNumber: Create Elder API <phoneNumber> <phoneType>")
     public void Enter_phoneNumber_validating(String phoneNumber, String phoneType) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             while (results.next()) {
@@ -166,7 +166,7 @@ public class ElderAPI04Steps extends BaseClass {
         }
     }
 
-    @Step("User enter healthIssues: Create Elder API validating <healthIssueid>")
+    @Step("Validate healthIssues: Create Elder API <healthIssueid>")
     public void Enter_healthIssues_validating(String healthIssueid) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             if (!(healthIssueid.equalsIgnoreCase("0"))) {
@@ -178,7 +178,7 @@ public class ElderAPI04Steps extends BaseClass {
         }
     }
 
-    @Step("User enter baseStation: Create Elder API validating <baseStationid> <tvBrandId> <baseStationstatus>")
+    @Step("Validate baseStation: Create Elder API <baseStationid> <tvBrandId> <baseStationstatus>")
     public void Enter_baseStation_validating(String baseStationid, String tvBrandId, String baseStationstatus) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             if (!(baseStationid.equalsIgnoreCase("0"))) {

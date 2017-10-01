@@ -5,8 +5,11 @@ Created by OsuraL on 9/6/2017
 This is an executable specification file which follows markdown syntax.
 Every heading in this file denotes a scenario. Every bulleted point denotes a step.
      
-     |elderid|username|password|logout_status|response_code|userID|userRoleID|status_code|version|
-     |190    |darshana|letmein |OK           |200          |210   |1         |20000      |v1     |
+    |TestCaseId |userID|elderid   |userRoleID|username      |password|logout_status|response_code|status_code|version|
+    |-----------|------|----------|----------|--------------|--------|-------------|-------------|-----------|-------|
+    |ELDER-22/23|190   |210       |1         |darshana      |letmein |OK           |200          |20000      |v1     |
+    |ELDER-22/23|190   |210       |2         |darshana      |letmein |OK           |200          |20000      |v1     |
+    |ELDER-24   |190   |210       |1         |apit@gmail.com|letmein |OK           |400          |40100      |v1     |
 
 LogIn API
    ----------------
