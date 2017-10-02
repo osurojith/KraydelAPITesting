@@ -34,7 +34,7 @@ public class AlertAPI02Steps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.putMethodBody(this.api, header, body);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
 
@@ -42,8 +42,8 @@ public class AlertAPI02Steps extends BaseClass {
     public void validate_backend(String sentalertid, String status) throws SQLException, ClassNotFoundException {
         String sql = "select * from main.user_alert_details where id=" + sentalertid + " and status=" + status + "";
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
-        Assert.assertEquals("No record found  main.user_alert_details.", true, results.next());
-        results.previous();
+        setResults(DatabaseFactory.getDBData(sql));
+        Assert.assertEquals("No record found  main.user_alert_details.", true, getResults().next());
+        getResults().previous();
     }
 }

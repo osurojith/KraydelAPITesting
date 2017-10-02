@@ -25,7 +25,7 @@ public class UserAPI10Steps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
 
     }
 
@@ -34,18 +34,18 @@ public class UserAPI10Steps extends BaseClass {
         if (status_code.equals("20000")) {
             String sql = null;
             sql = "select user_id from main.grampa_user where grampa_id=" + elderid + "";
-            results = DatabaseFactory.getDBData(sql);
+            setResults(DatabaseFactory.getDBData(sql));
 
-            if (results.next())
-                sql = "select * from main.person join main.user_role on main.user_role.role_id=2 and user_role.user_id=person.id and person.id <> " + results.getString("user_id") + "";
+            if (getResults().next())
+                sql = "select * from main.person join main.user_role on main.user_role.role_id=2 and user_role.user_id=person.id and person.id <> " + getResults().getString("user_id") + "";
             else
                 sql = "select * from main.person join main.user_role on main.user_role.role_id=2 and user_role.user_id=person.id";
 
             System.out.println(sql);
-            results = DatabaseFactory.getDBData(sql);
+            setResults(DatabaseFactory.getDBData(sql));
 
-            Assert.assertEquals("No cares found in the DB", true, results.next());
-            results.previous();
+            Assert.assertEquals("No cares found in the DB", true, getResults().next());
+            getResults().previous();
         }
     }
 
@@ -53,28 +53,28 @@ public class UserAPI10Steps extends BaseClass {
     public void validate_contetnt() throws SQLException {
         if (status_code.equals("20000")) {
             int count = 0;
-            Assert.assertEquals("No carers found", true, jsonPath.getList("content.carers").size() >= 1);
+            Assert.assertEquals("No carers found", true, getJsonPath().getList("content.carers").size() >= 1);
 
-            while (results.next()) {
+            while (getResults().next()) {
                 count++;
-                for (int i = 1; i <= jsonPath.getList("content.carers").size(); i++) {
+                for (int i = 1; i <= getJsonPath().getList("content.carers").size(); i++) {
 
-                    String id = jsonPath.getString("content.carers[" + (i - 1) + "].id");
-                    String fname = jsonPath.getString("content.carers[" + (i - 1) + "].firstName");
-                    String lname = jsonPath.getString("content.carers[" + (i - 1) + "].lastName");
-                    String email = jsonPath.getString("content.carers[" + (i - 1) + "].email");
-                    String picture = jsonPath.getString("content.carers[" + (i - 1) + "].picture");
+                    String id = getJsonPath().getString("content.carers[" + (i - 1) + "].id");
+                    String fname = getJsonPath().getString("content.carers[" + (i - 1) + "].firstName");
+                    String lname = getJsonPath().getString("content.carers[" + (i - 1) + "].lastName");
+                    String email = getJsonPath().getString("content.carers[" + (i - 1) + "].email");
+                    String picture = getJsonPath().getString("content.carers[" + (i - 1) + "].picture");
 
 
-                    if (EncryptionServiceImpl.decryptToLong(id).toString().equalsIgnoreCase(results.getString("id"))) {
-                        Assert.assertEquals("Validate content.carers.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
-                        Assert.assertEquals("Validate content.carers.fname", results.getString("first_name"), fname);
-                        Assert.assertEquals("Validate content.carers.lname", results.getString("last_name"), lname);
-                        Assert.assertEquals("Validate content.carers.email", results.getString("email"), email);
+                    if (EncryptionServiceImpl.decryptToLong(id).toString().equalsIgnoreCase(getResults().getString("id"))) {
+                        Assert.assertEquals("Validate content.carers.id", getResults().getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                        Assert.assertEquals("Validate content.carers.fname", getResults().getString("first_name"), fname);
+                        Assert.assertEquals("Validate content.carers.lname", getResults().getString("last_name"), lname);
+                        Assert.assertEquals("Validate content.carers.email", getResults().getString("email"), email);
                     }
                 }
             }
-            Assert.assertEquals("Data miss match API:DB", jsonPath.getList("content.carers").size(), count);
+            Assert.assertEquals("Data miss match API:DB", getJsonPath().getList("content.carers").size(), count);
         }
     }
 }

@@ -27,32 +27,32 @@ public class LocationAPISteps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     public void get_db_data(String id) throws SQLException, ClassNotFoundException {
         String sql = "select * from main.location where id=" + EncryptionServiceImpl.decryptToLong(id) + "";
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
-        Assert.assertEquals("No record found  main.location. ID:" + EncryptionServiceImpl.decryptToLong(id), true, results.next());
-        results.previous();
+        setResults(DatabaseFactory.getDBData(sql));
+        Assert.assertEquals("No record found  main.location. ID:" + EncryptionServiceImpl.decryptToLong(id), true, getResults().next());
+        getResults().previous();
     }
 
     @Step("Validate Location Content")
     public void Validate_Location_Content() throws SQLException, ClassNotFoundException {
 
 
-        for (int i = 1; i <= jsonPath.getList("content.locations").size(); i++) {
+        for (int i = 1; i <= getJsonPath().getList("content.locations").size(); i++) {
             int count = 0;
             String val = Integer.toString(i - 1);
-            String locationid = jsonPath.getString("content.locations[" + val + "].id");
-            String name = jsonPath.getString("content.locations[" + val + "].name");
+            String locationid = getJsonPath().getString("content.locations[" + val + "].id");
+            String name = getJsonPath().getString("content.locations[" + val + "].name");
 
             get_db_data(locationid);
-            while (results.next()) {
+            while (getResults().next()) {
                 count++;
-                Assert.assertEquals(results.getString("id"), EncryptionServiceImpl.decryptToLong(locationid).toString());
-                Assert.assertEquals(results.getString("name"), name);
+                Assert.assertEquals(getResults().getString("id"), EncryptionServiceImpl.decryptToLong(locationid).toString());
+                Assert.assertEquals(getResults().getString("name"), name);
 
             }
 

@@ -26,7 +26,7 @@ public class BaseStationAPI02 extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     public void get_db_data(String id, String status) throws SQLException, ClassNotFoundException {
@@ -36,9 +36,9 @@ public class BaseStationAPI02 extends BaseClass {
         else
             sql = "select base_station.id as basestationid,base_station.device_key devicekey,base_station.status as status from main.base_station where id=" + EncryptionServiceImpl.decryptToLong(id) + "";
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
-        Assert.assertEquals("No record found  main.BaseStation ID:" + id, true, results.next());
-        results.previous();
+        setResults(DatabaseFactory.getDBData(sql));
+        Assert.assertEquals("No record found  main.BaseStation ID:" + id, true, getResults().next());
+        getResults().previous();
 
     }
 
@@ -48,36 +48,36 @@ public class BaseStationAPI02 extends BaseClass {
         if (status_code.equals("20000")) {
 
 
-            for (int i = 1; i <= jsonPath.getList("content.base-stations").size(); i++) {
+            for (int i = 1; i <= getJsonPath().getList("content.base-stations").size(); i++) {
                 int count = 0;
                 String val = Integer.toString(i - 1);
-                String besestationid = jsonPath.getString("content.base-stations[" + val + "].id");
-                String devicekey = jsonPath.getString("content.base-stations[" + val + "].deviceKey");
-                String status = jsonPath.getString("content.base-stations[" + val + "].status").replace("UNASSIGNED", "2").replace("ASSIGNED", "1");
+                String besestationid = getJsonPath().getString("content.base-stations[" + val + "].id");
+                String devicekey = getJsonPath().getString("content.base-stations[" + val + "].deviceKey");
+                String status = getJsonPath().getString("content.base-stations[" + val + "].status").replace("UNASSIGNED", "2").replace("ASSIGNED", "1");
                 get_db_data(besestationid, status);
-                while (results.next()) {
+                while (getResults().next()) {
 
-                    Assert.assertEquals("Validate base_station.id", results.getString("basestationid"), EncryptionServiceImpl.decryptToLong(besestationid).toString());
-                    Assert.assertEquals("Validate base_station.devicekey", results.getString("devicekey"), devicekey);
-                    Assert.assertEquals("Validate base_station.status", results.getString("status"), status);
+                    Assert.assertEquals("Validate base_station.id", getResults().getString("basestationid"), EncryptionServiceImpl.decryptToLong(besestationid).toString());
+                    Assert.assertEquals("Validate base_station.devicekey", getResults().getString("devicekey"), devicekey);
+                    Assert.assertEquals("Validate base_station.status", getResults().getString("status"), status);
 
 
-                    if (jsonPath.getString("content.base-stations[" + val + "].status").equalsIgnoreCase("ASSIGNED")) {
+                    if (getJsonPath().getString("content.base-stations[" + val + "].status").equalsIgnoreCase("ASSIGNED")) {
 
-                        for (int x = 1; x <= jsonPath.getList("content.base-stations[" + val + "].grampas").size(); x++) {
+                        for (int x = 1; x <= getJsonPath().getList("content.base-stations[" + val + "].grampas").size(); x++) {
                             count++;
                             String val2 = Integer.toString(x - 1);
-                            String elderid = jsonPath.getString("content.base-stations[" + val + "].grampas[" + val2 + "].id");
-                            String fname = jsonPath.getString("content.base-stations[" + val + "].grampas[" + val2 + "].firstName");
-                            String lname = jsonPath.getString("content.base-stations[" + val + "].grampas[" + val2 + "].lastName");
-                            String locationid = jsonPath.getString("content.base-stations[" + val + "].grampas[" + val2 + "].location.id");
+                            String elderid = getJsonPath().getString("content.base-stations[" + val + "].grampas[" + val2 + "].id");
+                            String fname = getJsonPath().getString("content.base-stations[" + val + "].grampas[" + val2 + "].firstName");
+                            String lname = getJsonPath().getString("content.base-stations[" + val + "].grampas[" + val2 + "].lastName");
+                            String locationid = getJsonPath().getString("content.base-stations[" + val + "].grampas[" + val2 + "].location.id");
                             System.out.println(EncryptionServiceImpl.decryptToLong(besestationid).toString());
-                            Assert.assertEquals("Validate grampa.id: Base Station ID: " + EncryptionServiceImpl.decryptToLong(besestationid).toString(), results.getString("grampaid"), EncryptionServiceImpl.decryptToLong(elderid).toString());
-                            Assert.assertEquals("Validate grampa.FName", results.getString("fname"), fname);
-                            Assert.assertEquals("Validate grampa.LName", results.getString("lname"), lname);
-                            Assert.assertEquals("Validate grampa.Location_id", results.getString("locationid"), EncryptionServiceImpl.decryptToLong(locationid).toString());
+                            Assert.assertEquals("Validate grampa.id: Base Station ID: " + EncryptionServiceImpl.decryptToLong(besestationid).toString(), getResults().getString("grampaid"), EncryptionServiceImpl.decryptToLong(elderid).toString());
+                            Assert.assertEquals("Validate grampa.FName", getResults().getString("fname"), fname);
+                            Assert.assertEquals("Validate grampa.LName", getResults().getString("lname"), lname);
+                            Assert.assertEquals("Validate grampa.Location_id", getResults().getString("locationid"), EncryptionServiceImpl.decryptToLong(locationid).toString());
                         }
-                        Assert.assertEquals("Data miss match", jsonPath.getList("content.base-stations[" + val + "].grampas").size(), count);
+                        Assert.assertEquals("Data miss match", getJsonPath().getList("content.base-stations[" + val + "].grampas").size(), count);
 
                     }
                 }
@@ -88,10 +88,10 @@ public class BaseStationAPI02 extends BaseClass {
     @Step("Validate Search Base-Station API Pagination")
     public void Validate_Search_API_Pagination() {
         if (status_code.equals("20000")) {
-            Assert.assertEquals(true, !jsonPath.getString("pagination.pageNumber").isEmpty());
-            Assert.assertEquals(true, !jsonPath.getString("pagination.pageSize").isEmpty());
-            Assert.assertEquals(true, !jsonPath.getString("pagination.totalPages").isEmpty());
-            Assert.assertEquals(true, !jsonPath.getString("pagination.totalRecords").isEmpty());
+            Assert.assertEquals(true, !getJsonPath().getString("pagination.pageNumber").isEmpty());
+            Assert.assertEquals(true, !getJsonPath().getString("pagination.pageSize").isEmpty());
+            Assert.assertEquals(true, !getJsonPath().getString("pagination.totalPages").isEmpty());
+            Assert.assertEquals(true, !getJsonPath().getString("pagination.totalRecords").isEmpty());
         }
     }
 }

@@ -22,7 +22,7 @@ public class GraphDataAPI02Steps extends BaseClass {
     public void call_api() {
         Map<String, String> header = new HashMap();
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     @Step("Get data from kraydel database absolute-light Graph Data API <elderId>")

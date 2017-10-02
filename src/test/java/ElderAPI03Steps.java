@@ -28,7 +28,7 @@ public class ElderAPI03Steps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
 
@@ -46,42 +46,42 @@ public class ElderAPI03Steps extends BaseClass {
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " and address.person_id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.grampa on grampa.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.city on address.city= city.id";
         }
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
+        setResults(DatabaseFactory.getDBData(sql));
 
-        if (!results.next()) {
+        if (!getResults().next()) {
             sql = "select * from main.person where id=" + EncryptionServiceImpl.decryptToLong(elderid) + "";
-            results = DatabaseFactory.getDBData(sql);
+            setResults(DatabaseFactory.getDBData(sql));
 
-            Assert.assertEquals("No record found: main.person. User ID: " + id, true, results.next());
+            Assert.assertEquals("No record found: main.person. User ID: " + id, true, getResults().next());
 
             sql = "select * from main.address where person_id=" + EncryptionServiceImpl.decryptToLong(elderid) + "";
-            results = DatabaseFactory.getDBData(sql);
-            Assert.assertEquals("No record found: main.address User ID: " + id, true, results.next());
+            setResults(DatabaseFactory.getDBData(sql));
+            Assert.assertEquals("No record found: main.address User ID: " + id, true, getResults().next());
 
 
             sql = "select * from main.grampa where id=" + EncryptionServiceImpl.decryptToLong(elderid) + "";
-            results = DatabaseFactory.getDBData(sql);
-            Assert.assertEquals("No record found: main.grampa User ID: " + id, true, results.next());
+            setResults(DatabaseFactory.getDBData(sql));
+            Assert.assertEquals("No record found: main.grampa User ID: " + id, true, getResults().next());
 
             sql = "select * from main.city where id=(select main.address.city from main.address where person_id=" + EncryptionServiceImpl.decryptToLong(elderid) + ")";
-            results = DatabaseFactory.getDBData(sql);
-            Assert.assertEquals("No record found: main.city User ID: " + id, true, results.next());
+            setResults(DatabaseFactory.getDBData(sql));
+            Assert.assertEquals("No record found: main.city User ID: " + id, true, getResults().next());
 
 
             if (!(basestationid == null)) {
                 sql = "select * from main.base_station where base_station.id= (select base_station_id from main.grampa where id=" + EncryptionServiceImpl.decryptToLong(elderid) + ")";
-                results = DatabaseFactory.getDBData(sql);
-                Assert.assertEquals("No record found: main.BaseStation User ID: " + id, true, results.next());
+                setResults(DatabaseFactory.getDBData(sql));
+                Assert.assertEquals("No record found: main.BaseStation User ID: " + id, true, getResults().next());
             }
             if (!(healthissueid == null)) {
                 sql = "select * from main.health_issues where health_issues.id= (select health_issue_id from main.grampa_health_issues where grampa_id=" + EncryptionServiceImpl.decryptToLong(elderid) + ")";
-                results = DatabaseFactory.getDBData(sql);
-                Assert.assertEquals("No record found: main.health_issues ID: " + id, true, results.next());
+                setResults(DatabaseFactory.getDBData(sql));
+                Assert.assertEquals("No record found: main.health_issues ID: " + id, true, getResults().next());
             }
 
 
         } else {
-            results.previous();
+            getResults().previous();
         }
 
     }
@@ -90,37 +90,37 @@ public class ElderAPI03Steps extends BaseClass {
     public void Validate_Search_API_Users() throws Exception {
         if (status_code.equals("20000")) {
 
-            Assert.assertEquals("No elders found", true, jsonPath.getList("content.elders").size() >= 1);
-            for (int i = 1; i <= jsonPath.getList("content.elders").size(); i++) {
+            Assert.assertEquals("No elders found", true, getJsonPath().getList("content.elders").size() >= 1);
+            for (int i = 1; i <= getJsonPath().getList("content.elders").size(); i++) {
 
                 String val = Integer.toString(i - 1);
 
-                String id = jsonPath.getString("content.elders[" + val + "].id");
-                String lname = jsonPath.getString("content.elders[" + val + "].lastName");
-                String fname = jsonPath.getString("content.elders[" + val + "].firstName");
-                String status = jsonPath.getString("content.elders[" + val + "].status").replace("INACTIVE", "3").replace("ACTIVE", "1");
-                String dob = jsonPath.getString("content.elders[" + val + "].dateOfBirth");
-                String email = jsonPath.getString("content.elders[" + val + "].email");
-                String gender = jsonPath.getString("content.elders[" + val + "].gender");
-                String deviceid = jsonPath.getString("content.elders[" + val + "].baseStation.id");
-                String devicekey = jsonPath.getString("content.elders[" + val + "].baseStation.deviceKey");
-                String devicebrandid = jsonPath.getString("content.elders[" + val + "].baseStation.tvBrandId");
-                String locationid = jsonPath.getString("content.elders[" + val + "].location.id");
+                String id = getJsonPath().getString("content.elders[" + val + "].id");
+                String lname = getJsonPath().getString("content.elders[" + val + "].lastName");
+                String fname = getJsonPath().getString("content.elders[" + val + "].firstName");
+                String status = getJsonPath().getString("content.elders[" + val + "].status").replace("INACTIVE", "3").replace("ACTIVE", "1");
+                String dob = getJsonPath().getString("content.elders[" + val + "].dateOfBirth");
+                String email = getJsonPath().getString("content.elders[" + val + "].email");
+                String gender = getJsonPath().getString("content.elders[" + val + "].gender");
+                String deviceid = getJsonPath().getString("content.elders[" + val + "].baseStation.id");
+                String devicekey = getJsonPath().getString("content.elders[" + val + "].baseStation.deviceKey");
+                String devicebrandid = getJsonPath().getString("content.elders[" + val + "].baseStation.tvBrandId");
+                String locationid = getJsonPath().getString("content.elders[" + val + "].location.id");
                 get_db_data(id, deviceid, null);
-                while (results.next()) {
+                while (getResults().next()) {
                     totalRecords++;
-                    Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
-                    Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
-                    Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
-                    Assert.assertEquals("Validate person.status", results.getString("status"), status);
-                    Assert.assertEquals("Validate grampa.date_of_birth", results.getString("dob"), dob);
-                    Assert.assertEquals("Validate person.email", results.getString("email"), email);
-                    Assert.assertEquals("Validate person.gender", results.getString("gender"), gender);
+                    Assert.assertEquals("Validate person.id", getResults().getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                    Assert.assertEquals("Validate person.last_name", getResults().getString("lname"), lname);
+                    Assert.assertEquals("Validate person.first_name", getResults().getString("fname"), fname);
+                    Assert.assertEquals("Validate person.status", getResults().getString("status"), status);
+                    Assert.assertEquals("Validate grampa.date_of_birth", getResults().getString("dob"), dob);
+                    Assert.assertEquals("Validate person.email", getResults().getString("email"), email);
+                    Assert.assertEquals("Validate person.gender", getResults().getString("gender"), gender);
 
                     if (!(deviceid == null)) {
-                        Assert.assertEquals("Validate grampa.base_station_id", results.getString("deviceid"), EncryptionServiceImpl.decryptToLong(deviceid).toString());
-                        Assert.assertEquals("Validate base_station.device_key", results.getString("devicekey"), devicekey);
-                        Assert.assertEquals("Validate base_station.tv_brand_id", results.getString("devicebrandid"), EncryptionServiceImpl.decryptToLong(devicebrandid).toString());
+                        Assert.assertEquals("Validate grampa.base_station_id", getResults().getString("deviceid"), EncryptionServiceImpl.decryptToLong(deviceid).toString());
+                        Assert.assertEquals("Validate base_station.device_key", getResults().getString("devicekey"), devicekey);
+                        Assert.assertEquals("Validate base_station.tv_brand_id", getResults().getString("devicebrandid"), EncryptionServiceImpl.decryptToLong(devicebrandid).toString());
 
                     }
                 }
@@ -134,10 +134,10 @@ public class ElderAPI03Steps extends BaseClass {
     @Step("Validate Elder Search API Pagination")
     public void Validate_Search_API_Pagination() {
         if (status_code.equals("20000")) {
-            Assert.assertEquals(true, !jsonPath.getString("pagination.pageNumber").isEmpty());
-            Assert.assertEquals(true, !jsonPath.getString("pagination.pageSize").isEmpty());
-            Assert.assertEquals(true, !jsonPath.getString("pagination.totalPages").isEmpty());
-            Assert.assertEquals("Data Missmatch:", Integer.toString(totalRecords), jsonPath.getString("pagination.totalRecords"));
+            Assert.assertEquals(true, !getJsonPath().getString("pagination.pageNumber").isEmpty());
+            Assert.assertEquals(true, !getJsonPath().getString("pagination.pageSize").isEmpty());
+            Assert.assertEquals(true, !getJsonPath().getString("pagination.totalPages").isEmpty());
+            Assert.assertEquals("Data Missmatch:", Integer.toString(totalRecords), getJsonPath().getString("pagination.totalRecords"));
         }
     }
 

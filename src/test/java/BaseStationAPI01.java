@@ -27,41 +27,41 @@ public class BaseStationAPI01 extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     public void get_db_data(String id) throws SQLException, ClassNotFoundException {
         String sql = "select id as id,device_key as device_key,tv_brand_id as tv_brand_id from main.base_station where id=" + EncryptionServiceImpl.decryptToLong(id) + "";
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
-        Assert.assertEquals("No record found  main.base_station. ID:" + EncryptionServiceImpl.decryptToLong(id), true, results.next());
-        results.previous();
+        setResults(DatabaseFactory.getDBData(sql));
+        Assert.assertEquals("No record found  main.base_station. ID:" + EncryptionServiceImpl.decryptToLong(id), true, getResults().next());
+        getResults().previous();
     }
 
     @Step("Validate content Get Base-Station API")
     public void Validate_contetnt() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             int count = 0;
-            Assert.assertEquals("No base-stations found", true, jsonPath.getList("content.base-stations").size() >= 1);
+            Assert.assertEquals("No base-stations found", true, getJsonPath().getList("content.base-stations").size() >= 1);
 
 
-            for (int i = 1; i <= jsonPath.getList("content.base-stations").size(); i++) {
+            for (int i = 1; i <= getJsonPath().getList("content.base-stations").size(); i++) {
                 String val = Integer.toString(i - 1);
-                String id = jsonPath.getString("content.base-stations[" + val + "].id");
-                String devicekey = jsonPath.getString("content.base-stations[" + val + "].deviceKey");
-                String tvbrand = jsonPath.getString("content.base-stations[" + val + "].tvBrandId");
+                String id = getJsonPath().getString("content.base-stations[" + val + "].id");
+                String devicekey = getJsonPath().getString("content.base-stations[" + val + "].deviceKey");
+                String tvbrand = getJsonPath().getString("content.base-stations[" + val + "].tvBrandId");
 
                 get_db_data(id);
-                while (results.next()) {
+                while (getResults().next()) {
 
                     count++;
-                    Assert.assertEquals(results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
-                    Assert.assertEquals(results.getString("device_key"), devicekey);
-                    Assert.assertEquals(results.getString("tv_brand_id"), EncryptionServiceImpl.decryptToLong(tvbrand).toString());
+                    Assert.assertEquals(getResults().getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                    Assert.assertEquals(getResults().getString("device_key"), devicekey);
+                    Assert.assertEquals(getResults().getString("tv_brand_id"), EncryptionServiceImpl.decryptToLong(tvbrand).toString());
                 }
 
             }
-            Assert.assertEquals("Data miss match API:DB", jsonPath.getList("content.base-stations").size(), count);
+            Assert.assertEquals("Data miss match API:DB", getJsonPath().getList("content.base-stations").size(), count);
         }
     }
 }

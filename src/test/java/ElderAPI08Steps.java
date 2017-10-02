@@ -27,7 +27,7 @@ public class ElderAPI08Steps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     @Step("User gets data from kraydel database View Assigned API")
@@ -37,9 +37,9 @@ public class ElderAPI08Steps extends BaseClass {
 
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname,grampa.location_id as locationid from main.person join main.grampa on grampa.id=person.id and grampa.base_station_id is null";
             System.out.println(sql);
-            results = DatabaseFactory.getDBData(sql);
-            Assert.assertEquals("No Elder found for given elder.", true, results.next());
-            results.previous();
+            setResults(DatabaseFactory.getDBData(sql));
+            Assert.assertEquals("No Elder found for given elder.", true, getResults().next());
+            getResults().previous();
         }
     }
 
@@ -47,25 +47,25 @@ public class ElderAPI08Steps extends BaseClass {
     public void Validate_content() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             int count = 0;
-            Assert.assertEquals("No elders found", true, jsonPath.getList("content.elders").size() >= 1);
-            while (results.next()) {
-                for (int i = 1; i <= jsonPath.getList("content.elders").size(); i++) {
+            Assert.assertEquals("No elders found", true, getJsonPath().getList("content.elders").size() >= 1);
+            while (getResults().next()) {
+                for (int i = 1; i <= getJsonPath().getList("content.elders").size(); i++) {
 
                     String val = Integer.toString(i - 1);
-                    String id = jsonPath.getString("content.elders[" + val + "].id");
-                    String lname = jsonPath.getString("content.elders[" + val + "].lastName");
-                    String fname = jsonPath.getString("content.elders[" + val + "].firstName");
-                    String locationid = jsonPath.getString("content.elders[" + val + "].location.id");
-                    if (EncryptionServiceImpl.decryptToLong(id).toString().equalsIgnoreCase(results.getString("id"))) {
+                    String id = getJsonPath().getString("content.elders[" + val + "].id");
+                    String lname = getJsonPath().getString("content.elders[" + val + "].lastName");
+                    String fname = getJsonPath().getString("content.elders[" + val + "].firstName");
+                    String locationid = getJsonPath().getString("content.elders[" + val + "].location.id");
+                    if (EncryptionServiceImpl.decryptToLong(id).toString().equalsIgnoreCase(getResults().getString("id"))) {
                         count++;
-                        Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
-                        Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
-                        Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
-                        Assert.assertEquals("Validate grampa.locationId", results.getString("locationid"), EncryptionServiceImpl.decryptToLong(locationid).toString());
+                        Assert.assertEquals("Validate person.last_name", getResults().getString("lname"), lname);
+                        Assert.assertEquals("Validate person.first_name", getResults().getString("fname"), fname);
+                        Assert.assertEquals("Validate person.id", getResults().getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                        Assert.assertEquals("Validate grampa.locationId", getResults().getString("locationid"), EncryptionServiceImpl.decryptToLong(locationid).toString());
                     }
                 }
             }
-            Assert.assertEquals("Data miss match API:DB", jsonPath.getList("content.elders").size(), count);
+            Assert.assertEquals("Data miss match API:DB", getJsonPath().getList("content.elders").size(), count);
         }
     }
 

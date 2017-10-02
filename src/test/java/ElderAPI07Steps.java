@@ -36,7 +36,7 @@ public class ElderAPI07Steps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.putMethodBody(this.api, header, body);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
     @Step("User gets data from kraydel database Unassign-carer API <userID> <elderid> <userRoleID>")
     public void get_db_data(String userID, String elderid, String userRoleID) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
@@ -46,15 +46,15 @@ public class ElderAPI07Steps extends BaseClass {
             sql = "select count(*) as status from main.grampa_user where grampa_id=" + (elderid) + " and user_id=" + (userID) + " and grampa_role_id=" + (userRoleID) + "";
 
             System.out.println(sql);
-            results = DatabaseFactory.getDBData(sql);
+            setResults(DatabaseFactory.getDBData(sql));
         }
     }
 
     @Step("Validate back end Unassign-carer API <userID> <elderid> <userRoleID>")
     public void Validate_backend(String userID, String elderid, String userRoleID) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
-            while (results.next()) {
-                Assert.assertEquals("Validate elder_user", results.getString("status"), "0");
+            while (getResults().next()) {
+                Assert.assertEquals("Validate elder_user", getResults().getString("status"), "0");
             }
         }
 

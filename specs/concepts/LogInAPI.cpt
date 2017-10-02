@@ -5,13 +5,11 @@ This is a concept file with following syntax for each concept.
      * User enter API "/oauth/token"
      * User enter credentials <username>,<password>
      * User call the get token API
-     * Validate HTTP Response <response_code>
    	 * Get refresh token
 
    	#User send refresh token <response_code>
       * User enter API "/oauth/token"
       * User call the LogIn API
-      * Validate HTTP Response <response_code>
       * User get access token
 
      #User logout from kraydel <logout_status>

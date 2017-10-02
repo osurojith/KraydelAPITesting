@@ -35,7 +35,7 @@ public class UserAPI08Steps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.putMethodBody(this.api, header, body);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     @Step("User gets data from kraydel database Update Status API <id>")
@@ -45,16 +45,16 @@ public class UserAPI08Steps extends BaseClass {
 
             sql = "select main.user.status from main.user where id=" + userid + "";
             System.out.println(sql);
-            results = DatabaseFactory.getDBData(sql);
+            setResults(DatabaseFactory.getDBData(sql));
         }
     }
 
     @Step("Validate Back End Update Status API <Userstatus> <id>")
     public void Validate_backend(String userstatus, String id) throws Exception {
         if (status_code.equals("20000")) {
-            while (results.next()) {
+            while (getResults().next()) {
                 String status = userstatus.replace("INACTIVE", "3").replace("ACTIVE", "1");
-                Assert.assertEquals("Validate user.status", results.getString("status"), status);
+                Assert.assertEquals("Validate user.status", getResults().getString("status"), status);
             }
         }
     }

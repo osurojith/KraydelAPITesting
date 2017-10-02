@@ -25,7 +25,7 @@ public class UserAPI11Steps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
 
@@ -33,12 +33,12 @@ public class UserAPI11Steps extends BaseClass {
     public void get_db_data(String userid) throws SQLException, ClassNotFoundException {
         String sql = "select person.picture from main.person where id=" + userid + "";
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
+        setResults(DatabaseFactory.getDBData(sql));
     }
 
     @Step("Validate view Picture by id API")
     public void validate_picture_details() throws SQLException {
-        results.next();
-        Assert.assertEquals("Validate image DB:API", (results.getString("picture") == null), (jsonPath.getString("content.picture") == null));
+        getResults().next();
+        Assert.assertEquals("Validate image DB:API", (getResults().getString("picture") == null), (getJsonPath().getString("content.picture") == null));
     }
 }

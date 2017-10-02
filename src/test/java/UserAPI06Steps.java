@@ -23,7 +23,7 @@ public class UserAPI06Steps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     @Step("User gets data from kraydel database get Picture API <username>")
@@ -33,22 +33,22 @@ public class UserAPI06Steps extends BaseClass {
 
             sql = "select person.picture from main.person join main.user on person.id=main.user.id and username='" + username + "'";
             System.out.println(sql);
-            results = DatabaseFactory.getDBData(sql);
+            setResults(DatabaseFactory.getDBData(sql));
 
-            if (!results.next()) {
+            if (!getResults().next()) {
                 sql = "select * from main.user where username='" + username + "'";
                 System.out.println(sql);
-                results = DatabaseFactory.getDBData(sql);
-                Assert.assertEquals("No record found: main.user UserName: " + username, true, results.next());
+                setResults(DatabaseFactory.getDBData(sql));
+                Assert.assertEquals("No record found: main.user UserName: " + username, true, getResults().next());
 
                 sql = "select * from main.person where id=(select id from main.user where username='" + username + "')";
                 System.out.println(sql);
-                results = DatabaseFactory.getDBData(sql);
-                Assert.assertEquals("No record found: main.person. UserName: " + username, true, results.next());
+                setResults(DatabaseFactory.getDBData(sql));
+                Assert.assertEquals("No record found: main.person. UserName: " + username, true, getResults().next());
 
 
             } else {
-                results.previous();
+                getResults().previous();
             }
         }
     }
@@ -56,9 +56,9 @@ public class UserAPI06Steps extends BaseClass {
     @Step("Validate Get Picture API")
     public void Validate_Search_API_Users() throws Exception {
         if (status_code.equals("20000")) {
-            String picture = jsonPath.getString("content");
-            while (results.next()) {
-                Assert.assertEquals("Validate person.Picture", results.getString("picture"), picture);
+            String picture = getJsonPath().getString("content");
+            while (getResults().next()) {
+                Assert.assertEquals("Validate person.Picture", getResults().getString("picture"), picture);
             }
 
 

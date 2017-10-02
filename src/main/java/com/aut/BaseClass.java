@@ -13,8 +13,32 @@ public class BaseClass {
     public String password = null;
     public static String status_code=null;
     public static String token = null;
-    public  Response response;
-    public  JsonPath jsonPath;
-    public  ResultSet results;
+    public static  Response response;
+    public static JsonPath jsonPath;
+    public static ResultSet results;
 
+    public String getApi() {
+        return api;
+    }
+
+    public void setApi(String api) {
+        this.api = System.getenv("URI") +api;
+        System.out.println("API: " + getApi());
+    }
+
+    public JsonPath getJsonPath() {
+        return jsonPath;
+    }
+
+    public void setJsonPath(JsonPath jsonPath) {
+        this.jsonPath = jsonPath;
+    }
+
+    public ResultSet getResults() {
+        return results;
+    }
+
+    public void setResults(ResultSet results) {
+        this.results = results;
+    }
 }

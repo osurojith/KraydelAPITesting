@@ -35,16 +35,16 @@ public class BaseStationAPI03 extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.putMethodBody(this.api, header, body);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     @Step("User gets data from kraydel database  Update Base Station Status API <id>")
     public void get_db_data(String id) throws SQLException, ClassNotFoundException {
         String sql = "select * from main.base_station where id=" + id + "";
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
-        Assert.assertEquals("No record found  main.BaseStation ID:" + id, true, results.next());
-        results.previous();
+        setResults(DatabaseFactory.getDBData(sql));
+        Assert.assertEquals("No record found  main.BaseStation ID:" + id, true, getResults().next());
+        getResults().previous();
 
     }
 
@@ -52,9 +52,9 @@ public class BaseStationAPI03 extends BaseClass {
     public void validate_status(String basestationtatus) throws SQLException {
         basestationtatus = basestationtatus.replace("OFFLINE", "4").replace("ONLINE", "3").replace("DEPROVISIONED", "5");
         int count = 0;
-        while (results.next()) {
+        while (getResults().next()) {
             count++;
-            Assert.assertEquals(results.getString("status"), basestationtatus);
+            Assert.assertEquals(getResults().getString("status"), basestationtatus);
 
         }
         Assert.assertEquals("Data miss match", 1, count);

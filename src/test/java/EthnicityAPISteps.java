@@ -28,32 +28,32 @@ public class EthnicityAPISteps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     public void get_db_data(String id) throws SQLException, ClassNotFoundException {
         String sql = "select * from main.ethnicity where id=" + EncryptionServiceImpl.decryptToLong(id) + "";
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
-        Assert.assertEquals("No record found  main.ethnicity. ID:" + EncryptionServiceImpl.decryptToLong(id), true, results.next());
-        results.previous();
+        setResults(DatabaseFactory.getDBData(sql));
+        Assert.assertEquals("No record found  main.ethnicity. ID:" + EncryptionServiceImpl.decryptToLong(id), true, getResults().next());
+        getResults().previous();
     }
 
     @Step("Validate Ethnicity Content")
     public void Validate_Ethnicity_Content() throws SQLException, ClassNotFoundException {
 
-        for (int i = 1; i <= jsonPath.getList("content.ethnicities").size(); i++) {
+        for (int i = 1; i <= getJsonPath().getList("content.ethnicities").size(); i++) {
             int count = 0;
             String val = Integer.toString(i - 1);
-            String ethnicityid = jsonPath.getString("content.ethnicities[" + val + "].id");
-            String ethnicityname = jsonPath.getString("content.ethnicities[" + val + "].name");
+            String ethnicityid = getJsonPath().getString("content.ethnicities[" + val + "].id");
+            String ethnicityname = getJsonPath().getString("content.ethnicities[" + val + "].name");
 
 
             get_db_data(ethnicityid);
-            while (results.next()) {
+            while (getResults().next()) {
                 count++;
-                Assert.assertEquals(results.getString("id"), EncryptionServiceImpl.decryptToLong(ethnicityid).toString());
-                Assert.assertEquals(results.getString("name"), ethnicityname);
+                Assert.assertEquals(getResults().getString("id"), EncryptionServiceImpl.decryptToLong(ethnicityid).toString());
+                Assert.assertEquals(getResults().getString("name"), ethnicityname);
 
             }
 

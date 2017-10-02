@@ -14,7 +14,7 @@ public class LogInAPISteps extends BaseClass {
     @Step("User enter API </oauth/token>")
     public void User_enter_API(String api) {
         this.api = System.getenv("LOGIN_URI") + api;
-        System.out.println("API: " + api);
+        System.out.println("API: " + this.api);
     }
 
     @Step("User enter credentials <username>,<password>")
@@ -38,14 +38,14 @@ public class LogInAPISteps extends BaseClass {
 
 
         response = HttpMethodsFactory.postMethod(api, parameters, header);
-        jsonPath = new JsonPath(response.getBody().asString());
+        setJsonPath(new JsonPath(response.getBody().asString()));
 
     }
 
 
     @Step("Get refresh token")
     public void Get_refresh_token() {
-        token = jsonPath.getString("refresh_token");
+        token = getJsonPath().getString("refresh_token");
 
     }
 
@@ -61,21 +61,21 @@ public class LogInAPISteps extends BaseClass {
         header.put("headervalue", "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=");
 
         response = HttpMethodsFactory.postMethod(api, elements, header);
-        jsonPath = new JsonPath(response.getBody().asString());
+        setJsonPath(new JsonPath(response.getBody().asString()));
 
     }
 
 
     @Step("User get access token")
     public void User_get_access_token() {
-        token = jsonPath.getString("access_token");
+        token = getJsonPath().getString("access_token");
 
     }
 
 
-    @Step("User enter logout API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8081/kraydel-oauth-server/logout>")
+    @Step("User enter logout API </logout>")
     public void user_enter_logout_API(String api) {
-        this.api = api;
+        this.api =System.getenv("LOGIN_URI") + api;
     }
 
     @Step("User call logout API")
@@ -88,12 +88,12 @@ public class LogInAPISteps extends BaseClass {
 
 
         response = HttpMethodsFactory.postMethod(api, elements, header);
-        jsonPath = new JsonPath(response.getBody().asString());
+        setJsonPath(new JsonPath(response.getBody().asString()));
     }
 
     @Step("User logout using Acess Token and Validateg Acess Token and Validate <logout_status>")
     public void Log_out(String status) {
-        Assert.assertEquals(status, jsonPath.getString("status"));
+        Assert.assertEquals(status, getJsonPath().getString("status"));
 
     }
 

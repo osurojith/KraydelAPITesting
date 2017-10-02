@@ -27,32 +27,32 @@ public class RoleAPI02Steps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.getMethod(this.api, header);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     public void get_db_data(String id) throws SQLException, ClassNotFoundException {
         String sql = "select * from main.grampa_role where id=" + EncryptionServiceImpl.decryptToLong(id) + "";
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
-        Assert.assertEquals("No record found  main.grampa_roles. ID:" + EncryptionServiceImpl.decryptToLong(id), true, results.next());
-        results.previous();
+        setResults(DatabaseFactory.getDBData(sql));
+        Assert.assertEquals("No record found  main.grampa_roles. ID:" + EncryptionServiceImpl.decryptToLong(id), true, getResults().next());
+        getResults().previous();
     }
 
     @Step("Validate Content Get Elder Roles")
     public void Validate_Content() throws SQLException, ClassNotFoundException {
 
-        for (int i = 1; i <= jsonPath.getList("content.elderRoles").size(); i++) {
+        for (int i = 1; i <= getJsonPath().getList("content.elderRoles").size(); i++) {
             int count = 0;
             String val = Integer.toString(i - 1);
-            String roleid = jsonPath.getString("content.elderRoles[" + val + "].id");
-            String rolename = jsonPath.getString("content.elderRoles[" + val + "].roleName");
+            String roleid = getJsonPath().getString("content.elderRoles[" + val + "].id");
+            String rolename = getJsonPath().getString("content.elderRoles[" + val + "].roleName");
 
 
             get_db_data(roleid);
-            while (results.next()) {
+            while (getResults().next()) {
                 count++;
-                Assert.assertEquals("Validate elderRoles.id", results.getString("role_id"), EncryptionServiceImpl.decryptToLong(roleid).toString());
-                Assert.assertEquals("Validate elderRoles.role_name", results.getString("role_name"), rolename);
+                Assert.assertEquals("Validate elderRoles.id", getResults().getString("role_id"), EncryptionServiceImpl.decryptToLong(roleid).toString());
+                Assert.assertEquals("Validate elderRoles.role_name", getResults().getString("role_name"), rolename);
 
             }
 

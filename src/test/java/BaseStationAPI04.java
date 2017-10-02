@@ -34,16 +34,16 @@ public class BaseStationAPI04 extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.putMethodBody(this.api, header, body);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     @Step("User gets data from kraydel database Update Base Station API by ID <elderID> <id>")
     public void get_db_data(String elderID, String id) throws SQLException, ClassNotFoundException {
         String sql = "select * from main.grampa where id=" + elderID + " and base_station_id=" + id + "";
         System.out.println(sql);
-        results = DatabaseFactory.getDBData(sql);
-        Assert.assertEquals("No record found  main.grampa ID:Basestation " + elderID + " : " + id, true, results.next());
-        results.previous();
+        setResults(DatabaseFactory.getDBData(sql));
+        Assert.assertEquals("No record found  main.grampa ID:Basestation " + elderID + " : " + id, true, getResults().next());
+        getResults().previous();
 
     }
 }

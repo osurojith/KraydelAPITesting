@@ -33,7 +33,7 @@ public class GraphDataAPISteps extends BaseClass {
         Map<String, String> header = new HashMap();
 
         this.response = HttpMethodsFactory.postMethodBody(this.api, header, body);
-        this.jsonPath = new JsonPath(this.response.getBody().asString());
+        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
 

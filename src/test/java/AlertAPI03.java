@@ -1,8 +1,10 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import utils.BaseClass;
-import utils.HttpMethods;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +34,7 @@ public class AlertAPI03 extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.postMethodBody(this.api, header, body);
+        this.response = HttpMethodsFactory.postMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
