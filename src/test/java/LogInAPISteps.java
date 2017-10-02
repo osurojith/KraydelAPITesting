@@ -1,8 +1,9 @@
+import com.aut.BaseClass;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.HttpMethods;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class LogInAPISteps extends BaseClass {
         header.put("headervalue", "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=");
 
 
-        response = HttpMethods.postMethod(api, parameters, header);
+        response = HttpMethodsFactory.postMethod(api, parameters, header);
         jsonPath = new JsonPath(response.getBody().asString());
 
     }
@@ -59,7 +60,7 @@ public class LogInAPISteps extends BaseClass {
         header.put("headername", "Authorization");
         header.put("headervalue", "Basic YmFyQ2xpZW50SWRQYXNzd29yZDpzZWNyZXQ=");
 
-        response = HttpMethods.postMethod(api, elements, header);
+        response = HttpMethodsFactory.postMethod(api, elements, header);
         jsonPath = new JsonPath(response.getBody().asString());
 
     }
@@ -86,7 +87,7 @@ public class LogInAPISteps extends BaseClass {
         Map<String, String> elements = new HashMap<String, String>();
 
 
-        response = HttpMethods.postMethod(api, elements, header);
+        response = HttpMethodsFactory.postMethod(api, elements, header);
         jsonPath = new JsonPath(response.getBody().asString());
     }
 

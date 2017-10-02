@@ -1,10 +1,12 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
+
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -32,7 +34,7 @@ public class UserAPI08Steps extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.putMethodBody(this.api, header, body);
+        this.response = HttpMethodsFactory.putMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
@@ -43,7 +45,7 @@ public class UserAPI08Steps extends BaseClass {
 
             sql = "select main.user.status from main.user where id=" + userid + "";
             System.out.println(sql);
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
         }
     }
 

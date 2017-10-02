@@ -1,10 +1,12 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
+
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ public class ElderAPI01Steps extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.getMethod(this.api, header);
+        this.response = HttpMethodsFactory.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
@@ -45,31 +47,31 @@ public class ElderAPI01Steps extends BaseClass {
                 sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + elderid + " and address.person_id=" + elderid + " join main.grampa on grampa.id=" + elderid + " join main.city on address.city= city.id";
             }
             System.out.println(sql);
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
 
             if (!results.next()) {
                 sql = "select * from main.person where id=" + elderid + "";
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
 
                 Assert.assertEquals("No record found: main.person. User ID: " + elderid, true, results.next());
 
                 sql = "select * from main.address where person_id=" + elderid + "";
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
                 Assert.assertEquals("No record found: main.address User ID: " + elderid, true, results.next());
 
 
                 sql = "select * from main.grampa where id=" + elderid + "";
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
                 Assert.assertEquals("No record found: main.grampa User ID: " + elderid, true, results.next());
 
                 if (!(basestationid == null)) {
                     sql = "select * from main.base_station where base_station.id= (select base_station_id from main.grampa where id=" + elderid + ")";
-                    results = DBConn.getDBData(sql);
+                    results = DatabaseFactory.getDBData(sql);
                     Assert.assertEquals("No record found: main.BaseStation User ID: " + elderid, true, results.next());
                 }
                 if ((healthissueid > 0)) {
                     sql = "select * from main.health_issues where health_issues.id= (select health_issue_id from main.grampa_health_issues where grampa_id=" + elderid + ")";
-                    results = DBConn.getDBData(sql);
+                    results = DatabaseFactory.getDBData(sql);
                     Assert.assertEquals("No record found: main.health_issues ID: " + elderid, true, results.next());
                 }
 

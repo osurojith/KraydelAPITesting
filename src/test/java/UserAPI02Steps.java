@@ -1,10 +1,11 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class UserAPI02Steps extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.getMethod(this.api, header);
+        this.response = HttpMethodsFactory.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
@@ -32,28 +33,28 @@ public class UserAPI02Steps extends BaseClass {
             long id = EncryptionServiceImpl.decryptToLong(personid);
             sql = "select person.id as id,role.role_name as rolename,user_role.role_id as roleid,user_location.location_id as locationid,main.user.username as username , person.last_name as lname , person.first_name as fname, main.user.status as status, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + EncryptionServiceImpl.decryptToLong(personid) + " and address.person_id=" + EncryptionServiceImpl.decryptToLong(personid) + " join main.city on address.city= city.id join main.user on main.user.id=person.id join main.user_location on user_location.user_id=person.id join main.user_role on user_role.user_id=person.id join main.role on role.id=main.user_role.role_id";
             System.out.println(sql);
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
 
             if (!results.next()) {
                 sql = "select * from main.person where id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
 
                 Assert.assertEquals("No record found: main.person. User ID: " + id, true, results.next());
 
                 sql = "select * from main.address where person_id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
                 Assert.assertEquals("No record found: main.address User ID: " + id, true, results.next());
 
                 sql = "select * from main.user where id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
                 Assert.assertEquals("No record found: main.user User ID: " + id, true, results.next());
 
                 sql = "select * from main.user_location where user_id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
                 Assert.assertEquals("No record found: main.user_location User ID: " + id, true, results.next());
 
                 sql = "select * from main.user_role where user_id=" + EncryptionServiceImpl.decryptToLong(personid) + "";
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
                 Assert.assertEquals("No record found: main.user_role User ID: " + id, true, results.next());
             } else {
                 results.previous();

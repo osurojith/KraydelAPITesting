@@ -1,10 +1,12 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
+
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ public class AlertAPI02Steps extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.putMethodBody(this.api, header, body);
+        this.response = HttpMethodsFactory.putMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
@@ -40,7 +42,7 @@ public class AlertAPI02Steps extends BaseClass {
     public void validate_backend(String sentalertid, String status) throws SQLException, ClassNotFoundException {
         String sql = "select * from main.user_alert_details where id=" + sentalertid + " and status=" + status + "";
         System.out.println(sql);
-        results = DBConn.getDBData(sql);
+        results = DatabaseFactory.getDBData(sql);
         Assert.assertEquals("No record found  main.user_alert_details.", true, results.next());
         results.previous();
     }

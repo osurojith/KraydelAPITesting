@@ -1,9 +1,10 @@
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
+
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class UserAPI06Steps extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.getMethod(this.api, header);
+        this.response = HttpMethodsFactory.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
@@ -32,17 +33,17 @@ public class UserAPI06Steps extends BaseClass {
 
             sql = "select person.picture from main.person join main.user on person.id=main.user.id and username='" + username + "'";
             System.out.println(sql);
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
 
             if (!results.next()) {
                 sql = "select * from main.user where username='" + username + "'";
                 System.out.println(sql);
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
                 Assert.assertEquals("No record found: main.user UserName: " + username, true, results.next());
 
                 sql = "select * from main.person where id=(select id from main.user where username='" + username + "')";
                 System.out.println(sql);
-                results = DBConn.getDBData(sql);
+                results = DatabaseFactory.getDBData(sql);
                 Assert.assertEquals("No record found: main.person. UserName: " + username, true, results.next());
 
 

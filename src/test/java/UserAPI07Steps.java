@@ -1,10 +1,12 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
+
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ public class UserAPI07Steps extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.getMethod(this.api, header);
+        this.response = HttpMethodsFactory.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
@@ -35,7 +37,7 @@ public class UserAPI07Steps extends BaseClass {
 
             sql = "select person.id as id,person.gender as gender , person.last_name as lname , person.first_name as fname,grampa.location_id as locationid from main.person join main.grampa on grampa.id=person.id join main.grampa_user on grampa_user.grampa_id=person.id and grampa_user.user_id=(select id from main.user where main.user.username='" + username + "')";
             System.out.println(sql);
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
             Assert.assertEquals("No Elder found for given carer.", true, results.next());
             results.previous();
         }

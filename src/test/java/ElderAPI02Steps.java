@@ -1,10 +1,12 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
+
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -23,7 +25,7 @@ public class ElderAPI02Steps extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.getMethod(this.api, header);
+        this.response = HttpMethodsFactory.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
@@ -31,7 +33,7 @@ public class ElderAPI02Steps extends BaseClass {
     public void get_data_from_database(String elderid) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             String sql = "Select person.id as id, person.first_name AS fname, person.last_name as lname, person.email as email, grampa_user.grampa_role_id as roleId, grampa_role.role_name as rolename, main.user.username as username from main.grampa_user join main.person on grampa_user.user_id=person.id and grampa_user.grampa_id=" + (elderid) + " join main.grampa_role on grampa_user.grampa_role_id=grampa_role.role_id join main.user on grampa_user.user_id=main.user.id";
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
             System.out.println(sql);
 
             Assert.assertEquals("No carers found for given elder. Elder ID: " + (elderid), true, results.next());

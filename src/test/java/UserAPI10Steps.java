@@ -1,10 +1,12 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
+
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -22,7 +24,7 @@ public class UserAPI10Steps extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.getMethod(this.api, header);
+        this.response = HttpMethodsFactory.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
 
     }
@@ -32,7 +34,7 @@ public class UserAPI10Steps extends BaseClass {
         if (status_code.equals("20000")) {
             String sql = null;
             sql = "select user_id from main.grampa_user where grampa_id=" + elderid + "";
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
 
             if (results.next())
                 sql = "select * from main.person join main.user_role on main.user_role.role_id=2 and user_role.user_id=person.id and person.id <> " + results.getString("user_id") + "";
@@ -40,7 +42,7 @@ public class UserAPI10Steps extends BaseClass {
                 sql = "select * from main.person join main.user_role on main.user_role.role_id=2 and user_role.user_id=person.id";
 
             System.out.println(sql);
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
 
             Assert.assertEquals("No cares found in the DB", true, results.next());
             results.previous();

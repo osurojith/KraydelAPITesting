@@ -1,10 +1,12 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
+
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ public class CountryAPI01Steps extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.getMethod(this.api, header);
+        this.response = HttpMethodsFactory.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
@@ -32,14 +34,14 @@ public class CountryAPI01Steps extends BaseClass {
         String sql = null;
         if (tableName.equalsIgnoreCase("country")) {
             sql = "select * from main.country where id=" + EncryptionServiceImpl.decryptToLong(id) + "";
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
             System.out.println(sql);
             Assert.assertEquals("No record found  main.Country ID:" + id, true, results.next());
             results.previous();
         }
         if (tableName.equalsIgnoreCase("city")) {
             sql = "select * from main.city where country_id=" + EncryptionServiceImpl.decryptToLong(id) + "";
-            results = DBConn.getDBData(sql);
+            results = DatabaseFactory.getDBData(sql);
             System.out.println(sql);
             Assert.assertEquals("No record found  main.City ID:" + id, true, results.next());
             results.previous();

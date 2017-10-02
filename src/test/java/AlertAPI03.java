@@ -1,8 +1,6 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
-import org.junit.Assert;
 import utils.BaseClass;
 import utils.HttpMethods;
 

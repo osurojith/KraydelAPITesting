@@ -1,7 +1,7 @@
+import com.aut.BaseClass;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import utils.BaseClass;
-import utils.HttpMethods;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class GraphDataAPI01Steps extends BaseClass {
     @Step("User call the Activity Graph Data API")
     public void call_api() {
         Map<String, String> header = new HashMap();
-        this.response = HttpMethods.getMethod(this.api, header);
+        this.response = HttpMethodsFactory.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 

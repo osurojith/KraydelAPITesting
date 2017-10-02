@@ -1,10 +1,11 @@
-import KraydelEncryption.EncryptionServiceImpl;
+
+import com.aut.BaseClass;
+import com.aut.DatabaseFactory;
+import com.aut.EncryptionServiceImpl;
+import com.aut.HttpMethodsFactory;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
-import utils.BaseClass;
-import utils.DBConn;
-import utils.HttpMethods;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -23,14 +24,14 @@ public class AlertAPI01 extends BaseClass {
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
-        this.response = HttpMethods.getMethod(this.api, header);
+        this.response = HttpMethodsFactory.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
 
     public void get_db_data(String id) throws SQLException, ClassNotFoundException {
         String sql = "select sent_alert_details.id as sentalertid,person.id as grampaid, sent_alert_details.status as status,sent_alert_details.alert_message_body as alertbody ,sent_alert_details.alert_message_subject as alertsubject,person.first_name fname,person.last_name lname  from main.user_alert_details join main.sent_alert_details on sent_alert_details.id=user_alert_details.sent_alert_details_id join main.person on person.id=sent_alert_details.grampa_id and user_alert_details.id=" + EncryptionServiceImpl.decryptToLong(id) + "";
         System.out.println(sql);
-        results = DBConn.getDBData(sql);
+        results = DatabaseFactory.getDBData(sql);
         Assert.assertEquals("No record found. ID:" + EncryptionServiceImpl.decryptToLong(id), true, results.next());
         results.previous();
     }
