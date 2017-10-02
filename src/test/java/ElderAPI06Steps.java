@@ -1,7 +1,6 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
 import utils.DBConn;
@@ -16,8 +15,8 @@ public class ElderAPI06Steps extends BaseClass {
 
     @Step("User Enter Assign-carer API </api/><version></elders/><elderid></assign-carer>")
     public void Call_API(String arg0, String arg1, String arg2, long arg3, String arg4) throws Exception {
-        this.api = System.getenv("URI")+arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
-        System.out.println("API: "+api);
+        this.api = System.getenv("URI") + arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
+        System.out.println("API: " + api);
     }
 
     @Step("User enter Elder Details Assign-carer API <userID> <userRoleID>")
@@ -26,7 +25,7 @@ public class ElderAPI06Steps extends BaseClass {
                 " \"user\": {\"id\": \"" + EncryptionServiceImpl.encryptToString(userID) + "\"},\n" +
                 "    \"grampaRole\": {\"id\": \"" + EncryptionServiceImpl.encryptToString(userRoleID) + "\"}\n" +
                 "}";
-        System.out.println("Body: "+body);
+        System.out.println("Body: " + body);
     }
 
     @Step("User Call Assign-carer API")
@@ -38,6 +37,7 @@ public class ElderAPI06Steps extends BaseClass {
         this.response = HttpMethods.putMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+
     @Step("User gets data from kraydel database Assign-carer API <userID> <elderid> <userRoleID>")
     public void get_db_data(String userID, String elderid, String userRoleID) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
         if (status_code.equals("20000")) {

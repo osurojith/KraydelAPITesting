@@ -1,7 +1,6 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
 import utils.DBConn;
@@ -16,8 +15,8 @@ public class ElderAPI04Steps extends BaseClass {
 
     @Step("User Enter Create Elder API </api/><version></elders>")
     public void Enter_API(String part1, String version, String part2) {
-        this.api =System.getenv("URI")+ part1 + version + part2;
-        System.out.println("API: "+api);
+        this.api = System.getenv("URI") + part1 + version + part2;
+        System.out.println("API: " + api);
     }
 
     @Step("User enter Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
@@ -49,17 +48,17 @@ public class ElderAPI04Steps extends BaseClass {
 
     @Step("User enter healthIssues: Create Elder API <healthIssueid>")
     public void Enter_healthIssues(long healthIssueid) throws Exception {
-        if(!(healthIssueid==0))
+        if (!(healthIssueid == 0))
 
-        body = body + ",\"healthIssues\":[{\"id\":\"" + EncryptionServiceImpl.encryptToString(healthIssueid) + "\"}]";
+            body = body + ",\"healthIssues\":[{\"id\":\"" + EncryptionServiceImpl.encryptToString(healthIssueid) + "\"}]";
     }
 
     @Step("User enter baseStation: Create Elder API <baseStationid> <tvBrandId> <baseStationstatus>")
     public void Enter_baseStation(long baseStationid, long tvBrandId, String baseStationstatus) throws Exception {
-        if(!(baseStationid==0))
-        body = body + ",\"baseStation\":{\"id\":\"" + EncryptionServiceImpl.encryptToString(baseStationid) + "\",\"tvBrandId\":\"" + EncryptionServiceImpl.encryptToString(tvBrandId) + "\",\"status\":\"" + baseStationstatus + "\"";
-        body = body +"}}";
-        System.out.println("Body: "+body);
+        if (!(baseStationid == 0))
+            body = body + ",\"baseStation\":{\"id\":\"" + EncryptionServiceImpl.encryptToString(baseStationid) + "\",\"tvBrandId\":\"" + EncryptionServiceImpl.encryptToString(tvBrandId) + "\",\"status\":\"" + baseStationstatus + "\"";
+        body = body + "}}";
+        System.out.println("Body: " + body);
     }
 
     @Step("User Call Create Elder API")
@@ -71,6 +70,7 @@ public class ElderAPI04Steps extends BaseClass {
         this.response = HttpMethods.postMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+
     @Step("User gets data from kraydel database Create Elder API <baseStationid><healthIssueid><email>")
     public void get_db_data(long basestationid, long healthissueid, String email) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
         if (status_code.equals("20000")) {
@@ -120,6 +120,7 @@ public class ElderAPI04Steps extends BaseClass {
             }
         }
     }
+
     @Step("Validate Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
     public void Enter_user_details_validating(String firstName, String lastName, String email, String gender, String ethnicityId, String religionId, String dateOfBirth, String locationId, String elderstatus) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {

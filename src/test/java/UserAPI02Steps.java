@@ -13,7 +13,8 @@ import java.util.Map;
 public class UserAPI02Steps extends BaseClass {
     @Step("User enter Search API </api/><version></users/search>")
     public void implementation1(String part1, String version, String part2) {
-        this.api = System.getenv("URI")+part1 + version + part2;
+        this.api = System.getenv("URI") + part1 + version + part2;
+        System.out.println("API: " + api);
     }
 
     @Step("User call the Search API")
@@ -59,47 +60,42 @@ public class UserAPI02Steps extends BaseClass {
             }
         }
     }
+
     @Step("Validate Search API Users")
     public void Validate_Search_API_Users() throws Exception {
         if (status_code.equals("20000")) {
-            int count=0;
-            Assert.assertEquals("No users found",true,jsonPath.getList("content.users").size()>=1);
-            System.out.println(jsonPath.getList("content.users").size());
+            int count = 0;
+            Assert.assertEquals("No users found", true, jsonPath.getList("content.users").size() >= 1);
             for (int i = 1; i <= jsonPath.getList("content.users").size(); i++) {
 
                 String val = Integer.toString(i - 1);
-                String id=jsonPath.getString("content.users[" + val + "].id");
-                String username=jsonPath.getString("content.users[" + val + "].username");
-                String lname=jsonPath.getString("content.users[" + val + "].lastName");
-                String fname=jsonPath.getString("content.users[" + val + "].firstName");
-                String email=jsonPath.getString("content.users[" + val + "].email");
-                String gender=jsonPath.getString("content.users[" + val + "].gender");
-                String status=jsonPath.getString("content.users[" + val + "].status").replace("INACTIVE","3").replace("ACTIVE","1");
+                String id = jsonPath.getString("content.users[" + val + "].id");
+                String username = jsonPath.getString("content.users[" + val + "].username");
+                String lname = jsonPath.getString("content.users[" + val + "].lastName");
+                String fname = jsonPath.getString("content.users[" + val + "].firstName");
+                String email = jsonPath.getString("content.users[" + val + "].email");
+                String gender = jsonPath.getString("content.users[" + val + "].gender");
+                String status = jsonPath.getString("content.users[" + val + "].status").replace("INACTIVE", "3").replace("ACTIVE", "1");
 
                 get_DB_data(id);
 
                 while (results.next()) {
 
-                    Assert.assertEquals("Validate person.id",results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
-                    Assert.assertEquals("Validate person.last_name",results.getString("lname"),lname);
-                    Assert.assertEquals("Validate user.username",results.getString("username"),username);
-                    Assert.assertEquals("Validate person.first_name",results.getString("fname"),fname);
-                    Assert.assertEquals("Validate person.status",results.getString("status"), status);
-                    Assert.assertEquals("Validate person.email",results.getString("email"), email);
-                    Assert.assertEquals("Validate person.gender",results.getString("gender"),gender);
+                    Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                    Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
+                    Assert.assertEquals("Validate user.username", results.getString("username"), username);
+                    Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
+                    Assert.assertEquals("Validate person.status", results.getString("status"), status);
+                    Assert.assertEquals("Validate person.email", results.getString("email"), email);
+                    Assert.assertEquals("Validate person.gender", results.getString("gender"), gender);
 
                     for (int x = 1; x <= jsonPath.getList("content.users[" + val + "].roleNames").size(); x++) {
                         String val1 = Integer.toString(x - 1);
-                        String roleName=jsonPath.getString("content.users[" + val + "].roleNames[" + val1 + "]");
-
-                        System.out.println("bbb");
+                        String roleName = jsonPath.getString("content.users[" + val + "].roleNames[" + val1 + "]");
                         Assert.assertEquals("Validate user_role.role_id", results.getString("rolename"), roleName);
 
                     }
                 }
-
-
-
 
 
             }

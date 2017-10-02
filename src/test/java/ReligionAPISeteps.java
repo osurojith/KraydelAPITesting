@@ -1,7 +1,6 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
 import utils.DBConn;
@@ -16,7 +15,8 @@ public class ReligionAPISeteps extends BaseClass {
 
     @Step("User enter Religions API </api/><version></religions/partial>")
     public void User_enter_Religions_API(String part1, String version, String part2) {
-        this.api =System.getenv("URI")+ part1 + version + part2;
+        this.api = System.getenv("URI") + part1 + version + part2;
+        System.out.println("API: " + api);
     }
 
     @Step("User call the Religions API")
@@ -27,11 +27,12 @@ public class ReligionAPISeteps extends BaseClass {
         this.response = HttpMethods.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+
     public void get_db_data(String id) throws SQLException, ClassNotFoundException {
-        String sql="select * from main.religion where id="+ EncryptionServiceImpl.decryptToLong(id)+"";
+        String sql = "select * from main.religion where id=" + EncryptionServiceImpl.decryptToLong(id) + "";
         System.out.println(sql);
         results = DBConn.getDBData(sql);
-        Assert.assertEquals("No record found  main.religion. ID:"+EncryptionServiceImpl.decryptToLong(id), true, results.next());
+        Assert.assertEquals("No record found  main.religion. ID:" + EncryptionServiceImpl.decryptToLong(id), true, results.next());
         results.previous();
     }
 
@@ -39,30 +40,25 @@ public class ReligionAPISeteps extends BaseClass {
     @Step("Validate Religions Content")
     public void Validate_Religions_Content() throws SQLException, ClassNotFoundException {
 
-            for (int i = 1; i <= jsonPath.getList("content.religions").size(); i++) {
-                int count=0;
-                String val = Integer.toString(i - 1);
-                String religionid=jsonPath.getString("content.religions[" + val + "].id");
-                String religionname=jsonPath.getString("content.religions[" + val + "].name");
+        for (int i = 1; i <= jsonPath.getList("content.religions").size(); i++) {
+            int count = 0;
+            String val = Integer.toString(i - 1);
+            String religionid = jsonPath.getString("content.religions[" + val + "].id");
+            String religionname = jsonPath.getString("content.religions[" + val + "].name");
 
-                get_db_data(religionid);
-                while (results.next()) {
-                    count++;
-                    Assert.assertEquals(results.getString("id"), EncryptionServiceImpl.decryptToLong(religionid).toString());
-                    Assert.assertEquals(results.getString("name"), religionname);
+            get_db_data(religionid);
+            while (results.next()) {
+                count++;
+                Assert.assertEquals(results.getString("id"), EncryptionServiceImpl.decryptToLong(religionid).toString());
+                Assert.assertEquals(results.getString("name"), religionname);
 
-                }
+            }
 
-                Assert.assertEquals("Data miss match API:DB",1,count);
-
-
+            Assert.assertEquals("Data miss match API:DB", 1, count);
 
 
         }
     }
-
-
-
 
 
 }

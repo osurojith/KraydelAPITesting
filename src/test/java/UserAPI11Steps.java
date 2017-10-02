@@ -13,7 +13,8 @@ import java.util.Map;
 public class UserAPI11Steps extends BaseClass {
     @Step("User enter User API view Picture by id </api/><version></user/><id></picture>")
     public void enter_api(String arg0, String arg1, String arg2, long arg3, String arg4) throws Exception {
-        api=System.getenv("URI")+arg0+arg1+arg2+ EncryptionServiceImpl.encryptToString(arg3)+arg4;
+        this.api = System.getenv("URI") + arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
+        System.out.println("API: " + api);
     }
 
     @Step("User call the User API view Picture by id")
@@ -28,7 +29,7 @@ public class UserAPI11Steps extends BaseClass {
 
     @Step("Get data from kraydel database <userid>")
     public void get_db_data(String userid) throws SQLException, ClassNotFoundException {
-        String sql = "select person.picture from main.person where id="+userid+"";
+        String sql = "select person.picture from main.person where id=" + userid + "";
         System.out.println(sql);
         results = DBConn.getDBData(sql);
     }
@@ -36,6 +37,6 @@ public class UserAPI11Steps extends BaseClass {
     @Step("Validate view Picture by id API")
     public void validate_picture_details() throws SQLException {
         results.next();
-        Assert.assertEquals("Validate image DB:API",(results.getString("picture")==null),(jsonPath.getString("content.picture")==null));
+        Assert.assertEquals("Validate image DB:API", (results.getString("picture") == null), (jsonPath.getString("content.picture") == null));
     }
 }

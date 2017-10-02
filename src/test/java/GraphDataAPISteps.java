@@ -1,7 +1,5 @@
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
-import org.junit.Assert;
 import utils.BaseClass;
 import utils.HttpMethods;
 
@@ -13,7 +11,7 @@ public class GraphDataAPISteps extends BaseClass {
 
     @Step("User Enter Graph-Data API </api/><version></graph-data>")
     public void Enter_API(String part1, String part2, String part3) {
-        this.api =System.getenv("URI")+ part1 + part2 + part3;
+        this.api = System.getenv("URI") + part1 + part2 + part3;
 
     }
 

@@ -1,7 +1,6 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
 import utils.DBConn;
@@ -16,7 +15,8 @@ public class UserAPI04Steps extends BaseClass {
 
     @Step("User Enter Create User API </api/><version></users>")
     public void Enter_API(String part1, String version, String part2) {
-        this.api =System.getenv("URI")+ part1 + version + part2;
+        this.api = System.getenv("URI") + part1 + version + part2;
+        System.out.println("API: " + api);
     }
 
     @Step("User enter User Details Create User API <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>")
@@ -61,20 +61,21 @@ public class UserAPI04Steps extends BaseClass {
                 "    \"id\": \"" + EncryptionServiceImpl.encryptToString(roleId) + "\"\n" +
                 " }]\n" +
                 "}";
+        System.out.println("Body: " + body);
     }
 
     @Step("User Call Create User API")
     public void Call_create_user_API() {
-        System.out.println(body);
+
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethods.postMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+
     @Step("User gets data from kraydel database Create User API <email>")
     public void get_data_from_database(String email) throws SQLException, ClassNotFoundException {
-        System.out.println(status_code);
         if (status_code.equalsIgnoreCase("20000")) {
             String sql = null;
 
@@ -115,7 +116,6 @@ public class UserAPI04Steps extends BaseClass {
         if (status_code.equals("20000")) {
             while (results.next()) {
                 status = status.replace("ACTIVE", "1").replace("INACTIVE", "3");
-                System.out.println("acb");
                 Assert.assertEquals("Validate person.last_name", results.getString("lname"), lastname);
                 Assert.assertEquals("Validate user.username", results.getString("username"), username);
                 Assert.assertEquals("Validate person.first_name", results.getString("fname"), firstname);
@@ -132,7 +132,6 @@ public class UserAPI04Steps extends BaseClass {
         if (status_code.equals("20000")) {
             while (results.previous()) {
                 addressType = addressType.replace("PRIMARY", "1");
-                System.out.println("acb");
                 Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalCode);
                 Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doorNumber);
                 Assert.assertEquals("Validate address.street", results.getString("street"), street);
@@ -146,7 +145,6 @@ public class UserAPI04Steps extends BaseClass {
     public void Validate_Location_Id(String locationId) throws SQLException {
         if (status_code.equals("20000")) {
             while (results.next()) {
-                System.out.println("acb");
                 Assert.assertEquals("Validate user_location.location_id", results.getString("locationid"), locationId);
             }
         }
@@ -156,13 +154,11 @@ public class UserAPI04Steps extends BaseClass {
     public void Validate_Role_Id(String roleId) throws SQLException {
         if (status_code.equals("20000")) {
             while (results.previous()) {
-                System.out.println("acb");
                 Assert.assertEquals("Validate user_role.role_id", results.getString("roleid"), roleId);
 
             }
         }
     }
-
 
 
 }

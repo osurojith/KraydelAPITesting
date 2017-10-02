@@ -1,6 +1,5 @@
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
 import utils.HttpMethods;
@@ -13,7 +12,8 @@ public class LogInAPISteps extends BaseClass {
 
     @Step("User enter API </oauth/token>")
     public void User_enter_API(String api) {
-        this.api =System.getenv("LOGIN_URI")+ api;
+        this.api = System.getenv("LOGIN_URI") + api;
+        System.out.println("API: " + api);
     }
 
     @Step("User enter credentials <username>,<password>")
@@ -45,7 +45,7 @@ public class LogInAPISteps extends BaseClass {
     @Step("Get refresh token")
     public void Get_refresh_token() {
         token = jsonPath.getString("refresh_token");
-        System.out.println("xxxxx   "+token);
+
     }
 
 
@@ -68,7 +68,7 @@ public class LogInAPISteps extends BaseClass {
     @Step("User get access token")
     public void User_get_access_token() {
         token = jsonPath.getString("access_token");
-        System.out.println(token);
+
     }
 
 
@@ -96,9 +96,4 @@ public class LogInAPISteps extends BaseClass {
 
     }
 
-
-    @Step("Validate invalid HTTP Response <response_code>")
-    public void Validate_invalid_HTTP_Response(int code) {
-        Assert.assertEquals(code, response.getStatusCode());
-    }
 }

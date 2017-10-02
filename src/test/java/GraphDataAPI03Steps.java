@@ -8,13 +8,13 @@ import java.util.Map;
 
 public class GraphDataAPI03Steps extends BaseClass {
     @Step("User enter ambient-temperature Graph Data API </api/><version></graph-data/ambient-temperature>")
-    public void enter_api(String arg0,String arg1,String arg2) {
-        api=System.getenv("URI")+arg0+arg1+arg2;
+    public void enter_api(String arg0, String arg1, String arg2) {
+        api = System.getenv("URI") + arg0 + arg1 + arg2;
     }
 
     @Step("User enter parameter values ambient-temperature Graph Data API <elderId><fromTime><toTime><startIndex><resultCount><tableName>")
     public void enter_parameter_data(String elderId, String fromTime, String toTime, String startIndex, String resultCount, String tableName) {
-        api=api+"?elderId="+elderId+"&fromTime="+fromTime+"&toTime="+toTime+"&startIndex="+startIndex+"&resultCount="+resultCount+"&tableName="+tableName+"";
+        api = api + "?elderId=" + elderId + "&fromTime=" + fromTime + "&toTime=" + toTime + "&startIndex=" + startIndex + "&resultCount=" + resultCount + "&tableName=" + tableName + "";
     }
 
     @Step("User call the ambient-temperature Graph Data API")

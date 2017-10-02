@@ -14,7 +14,8 @@ public class UserAPI08Steps extends BaseClass {
 
     @Step("User enter Update Status API </api/><version></users/><id></status>")
     public void User_enter_Update_Status_API(String part1, String part2, String part3, long part4, String part5) throws Exception {
-        this.api = System.getenv("URI")+part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4) + part5;
+        this.api = System.getenv("URI") + part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4) + part5;
+        System.out.println("API: " + api);
     }
 
     @Step("Update API Body <Userstatus>")
@@ -22,18 +23,19 @@ public class UserAPI08Steps extends BaseClass {
         body = "{\n" +
                 " \"status\":\"" + status + "\"\n" +
                 "}";
-
+        System.out.println("Body: " + body);
     }
 
     @Step("User call the Update Status API")
     public void User_call_the_Update_status_API() {
-        System.out.println(body);
+
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethods.putMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+
     @Step("User gets data from kraydel database Update Status API <id>")
     public void get_db_data(String userid) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {

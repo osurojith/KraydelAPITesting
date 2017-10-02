@@ -1,7 +1,6 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
 import utils.DBConn;
@@ -16,7 +15,8 @@ public class UserAPI01Steps extends BaseClass {
 
     @Step("User enter User API </api/><version></users/><user-ID>")
     public void User_enter_User_API(String part1, String part2, String part3, long part4) throws Exception {
-        this.api = System.getenv("URI")+part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4).toString();
+        this.api = System.getenv("URI") + part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4).toString();
+        System.out.println("API: " + api);
     }
 
     @Step("User call the User API")
@@ -83,14 +83,13 @@ public class UserAPI01Steps extends BaseClass {
             String status = jsonPath.getString("content.user.status").replace("ACTIVE", "1").replace("INACTIVE", "3");
 
             while (results.next()) {
-                System.out.println(fname);
-                Assert.assertEquals("Validate person.id",results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
-                Assert.assertEquals("Validate person.last_name",results.getString("lname"),lname);
-                Assert.assertEquals("Validate user.username",results.getString("username"),username);
-                Assert.assertEquals("Validate person.first_name",results.getString("fname"),fname);
-                Assert.assertEquals("Validate person.status",results.getString("status"), status);
-                Assert.assertEquals("Validate person.email",results.getString("email"), email);
-                Assert.assertEquals("Validate person.gender",results.getString("gender"),gender);
+                Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
+                Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
+                Assert.assertEquals("Validate user.username", results.getString("username"), username);
+                Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
+                Assert.assertEquals("Validate person.status", results.getString("status"), status);
+                Assert.assertEquals("Validate person.email", results.getString("email"), email);
+                Assert.assertEquals("Validate person.gender", results.getString("gender"), gender);
             }
 
 
@@ -101,24 +100,22 @@ public class UserAPI01Steps extends BaseClass {
     @Step("Validate User Address Details")
     public void Validate_User_Address_Details() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
-            int count=0;
-            Assert.assertEquals("No addresses found",true,jsonPath.getList("content.user.addresses").size()>=1);
+            int count = 0;
+            Assert.assertEquals("No addresses found", true, jsonPath.getList("content.user.addresses").size() >= 1);
 
             while (results.previous()) {
                 count++;
-            for (int i = 1; i <= jsonPath.getList("content.user.addresses").size(); i++) {
-                String val = Integer.toString(i - 1);
-                String addressid = jsonPath.getString("content.user.addresses[" + val + "].id");
-                String postalcode = jsonPath.getString("content.user.addresses[" + val + "].postalCode");
-                String doornum = jsonPath.getString("content.user.addresses[" + val + "].doorNumber");
-                String street = jsonPath.getString("content.user.addresses[" + val + "].street");
-                String addresstype = jsonPath.getString("content.user.addresses[" + val + "].addressType").replace("PRIMARY", "1");
-                String cityId = jsonPath.getString("content.user.addresses[" + val + "].cityId");
-                String cointryId = jsonPath.getString("content.user.addresses[" + val + "].countryId");
+                for (int i = 1; i <= jsonPath.getList("content.user.addresses").size(); i++) {
+                    String val = Integer.toString(i - 1);
+                    String addressid = jsonPath.getString("content.user.addresses[" + val + "].id");
+                    String postalcode = jsonPath.getString("content.user.addresses[" + val + "].postalCode");
+                    String doornum = jsonPath.getString("content.user.addresses[" + val + "].doorNumber");
+                    String street = jsonPath.getString("content.user.addresses[" + val + "].street");
+                    String addresstype = jsonPath.getString("content.user.addresses[" + val + "].addressType").replace("PRIMARY", "1");
+                    String cityId = jsonPath.getString("content.user.addresses[" + val + "].cityId");
+                    String cointryId = jsonPath.getString("content.user.addresses[" + val + "].countryId");
 
 
-
-                    System.out.println(addressid);
                     Assert.assertEquals("Validate address.id", results.getString("addressid"), EncryptionServiceImpl.decryptToLong(addressid).toString());
                     Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalcode);
                     Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doornum);
@@ -129,9 +126,8 @@ public class UserAPI01Steps extends BaseClass {
                 }
 
 
-
             }
-            Assert.assertEquals("Data miss match API:DB",jsonPath.getList("content.user.addresses").size(),count);
+            Assert.assertEquals("Data miss match API:DB", jsonPath.getList("content.user.addresses").size(), count);
         }
     }
 
@@ -139,45 +135,39 @@ public class UserAPI01Steps extends BaseClass {
     @Step("Validate Locations")
     public void Validate_Location() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
-            int count=0;
-            Assert.assertEquals("No location found",true,jsonPath.getList("content.user.locations").size()>=1);
+            int count = 0;
+            Assert.assertEquals("No location found", true, jsonPath.getList("content.user.locations").size() >= 1);
 
             while (results.next()) {
                 count++;
-            for (int i = 1; i <= jsonPath.getList("content.user.locations").size(); i++) {
-                String location = jsonPath.getString("content.user.locations[" + (i - 1) + "].id");
-
-
-                    System.out.println("acb");
+                for (int i = 1; i <= jsonPath.getList("content.user.locations").size(); i++) {
+                    String location = jsonPath.getString("content.user.locations[" + (i - 1) + "].id");
                     Assert.assertEquals("Validate user_location.location_id", results.getString("locationid"), EncryptionServiceImpl.decryptToLong(location).toString());
-                    }
+                }
             }
-            Assert.assertEquals("Data miss match API:DB",jsonPath.getList("content.user.locations").size(),count);
+            Assert.assertEquals("Data miss match API:DB", jsonPath.getList("content.user.locations").size(), count);
         }
     }
 
     @Step("Validate Roles")
     public void Validate_Roles() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
-            int count=0;
-            Assert.assertEquals("No roles found",true,jsonPath.getList("content.user.roles").size()>=1);
+            int count = 0;
+            Assert.assertEquals("No roles found", true, jsonPath.getList("content.user.roles").size() >= 1);
 
             while (results.previous()) {
                 count++;
-            for (int i = 1; i <= jsonPath.getList("content.user.roles").size(); i++) {
-                String roleID = jsonPath.getString("content.user.roles[" + (i - 1) + "].id");
+                for (int i = 1; i <= jsonPath.getList("content.user.roles").size(); i++) {
+                    String roleID = jsonPath.getString("content.user.roles[" + (i - 1) + "].id");
 
-
-                    System.out.println("acb");
                     Assert.assertEquals("Validate user_role.role_id", results.getString("roleid"), EncryptionServiceImpl.decryptToLong(roleID).toString());
                 }
 
-        }
-            Assert.assertEquals("Data miss match API:DB",jsonPath.getList("content.user.roles").size(),count);
+            }
+            Assert.assertEquals("Data miss match API:DB", jsonPath.getList("content.user.roles").size(), count);
 
         }
     }
-
 
 
 }

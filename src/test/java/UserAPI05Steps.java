@@ -14,7 +14,8 @@ public class UserAPI05Steps extends BaseClass {
 
     @Step("User Enter Update User API </api/><version></users/><id>")
     public void Update_User_API(String part1, String part2, String part3, long part4) throws Exception {
-        this.api =System.getenv("URI")+ part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4);
+        this.api = System.getenv("URI") + part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4);
+        System.out.println("API: " + api);
     }
 
     @Step("User enter User Details Update User API <userid> <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>")
@@ -60,6 +61,7 @@ public class UserAPI05Steps extends BaseClass {
                 "    \"id\": \"" + EncryptionServiceImpl.encryptToString(roleId) + "\"\n" +
                 " }]\n" +
                 "}";
+        System.out.println("Body: " + body);
     }
 
     @Step("User Call Update User API")
@@ -107,12 +109,13 @@ public class UserAPI05Steps extends BaseClass {
             }
         }
     }
+
     @Step("Validate User Details Update User API <userid> <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>")
     public void Validate_user_details(String userid, String username, String password, String firstname, String lastname, String email, String status, String gender) throws SQLException {
         if (status_code.equals("20000")) {
             while (results.next()) {
                 status = status.replace("ACTIVE", "1").replace("INACTIVE", "3");
-                System.out.println("acb");
+
                 Assert.assertEquals("Validate person.id", results.getString("id"), userid);
                 Assert.assertEquals("Validate person.last_name", results.getString("lname"), lastname);
                 Assert.assertEquals("Validate user.username", results.getString("username"), username);
@@ -130,7 +133,7 @@ public class UserAPI05Steps extends BaseClass {
         if (status_code.equals("20000")) {
             while (results.previous()) {
                 addressType = addressType.replace("PRIMARY", "1");
-                System.out.println("acb");
+
                 Assert.assertEquals("Validate address.id", results.getString("addressid"), addressid);
                 Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalCode);
                 Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doorNumber);
@@ -145,7 +148,6 @@ public class UserAPI05Steps extends BaseClass {
     public void Validate_Location_Id(String locationId) throws SQLException {
         if (status_code.equals("20000")) {
             while (results.next()) {
-                System.out.println("acb");
                 Assert.assertEquals("Validate user_location.location_id", results.getString("locationid"), locationId);
             }
         }
@@ -155,13 +157,11 @@ public class UserAPI05Steps extends BaseClass {
     public void Validate_Role_Id(String roleId) throws SQLException {
         if (status_code.equals("20000")) {
             while (results.previous()) {
-                System.out.println("acb");
                 Assert.assertEquals("Validate user_role.role_id", results.getString("roleid"), roleId);
 
             }
         }
     }
-
 
 
 }

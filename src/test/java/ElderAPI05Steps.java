@@ -1,7 +1,6 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
 import utils.DBConn;
@@ -12,11 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ElderAPI05Steps extends BaseClass {
-long elder_id;
+    long elder_id;
+
     @Step("User Enter Update Elder API </api/><version></elders/><elderid>")
     public void Enter_API(String arg0, String arg1, String arg2, long arg3) throws Exception {
-        this.api = System.getenv("URI")+arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3);
-        System.out.println("API: "+api);
+        this.api = System.getenv("URI") + arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3);
+        System.out.println("API: " + api);
     }
 
 
@@ -40,7 +40,7 @@ long elder_id;
     @Step("User enter List: addresses Update Elder API <countryId> <addressID> <postalCode> <doorNumber> <street> <cityId> <addressType>")
     public void Enter_Address_Details(long countryId, long addressID, String postalCode, String doorNumber, String street, long cityId, String addressType) throws Exception {
 
-        body = body + "\"addresses\":[{\"countryId\": \""+EncryptionServiceImpl.encryptToString(countryId)+"\",\"id\": \""+EncryptionServiceImpl.encryptToString(addressID)+"\",\"doorNumber\":\""+doorNumber+"\",\"street\":\""+street+"\",\"postalCode\":\""+postalCode+"\",\"cityId\":\""+EncryptionServiceImpl.encryptToString(cityId)+"\",\"addressType\":\""+addressType+"\"}],";
+        body = body + "\"addresses\":[{\"countryId\": \"" + EncryptionServiceImpl.encryptToString(countryId) + "\",\"id\": \"" + EncryptionServiceImpl.encryptToString(addressID) + "\",\"doorNumber\":\"" + doorNumber + "\",\"street\":\"" + street + "\",\"postalCode\":\"" + postalCode + "\",\"cityId\":\"" + EncryptionServiceImpl.encryptToString(cityId) + "\",\"addressType\":\"" + addressType + "\"}],";
     }
 
 
@@ -51,16 +51,18 @@ long elder_id;
 
     @Step("User enter baseStation: Update Elder API <baseStationid> <tvBrandId>")
     public void Enter_baseStation(long baseStationid, long tvBrandId) throws Exception {
-        if(!(baseStationid==0))
-        body = body + ",\"baseStation\":{\"id\":\"" + EncryptionServiceImpl.encryptToString(baseStationid) + "\",\"tvBrandId\":\"" + EncryptionServiceImpl.encryptToString(tvBrandId) + "\"";
-        body = body +"}}";
-        System.out.println("Body: "+body);
+        if (!(baseStationid == 0))
+            body = body + ",\"baseStation\":{\"id\":\"" + EncryptionServiceImpl.encryptToString(baseStationid) + "\",\"tvBrandId\":\"" + EncryptionServiceImpl.encryptToString(tvBrandId) + "\"";
+        body = body + "}}";
+        System.out.println("Body: " + body);
     }
+
     public void resetDB() throws SQLException {
-        while (results.previous()){
+        while (results.previous()) {
             System.out.println();
         }
-}
+    }
+
     @Step("User Call Update Elder API")
     public void Call_create_user_API() {
 
@@ -70,6 +72,7 @@ long elder_id;
         this.response = HttpMethods.putMethodBody(this.api, header, body);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+
     @Step("User gets data from kraydel database Update Elder API <baseStationid><healthIssueid><email>")
     public void get_db_data(long basestationid, long healthissueid, String email) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
         if (status_code.equals("20000")) {
@@ -125,6 +128,7 @@ long elder_id;
             }
         }
     }
+
     @Step("Validate Elder Details Update Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
     public void Enter_user_details_validating(String firstName, String lastName, String email, String gender, String ethnicityId, String religionId, String dateOfBirth, String locationId, String elderstatus) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
@@ -140,7 +144,6 @@ long elder_id;
             }
 
         }
-
 
 
     }

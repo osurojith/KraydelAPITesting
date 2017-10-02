@@ -1,7 +1,6 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
 import utils.DBConn;
@@ -16,7 +15,8 @@ public class UserAPI07Steps extends BaseClass {
 
     @Step("User enter View Elders Assigned API </api/><version></user/elders>")
     public void User_enter_View_Elders_Assigned_API(String part1, String part2, String part3) {
-        this.api =System.getenv("URI")+ part1 + part2 + part3;
+        this.api = System.getenv("URI") + part1 + part2 + part3;
+        System.out.println("API: " + api);
     }
 
     @Step("User call the View Elders Assigned API")
@@ -27,6 +27,7 @@ public class UserAPI07Steps extends BaseClass {
         this.response = HttpMethods.getMethod(this.api, header);
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
+
     @Step("User gets data from kraydel database View Elders Assigned API <username>")
     public void get_db_data(String username) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
         if (status_code.equals("20000")) {
@@ -44,10 +45,10 @@ public class UserAPI07Steps extends BaseClass {
     @Step("Validate Content View Elders Assigned API")
     public void Validate_content() throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
-            int count=0;
-            Assert.assertEquals("No elders found",true,jsonPath.getList("content.elders").size()>=1);
+            int count = 0;
+            Assert.assertEquals("No elders found", true, jsonPath.getList("content.elders").size() >= 1);
             while (results.next()) {
-               count++;
+                count++;
                 for (int i = 1; i <= jsonPath.getList("content.elders").size(); i++) {
 
                     String val = Integer.toString(i - 1);
@@ -56,19 +57,18 @@ public class UserAPI07Steps extends BaseClass {
                     String fname = jsonPath.getString("content.elders[" + val + "].firstName");
                     String gender = jsonPath.getString("content.elders[" + val + "].gender");
                     if (EncryptionServiceImpl.decryptToLong(id).toString().equalsIgnoreCase(results.getString("id"))) {
-                        System.out.println(fname);
+
                         Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
                         Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
                         Assert.assertEquals("Validate person.gender", results.getString("gender"), gender);
                         Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
-                        }
+                    }
                 }
             }
-            Assert.assertEquals("Data miss match API:DB",jsonPath.getList("content.elders").size(),count);
+            Assert.assertEquals("Data miss match API:DB", jsonPath.getList("content.elders").size(), count);
 
         }
     }
-
 
 
 }

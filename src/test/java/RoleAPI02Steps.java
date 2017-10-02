@@ -1,7 +1,6 @@
 import KraydelEncryption.EncryptionServiceImpl;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
 import org.junit.Assert;
 import utils.BaseClass;
 import utils.DBConn;
@@ -16,7 +15,8 @@ public class RoleAPI02Steps extends BaseClass {
     @Step("User enter Role API Get Elder Roles </api/><version></roles/elder-roles/partial>")
     public void Enter_role_API(String part1, String version, String part2) {
 
-        this.api = System.getenv("URI")+part1 + version + part2;
+        this.api = System.getenv("URI") + part1 + version + part2;
+        System.out.println("API: " + api);
     }
 
     @Step("User call the Role API Get Elder Roles")
