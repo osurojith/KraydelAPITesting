@@ -17,6 +17,7 @@ public class CountryAPI01Steps extends BaseClass {
     @Step("User enter Country API </api/><version></countries/partial>")
     public void User_enter_Country_API(String part1, String version, String part2) {
         this.api = System.getenv("URI")+part1 + version + part2;
+        System.out.println("API: "+api);
     }
 
     @Step("User call the Country API")

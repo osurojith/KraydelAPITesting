@@ -15,6 +15,7 @@ public class AlertAPI03 extends BaseClass {
     @Step("User Enter Alert API POST </api/><version></alerts>")
     public void Enter_API(String part1, String part2, String part3) {
         this.api = System.getenv("URI")+part1 + part2 + part3;
+        System.out.println("API: "+api);
     }
 
     @Step("User enter Alert Details Alert API POST <alertMessage> <alertSubject> <subEventType> <grampaId>")
@@ -25,7 +26,7 @@ public class AlertAPI03 extends BaseClass {
                 "\"subEventType\": \"" + subEventType + "\",\n" +
                 "\"grampaId\": " + EncryptionServiceImpl.encryptToString(grampaId) + "\n" +
                 "}";
-        System.out.println(body);
+        System.out.println("Body: " +body);
     }
 
     @Step("User Call Alert API POST")

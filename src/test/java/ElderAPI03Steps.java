@@ -17,6 +17,7 @@ public class ElderAPI03Steps extends BaseClass {
     @Step("User enter Elder Search API </api/><version></elders/search>")
     public void implementation1(String part1, String version, String part2) {
         this.api = System.getenv("URI")+part1 + version + part2;
+        System.out.println("API: "+api);
     }
 
     @Step("User call the Elder Search API")
@@ -33,8 +34,6 @@ public class ElderAPI03Steps extends BaseClass {
 
         String sql = null;
         long id=EncryptionServiceImpl.decryptToLong(elderid);
-        System.out.println("xxx  " + basestationid);
-        System.out.println("xxx  " + healthissueid);
         if (!(basestationid == null) && !(healthissueid == null)) {
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId, grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename from main.person join main.address on person.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " and address.person_id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.grampa on grampa.id=" + EncryptionServiceImpl.decryptToLong(elderid) + " join main.base_station on grampa.base_station_id=base_station.id join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id";
         } else if ((basestationid == null) && !(healthissueid == null)) {
@@ -117,7 +116,6 @@ public class ElderAPI03Steps extends BaseClass {
                     Assert.assertEquals("Validate person.gender", results.getString("gender"), gender);
 
                     if (!(deviceid == null)) {
-                        System.out.println("yyyy "+results.getString("deviceid"));
                         Assert.assertEquals("Validate grampa.base_station_id", results.getString("deviceid"), EncryptionServiceImpl.decryptToLong(deviceid).toString());
                         Assert.assertEquals("Validate base_station.device_key", results.getString("devicekey"), devicekey);
                         Assert.assertEquals("Validate base_station.tv_brand_id", results.getString("devicebrandid"), EncryptionServiceImpl.decryptToLong(devicebrandid).toString());

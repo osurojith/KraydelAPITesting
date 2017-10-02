@@ -17,6 +17,7 @@ public class BaseStationAPI01 extends BaseClass {
     @Step("User enter Get Base-Station API </api/><version></base-stations/partial>")
     public void get_API(String part1, String version, String part2) {
         this.api =System.getenv("URI")+ part1 + version + part2;
+        System.out.println("API: "+api);
     }
 
     @Step("User call the Get Base-Station API")
@@ -30,7 +31,7 @@ public class BaseStationAPI01 extends BaseClass {
     public void get_db_data(String id) throws SQLException, ClassNotFoundException {
       String sql="select id as id,device_key as device_key,tv_brand_id as tv_brand_id from main.base_station where id="+ EncryptionServiceImpl.decryptToLong(id)+"";
         System.out.println(sql);
-        results = DBConn.getDBData(sql);
+      results = DBConn.getDBData(sql);
         Assert.assertEquals("No record found  main.base_station. ID:"+EncryptionServiceImpl.decryptToLong(id), true, results.next());
         results.previous();
     }

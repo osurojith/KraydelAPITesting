@@ -16,6 +16,7 @@ public class ElderAPI02Steps extends BaseClass {
     @Step("User enter Elder Search API view carers </api/><version></elders/><elder-ID></carers>")
     public void Enter_API(String arg0, String arg1, String arg2, long arg3, String arg4) throws Exception {
         this.api = System.getenv("URI")+arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
+        System.out.println("API: "+api);
     }
 
     @Step("User call the Elder Search API view carers")
@@ -65,7 +66,7 @@ public class ElderAPI02Steps extends BaseClass {
                 Assert.assertEquals("Validate person.id", results.getString("roleid"), roleid);
                 Assert.assertEquals("Validate person.id", results.getString("rolename"), rolename);
                 Assert.assertEquals("Validate person.id", results.getString("username"), username);
-                System.out.println(results.getString("fname")+"    "+fname);
+
             }
 
             }

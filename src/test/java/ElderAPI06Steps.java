@@ -17,6 +17,7 @@ public class ElderAPI06Steps extends BaseClass {
     @Step("User Enter Assign-carer API </api/><version></elders/><elderid></assign-carer>")
     public void Call_API(String arg0, String arg1, String arg2, long arg3, String arg4) throws Exception {
         this.api = System.getenv("URI")+arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
+        System.out.println("API: "+api);
     }
 
     @Step("User enter Elder Details Assign-carer API <userID> <userRoleID>")
@@ -25,11 +26,12 @@ public class ElderAPI06Steps extends BaseClass {
                 " \"user\": {\"id\": \"" + EncryptionServiceImpl.encryptToString(userID) + "\"},\n" +
                 "    \"grampaRole\": {\"id\": \"" + EncryptionServiceImpl.encryptToString(userRoleID) + "\"}\n" +
                 "}";
+        System.out.println("Body: "+body);
     }
 
     @Step("User Call Assign-carer API")
     public void Call_API() {
-        System.out.printf(body);
+
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);

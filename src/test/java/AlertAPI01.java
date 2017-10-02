@@ -14,12 +14,12 @@ public class AlertAPI01 extends BaseClass {
     @Step("User Enter Alert Search API </api/><version></alerts/search>")
     public void enter_api(String arg0, String arg1, String arg2) {
         this.api=System.getenv("URI")+arg0+arg1+arg2;
-        System.out.println(api);
+        System.out.println("API: "+api);
     }
 
     @Step("User Call Alert Search API")
     public void call_the_api() {
-        System.out.println("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);

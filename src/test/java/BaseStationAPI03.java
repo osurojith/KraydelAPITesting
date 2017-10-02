@@ -17,6 +17,7 @@ public class BaseStationAPI03 extends BaseClass {
     @Step("User enter Update Base Station API </api/><version></users/><id></status>")
     public void User_enter_Update_Status_API(String part1, String part2, String part3, long part4, String part5) throws Exception {
         this.api = System.getenv("URI")+part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4) + part5;
+        System.out.println("API: "+api);
     }
 
     @Step("Update Base Station API Body <Userstatus>")
@@ -39,6 +40,7 @@ public class BaseStationAPI03 extends BaseClass {
     @Step("User gets data from kraydel database  Update Base Station Status API <id>")
     public void get_db_data(String id) throws SQLException, ClassNotFoundException {
         String sql = "select * from main.base_station where id=" + id + "";
+        System.out.println(sql);
         results = DBConn.getDBData(sql);
         Assert.assertEquals("No record found  main.BaseStation ID:" + id, true, results.next());
         results.previous();

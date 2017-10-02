@@ -17,6 +17,7 @@ public class ElderAPI08Steps extends BaseClass {
     @Step("User Enter View Assigned API </api/><version></elders/unassigned/partial>")
     public void Enter_API(String arg0, String arg1, String arg2) {
         this.api =System.getenv("URI")+ arg0 + arg1 + arg2;
+        System.out.println("API: "+api);
     }
 
     @Step("User Call View Assigned API")
@@ -55,7 +56,6 @@ public class ElderAPI08Steps extends BaseClass {
                 String locationid = jsonPath.getString("content.elders[" + val + "].location.id");
                 if (EncryptionServiceImpl.decryptToLong(id).toString().equalsIgnoreCase(results.getString("id"))) {
                     count++;
-                    System.out.println(fname);
                     Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
                     Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
                     Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());

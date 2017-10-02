@@ -17,7 +17,7 @@ public class ElderAPI01Steps extends BaseClass {
     @Step("User enter Elder Search API By ID </api/><version></elders/><elder-ID>")
     public void Enter_API(String part1, String part2, String part3, long part4) throws Exception {
         this.api =System.getenv("URI")+ part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4);
-        System.out.println(api);
+        System.out.println("API: "+api);
     }
 
     @Step("User call the Elder Search API By ID")
@@ -104,7 +104,6 @@ public class ElderAPI01Steps extends BaseClass {
             resetDB();
             while (results.next()) {
                 count++;
-                System.out.println("xxxxxxxxxxxxxxxxxxxxxx " + results.getString("id"));
                 Assert.assertEquals("Validate person.id", results.getString("id"), EncryptionServiceImpl.decryptToLong(id).toString());
                 Assert.assertEquals("Validate person.last_name", results.getString("lname"), lname);
                 Assert.assertEquals("Validate person.first_name", results.getString("fname"), fname);
@@ -137,7 +136,6 @@ public class ElderAPI01Steps extends BaseClass {
             while (results.next()) {
                 count++;
             for (int i = 1; i <= jsonPath.getList("content.elder.addresses").size(); i++) {
-                System.out.println("PPPPPPPPPPPPPPPPPPPPPPP");
                 String val = Integer.toString(i - 1);
                 String addressid = jsonPath.getString("content.elder.addresses[" + val + "].id");
                 String postalcode = jsonPath.getString("content.elder.addresses[" + val + "].postalCode");

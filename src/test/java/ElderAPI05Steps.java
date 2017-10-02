@@ -16,6 +16,7 @@ long elder_id;
     @Step("User Enter Update Elder API </api/><version></elders/><elderid>")
     public void Enter_API(String arg0, String arg1, String arg2, long arg3) throws Exception {
         this.api = System.getenv("URI")+arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3);
+        System.out.println("API: "+api);
     }
 
 
@@ -32,12 +33,13 @@ long elder_id;
                 "\"locationId\":\"" + EncryptionServiceImpl.encryptToString(locationId) + "\",\n" +
                 "\"status\":\"" + elderstatus + "\",\n" +
                 "\"picture\":null,";
+
     }
 
 
     @Step("User enter List: addresses Update Elder API <countryId> <addressID> <postalCode> <doorNumber> <street> <cityId> <addressType>")
     public void Enter_Address_Details(long countryId, long addressID, String postalCode, String doorNumber, String street, long cityId, String addressType) throws Exception {
-        System.out.println("yyy  "+addressID);
+
         body = body + "\"addresses\":[{\"countryId\": \""+EncryptionServiceImpl.encryptToString(countryId)+"\",\"id\": \""+EncryptionServiceImpl.encryptToString(addressID)+"\",\"doorNumber\":\""+doorNumber+"\",\"street\":\""+street+"\",\"postalCode\":\""+postalCode+"\",\"cityId\":\""+EncryptionServiceImpl.encryptToString(cityId)+"\",\"addressType\":\""+addressType+"\"}],";
     }
 
@@ -52,6 +54,7 @@ long elder_id;
         if(!(baseStationid==0))
         body = body + ",\"baseStation\":{\"id\":\"" + EncryptionServiceImpl.encryptToString(baseStationid) + "\",\"tvBrandId\":\"" + EncryptionServiceImpl.encryptToString(tvBrandId) + "\"";
         body = body +"}}";
+        System.out.println("Body: "+body);
     }
     public void resetDB() throws SQLException {
         while (results.previous()){
@@ -60,7 +63,7 @@ long elder_id;
 }
     @Step("User Call Update Elder API")
     public void Call_create_user_API() {
-        System.out.println(body);
+
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
@@ -71,7 +74,7 @@ long elder_id;
     public void get_db_data(long basestationid, long healthissueid, String email) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
         if (status_code.equals("20000")) {
             String sql = null;
-            System.out.println(email);
+
             if (!(basestationid == 0) && !(healthissueid == 0)) {
                 sql = "select person.id as id,phone_number.phone_number as phonenumber, phone_number.phone_type as phonenumbertype,person.ethnicity_id as ethnicityid,person.religion_id as religionid, person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId, grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename from main.person join main.address on person.id= address.person_id and person.email='" + email + "' join main.grampa on grampa.id=person.id join main.base_station on grampa.base_station_id=base_station.id join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id join main.phone_number on phone_number.person_id=grampa.id";
             } else if ((basestationid == 0) && !(healthissueid == 0)) {
@@ -99,16 +102,20 @@ long elder_id;
 
 
                 sql = "select * from main.grampa where id=(select id from main.person where email='" + email + "')";
+                System.out.println(sql);
                 results = DBConn.getDBData(sql);
                 Assert.assertEquals("No record found: main.grampa User email: " + email, true, results.next());
 
                 if (!(basestationid == 0)) {
                     sql = "select * from main.base_station where base_station.id= (select base_station_id from main.grampa where id=(select id from main.person where email='" + email + "'))";
+                    System.out.println(sql);
                     results = DBConn.getDBData(sql);
                     Assert.assertEquals("No record found: main.BaseStation User email: " + email, true, results.next());
                 }
                 if (!(healthissueid == 0)) {
+
                     sql = "select * from main.health_issues where health_issues.id= (select health_issue_id from main.grampa_health_issues where grampa_id=(select id from main.person where email='" + email + "'))";
+                    System.out.println(sql);
                     results = DBConn.getDBData(sql);
                     Assert.assertEquals("No record found: main.health_issues email: " + email, true, results.next());
                 }

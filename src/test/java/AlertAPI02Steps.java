@@ -14,6 +14,7 @@ public class AlertAPI02Steps extends BaseClass {
     @Step("User Enter Alert Update Status API </api/><version></alerts/><sentalertid></user-alerts/status>")
     public void call_api(String arg0, String arg1, String arg2, long arg3, String arg4) throws Exception {
         this.api=System.getenv("URI")+arg0+arg1+arg2+ EncryptionServiceImpl.encryptToString(arg3)+arg4;
+        System.out.println("API: "+api);
     }
 
     @Step("Update request body Alert Update Status API <status>")

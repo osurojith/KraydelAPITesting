@@ -17,6 +17,7 @@ public class ElderAPI04Steps extends BaseClass {
     @Step("User Enter Create Elder API </api/><version></elders>")
     public void Enter_API(String part1, String version, String part2) {
         this.api =System.getenv("URI")+ part1 + version + part2;
+        System.out.println("API: "+api);
     }
 
     @Step("User enter Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
@@ -55,15 +56,15 @@ public class ElderAPI04Steps extends BaseClass {
 
     @Step("User enter baseStation: Create Elder API <baseStationid> <tvBrandId> <baseStationstatus>")
     public void Enter_baseStation(long baseStationid, long tvBrandId, String baseStationstatus) throws Exception {
-        System.out.println(baseStationid==0);
         if(!(baseStationid==0))
         body = body + ",\"baseStation\":{\"id\":\"" + EncryptionServiceImpl.encryptToString(baseStationid) + "\",\"tvBrandId\":\"" + EncryptionServiceImpl.encryptToString(tvBrandId) + "\",\"status\":\"" + baseStationstatus + "\"";
         body = body +"}}";
+        System.out.println("Body: "+body);
     }
 
     @Step("User Call Create Elder API")
     public void Call_create_user_API() {
-        System.out.println(body);
+
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
@@ -123,7 +124,6 @@ public class ElderAPI04Steps extends BaseClass {
     public void Enter_user_details_validating(String firstName, String lastName, String email, String gender, String ethnicityId, String religionId, String dateOfBirth, String locationId, String elderstatus) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             while (results.next()) {
-                System.out.println("aaa");
                 Assert.assertEquals("Validate person.last_name", results.getString("lname"), lastName);
                 Assert.assertEquals("Validate person.first_name", results.getString("fname"), firstName);
                 Assert.assertEquals("Validate grampa.date_of_birth", results.getString("dob"), dateOfBirth);
@@ -144,7 +144,7 @@ public class ElderAPI04Steps extends BaseClass {
     public void Enter_Address_Details_validating(String postalCode, String doorNumber, String street, String cityId, String addressType) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             while (results.previous()) {
-                System.out.println("bbb");
+
                 Assert.assertEquals("Validate address.postal_code", results.getString("postalcode"), postalCode);
                 Assert.assertEquals("Validate address.door_number", results.getString("doornum"), doorNumber);
                 Assert.assertEquals("Validate address.street", results.getString("street"), street);
@@ -159,7 +159,7 @@ public class ElderAPI04Steps extends BaseClass {
     public void Enter_phoneNumber_validating(String phoneNumber, String phoneType) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
             while (results.next()) {
-                System.out.println("ccc");
+
                 Assert.assertEquals("Validate phone_number.number", results.getString("phonenumber"), phoneNumber);
                 Assert.assertEquals("Validate phone_number.type", results.getString("phonenumbertype"), phoneType);
             }
@@ -171,7 +171,7 @@ public class ElderAPI04Steps extends BaseClass {
         if (status_code.equals("20000")) {
             if (!(healthIssueid.equalsIgnoreCase("0"))) {
                 while (results.previous()) {
-                    System.out.println("ddd");
+
                     Assert.assertEquals("Validate grampa_health_issues.health_issue_id", results.getString("healthissueid"), (healthIssueid));
                 }
             }
@@ -183,7 +183,7 @@ public class ElderAPI04Steps extends BaseClass {
         if (status_code.equals("20000")) {
             if (!(baseStationid.equalsIgnoreCase("0"))) {
                 while (results.next()) {
-                    System.out.println("eee");
+
                     Assert.assertEquals("Validate grampa.base_station_id", results.getString("deviceid"), (baseStationid));
                     Assert.assertEquals("Validate base_station.tv_brand_id", results.getString("devicebrandid"), (tvBrandId));
                 }

@@ -17,6 +17,7 @@ public class BaseStationAPI02 extends BaseClass {
     @Step("User enter Search Base-Station API </api/><version></base-stations/search>")
     public void get_API(String part1, String version, String part2) {
         this.api = System.getenv("URI")+part1 + version + part2;
+        System.out.println("API: "+api);
     }
 
     @Step("User call the Search Base-Station API")
@@ -28,14 +29,13 @@ public class BaseStationAPI02 extends BaseClass {
         this.jsonPath = new JsonPath(this.response.getBody().asString());
     }
     public void get_db_data(String id,String status) throws SQLException, ClassNotFoundException {
-        String sql=null;
+
        if(status.equalsIgnoreCase("1"))
          sql = "select base_station.id as basestationid,base_station.device_key devicekey,base_station.status as status,grampa.id as grampaid,person.first_name as fname, person.last_name as lname,grampa.location_id as locationid from main.grampa join main.person on grampa.base_station_id="+ EncryptionServiceImpl.decryptToLong(id)+" and person.id=grampa.id join main.base_station on main.base_station.id=grampa.base_station_id";
        else
            sql = "select base_station.id as basestationid,base_station.device_key devicekey,base_station.status as status from main.base_station where id="+EncryptionServiceImpl.decryptToLong(id)+"";
-
-        results = DBConn.getDBData(sql);
         System.out.println(sql);
+        results = DBConn.getDBData(sql);
         Assert.assertEquals("No record found  main.BaseStation ID:" + id, true, results.next());
         results.previous();
 
