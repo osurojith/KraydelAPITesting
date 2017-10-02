@@ -1,10 +1,7 @@
 Update Status API
 =====================
-Created by OsuraL on 9/4/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
-     
+   
     |TestCaseId|id |version|username      |password|logout_status|response_code|Userstatus|status_code|status |
     |----------|---|-------|--------------|--------|-------------|-------------|----------|-----------|-------|
     |USER-21/25|210|v1     |darshana      |letmein |OK           |200          |INACTIVE  |20000      |Success|

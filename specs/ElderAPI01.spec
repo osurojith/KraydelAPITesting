@@ -1,15 +1,13 @@
 Elder Search API By ID
 =====================
-Created by OsuraL on 9/4/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
-     
+  
     |TestCaseId |elder-ID|version|username      |password|logout_status|response_code|status_code|status |
     |-----------|--------|-------|--------------|--------|-------------|-------------|-----------|-------|
     |ELDER-01/03|13      |v1     |darshana      |letmein |OK           |200          |20000      |Success|
     |ELDER-02/03|13      |v1     |apit@gmail.com|letmein |OK           |200          |20000      |Success|
     |ELDER-04   |13      |v1     |darshana      |letmein |OK           |400          |40000      |Success|
+
 
 
 LogIn API

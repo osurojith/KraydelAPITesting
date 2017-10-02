@@ -1,24 +1,21 @@
 Update Base station status
 =====================
-Created by OsuraL on 9/4/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
-     
-     |id|version|status_code|request_code|status |username|password|logout_status|response_code|role_name|basestationtatus|
-     |9 |v1     |20000      |200         |Success|darshana|letmein |OK           |200          |null     |ONLINE         |
+
+    |TestCaseId       |id|basestationtatus|version|username|password|logout_status|response_code|status_code|
+    |-----------------|--|----------------|-------|--------|--------|-------------|-------------|-----------|
+    |BASESTATION-05/06|9 |ONLINE          |v1     |darshana|letmein |OK           |200          |20000      |
+    |BASESTATION-05/06|9 |ONLINE          |v1     |darshana|letmein |OK           |400          |40000      |
 
 
 
 LogIn API
-   ----------------
-       *User get refresh token <username>,<password> and <response_code>
-        *User send refresh token <response_code>
-
+----------------
+    * User get refresh token <username>,<password> and <response_code>
+    * User send refresh token <response_code>
 
 Update Base Station API
 ----------------
-
 
     * User enter Update Base Station API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/base-stations/"<id>"/status"
     * Update Base Station API Body <basestationtatus>
@@ -28,8 +25,6 @@ Update Base Station API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
 
-
-
 LogOut API
 ----------------
-   *User logout from kraydel <logout_status>
+    * User logout from kraydel <logout_status>

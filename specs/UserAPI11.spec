@@ -1,14 +1,10 @@
 User API view picture by ID
 =====================
-Created by OsuraL on 8/31/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
     |TestCaseId|userid|version|username|password|logout_status|response_code|status_code|status |
     |----------|------|-------|--------|--------|-------------|-------------|-----------|-------|
     |USER-29/30|232   |v1     |darshana|letmein |OK           |200          |20000      |Success|
-
 
 
 

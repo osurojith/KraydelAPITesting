@@ -1,19 +1,17 @@
 Religions API
 =====================
-Created by OsuraL on 8/30/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
-     	|version|status_code |request_code|status  |username |password |logout_status|response_code|role_name|
-        |   v1  |    20000   |    400     | Success|darshana |letmein	 |OK           | 200     |null     |
+
+    |TestCaseId    |version|username|password|logout_status|response_code|status_code|
+    |--------------|-------|--------|--------|-------------|-------------|-----------|
+    |RELIGION-01/02|v1     |darshana|letmein |OK           |200          |20000      |
+
 
 
 LogIn API
-   ----------------
-       *User get refresh token <username>,<password> and <response_code>
-        *User send refresh token <response_code>
-
-
+----------------
+    * User get refresh token <username>,<password> and <response_code>
+    * User send refresh token <response_code>
 
 Religions API
 ----------------
@@ -23,8 +21,6 @@ Religions API
     * Validate HTTP Response <response_code>
     * Validate Religions Content
 
-
-
 LogOut API
 ----------------
-   *User logout from kraydel <logout_status>
+    * User logout from kraydel <logout_status>

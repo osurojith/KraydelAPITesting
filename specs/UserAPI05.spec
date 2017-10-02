@@ -1,9 +1,6 @@
 Update User API
 =====================
-Created by OsuraL on 9/1/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
     |TestCaseId|userid|username      |password|usernameC   |passwordC|firstname         |lastname|email           |status|gender|postalCode|doorNumber|street|cityId|addressType|locationId|roleId|status_code|version|addressid|logout_status|response_code|
     |----------|------|--------------|--------|------------|---------|------------------|--------|----------------|------|------|----------|----------|------|------|-----------|----------|------|-----------|-------|---------|-------------|-------------|

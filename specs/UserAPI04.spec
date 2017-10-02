@@ -1,9 +1,6 @@
 Create User API
 =====================
-Created by OsuraL on 9/1/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
     |TestCaseId|username      |password|usernameC     |passwordC|firstname|lastname|email            |status|gender|postalCode|doorNumber|street|cityId|addressType|locationId|roleId|status_code|version|logout_status|response_code|
     |----------|--------------|--------|--------------|---------|---------|--------|-----------------|------|------|----------|----------|------|------|-----------|----------|------|-----------|-------|-------------|-------------|
@@ -11,6 +8,7 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
     |USER-10   |apit@gmail.com|letmein |TestingAPI003 |Test@12  |Testfirst|Testlast|test001@gmail.com|ACTIVE|M     |10524     |456       |AAA   |1     |PRIMARY    |1         |1     |40100      |v1     |OK           |400          |
     |USER-11   |darshana      |letmein |apit@gmail.com|Test@12  |Testfirst|Testlast|test001@gmail.com|ACTIVE|M     |10524     |456       |AAA   |1     |PRIMARY    |1         |1     |20000      |v1     |OK           |201          |
     |USER-12   |darshana      |letmein |TestingAPI004 |Test@12  |Testfirst|Testlast|test001@gmail.com|ACTIVE|M     |10524     |456       |AAA   |1     |PRIMARY    |1         |1     |20000      |v1     |OK           |201          |
+ 
     
 
 LogIn API

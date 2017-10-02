@@ -1,15 +1,13 @@
 Assign-carer API
 =====================
-Created by OsuraL on 9/6/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
     |TestCaseId |userID|elderid   |userRoleID|username      |password|logout_status|response_code|status_code|version|
     |-----------|------|----------|----------|--------------|--------|-------------|-------------|-----------|-------|
     |ELDER-18/20|190   |210       |1         |darshana      |letmein |OK           |200          |20000      |v1     |
     |ELDER-19/20|190   |210       |2         |darshana      |letmein |OK           |200          |20000      |v1     |
     |ELDER-21   |190   |210       |1         |apit@gmail.com|letmein |OK           |400          |40100      |v1     |
+
 
 
 LogIn API

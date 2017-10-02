@@ -1,9 +1,6 @@
 Elder Search API view carers
 =====================
-Created by OsuraL on 9/4/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
     |TestCaseId |elder-ID|version|username|password|logout_status|response_code|status_code|status |
     |-----------|--------|-------|--------|--------|-------------|-------------|-----------|-------|
@@ -11,12 +8,10 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
 
 
 
-
 LogIn API
-   ----------------
-       *User get refresh token <username>,<password> and <response_code>
-        *User send refresh token <response_code>
-
+----------------
+    * User get refresh token <username>,<password> and <response_code>
+    * User send refresh token <response_code>
 
 Elder Search API view carers
 ----------------
@@ -28,8 +23,6 @@ Elder Search API view carers
     * User gets data from kraydel database Elder Search API view carers <elder-ID>
     * Validate Elder Search API view carers Content <elder-ID>
 
-
-
 LogOut API
 ----------------
-   *User logout from kraydel <logout_status>
+    * User logout from kraydel <logout_status>

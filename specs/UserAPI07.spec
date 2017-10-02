@@ -1,9 +1,6 @@
 View elders assigned to a given  carer
 =====================
-Created by OsuraL on 9/4/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
     |TestCaseId|version|username        |password|logout_status|response_code|status_code|request_code|status |
     |----------|-------|----------------|--------|-------------|-------------|-----------|------------|-------|

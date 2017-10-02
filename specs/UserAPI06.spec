@@ -1,13 +1,11 @@
 User Get Picture API
 =====================
-Created by OsuraL on 8/31/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
     |TestCaseId|version|status |username|password|logout_status|response_code|status_code|
     |----------|-------|-------|--------|--------|-------------|-------------|-----------|
     |USER-17/18|v1     |Success|darshana|letmein |OK           |200          |20000      |
+
 
 
 LogIn API

@@ -1,14 +1,10 @@
 User API view unassigned carer
 =====================
-Created by OsuraL on 8/31/2017
 
-This is an executable specification file which follows markdown syntax.
-Every heading in this file denotes a scenario. Every bulleted point denotes a step.
 
     |TestCaseId|elderid|username|password|logout_status|response_code|status_code|request_code|status |version|
     |----------|-------|--------|--------|-------------|-------------|-----------|------------|-------|-------|
     |USER-27/28|212    |darshana|letmein |OK           |200          |20000      |200         |Success|v1     |
-
 
 
 
