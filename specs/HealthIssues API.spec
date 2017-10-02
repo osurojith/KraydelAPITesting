@@ -15,7 +15,7 @@ LogIn API
 
 HealthIssue API
 ----------------
-    * User enter HealthIssue API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/healthissues/partial"
+    * User enter HealthIssue API "/api/"<version>"/healthissues/partial"
     * User call the HealthIssue API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

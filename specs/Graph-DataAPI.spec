@@ -14,7 +14,7 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
 
 Graph-Data API
 ----------------
- * User Enter Graph-Data API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/graph-data"
+ * User Enter Graph-Data API "/api/"<version>"/graph-data"
  * User enter Graph Details Graph-Data API <baseStationId> <fromTime> <resultCount> <startIndex> <tableName> <toTime>
  * User Call Graph-Data API
  * Validate Status Code <status_code>

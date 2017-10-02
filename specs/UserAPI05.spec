@@ -17,7 +17,7 @@ LogIn API
 
 Update User API
 ----------------
-    * User Enter Update User API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/users/"<userid>
+    * User Enter Update User API "/api/"<version>"/users/"<userid>
     * User enter User Details Update User API <userid> <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>
     * User enter List: addresses Update User API <addressid> <postalCode> <doorNumber> <street> <cityId> <addressType>
     * User enter locations: id Update User API <locationId>

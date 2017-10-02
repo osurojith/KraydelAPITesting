@@ -15,7 +15,7 @@ LogIn API
 
 User API
 ----------------
-    * User enter User API view Picture by id "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/user/"<userid>"/picture"
+    * User enter User API view Picture by id "/api/"<version>"/user/"<userid>"/picture"
     * User call the User API view Picture by id
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

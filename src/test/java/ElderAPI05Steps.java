@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class ElderAPI05Steps extends BaseClass {
 long elder_id;
-    @Step("User Enter Update Elder API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></elders/><elderid>")
+    @Step("User Enter Update Elder API </api/><version></elders/><elderid>")
     public void Enter_API(String arg0, String arg1, String arg2, long arg3) throws Exception {
-        this.api = arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3);
+        this.api = System.getenv("URI")+arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3);
     }
 
 

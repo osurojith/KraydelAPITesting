@@ -17,7 +17,7 @@ LogIn API
 Update Base Station API
 ----------------
 
-    * User enter Update Base Station API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/base-stations/"<id>"/status"
+    * User enter Update Base Station API "/api/"<version>"/base-stations/"<id>"/status"
     * Update Base Station API Body <basestationtatus>
     * User call the Update Base Station API
     * User gets data from kraydel database  Update Base Station Status API <id>

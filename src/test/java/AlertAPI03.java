@@ -12,9 +12,9 @@ import java.util.Map;
 public class AlertAPI03 extends BaseClass {
 
 
-    @Step("User Enter Alert API POST <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></alerts>")
+    @Step("User Enter Alert API POST </api/><version></alerts>")
     public void Enter_API(String part1, String part2, String part3) {
-        this.api = part1 + part2 + part3;
+        this.api = System.getenv("URI")+part1 + part2 + part3;
     }
 
     @Step("User enter Alert Details Alert API POST <alertMessage> <alertSubject> <subEventType> <grampaId>")

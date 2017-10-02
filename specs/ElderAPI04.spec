@@ -17,7 +17,7 @@ LogIn API
 
 Create Elder API
 ----------------
-    * User Enter Create Elder API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders"
+    * User Enter Create Elder API "/api/"<version>"/elders"
     * User enter Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>
     * User enter List: addresses Create Elder API <postalCode> <doorNumber> <street> <cityId> <addressType>
     * User enter phoneNumber: Create Elder API <phoneNumber> <phoneType>

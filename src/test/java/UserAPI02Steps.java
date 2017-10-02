@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserAPI02Steps extends BaseClass {
-    @Step("User enter Search API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></users/search>")
+    @Step("User enter Search API </api/><version></users/search>")
     public void implementation1(String part1, String version, String part2) {
-        this.api = part1 + version + part2;
+        this.api = System.getenv("URI")+part1 + version + part2;
     }
 
     @Step("User call the Search API")

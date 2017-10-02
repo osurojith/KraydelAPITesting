@@ -17,7 +17,7 @@ LogIn API
 
 Assign-carer API
 ----------------
-    * User Enter Assign-carer API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders/"<elderid>"/assign-carer"
+    * User Enter Assign-carer API "/api/"<version>"/elders/"<elderid>"/assign-carer"
     * User enter Elder Details Assign-carer API <userID> <userRoleID>
     * User Call Assign-carer API
     * Validate Status Code <status_code>

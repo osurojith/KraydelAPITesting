@@ -15,7 +15,7 @@ LogIn API
 
 Get Base-Station API
 ----------------
-    * User enter Get Base-Station API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/base-stations/partial"
+    * User enter Get Base-Station API "/api/"<version>"/base-stations/partial"
     * User call the Get Base-Station API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

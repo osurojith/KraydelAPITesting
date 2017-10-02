@@ -16,7 +16,7 @@ LogIn API
 
 User Search API
 ----------------
-    * User enter Search API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/users/search"
+    * User enter Search API "/api/"<version>"/users/search"
     * User call the Search API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

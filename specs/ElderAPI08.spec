@@ -1,7 +1,7 @@
 View Elders who isnt Assigned to a device API
 =====================
 
-  
+
     |TestCaseId |username      |password|logout_status|response_code|status_code|version|
     |-----------|--------------|--------|-------------|-------------|-----------|-------|
     |ELDER-25/27|darshana      |letmein |OK           |200          |20000      |v1     |
@@ -16,7 +16,7 @@ LogIn API
 
 View Assigned API
 ----------------
-    * User Enter View Assigned API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders/unassigned/partial"
+    * User Enter View Assigned API "/api/"<version>"/elders/unassigned/partial"
     * User Call View Assigned API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

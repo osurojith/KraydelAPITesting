@@ -15,7 +15,7 @@ LogIn API
 
 Location API
 ----------------
-    * User enter Location API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/locations/partial"
+    * User enter Location API "/api/"<version>"/locations/partial"
     * User call the Location API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

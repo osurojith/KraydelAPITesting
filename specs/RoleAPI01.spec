@@ -16,7 +16,7 @@ LogIn API
 
 Role API
 ----------------
-    * User enter Role API Get User Roles "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/roles/partial"
+    * User enter Role API Get User Roles "/api/"<version>"/roles/partial"
     * User call the Role API Get User Roles
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

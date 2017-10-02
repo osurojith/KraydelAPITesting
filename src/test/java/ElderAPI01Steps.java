@@ -14,9 +14,10 @@ import java.util.Map;
 public class ElderAPI01Steps extends BaseClass {
 
 
-    @Step("User enter Elder Search API By ID <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></elders/><elder-ID>")
+    @Step("User enter Elder Search API By ID </api/><version></elders/><elder-ID>")
     public void Enter_API(String part1, String part2, String part3, long part4) throws Exception {
-        this.api = part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4);
+        this.api =System.getenv("URI")+ part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4);
+        System.out.println(api);
     }
 
     @Step("User call the Elder Search API By ID")
@@ -31,24 +32,17 @@ public class ElderAPI01Steps extends BaseClass {
     @Step("User gets data from kraydel database Search API By ID <elder-ID>")
     public void get_data_from_database(String elderid) throws SQLException, ClassNotFoundException {
         if (status_code.equals("20000")) {
-        String sql=null;
 
         String basestationid=jsonPath.getString("content.elder.baseStation.id");
         int healthissueid=jsonPath.getList("content.elder.healthIssues").size();
 
-        System.out.println("xxx  "+basestationid);
-        System.out.println("xxx  "+healthissueid);
         if (!(basestationid == null) && (healthissueid >0)) {
-            System.out.println("A");
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId, grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename from main.person join main.address on person.id=" + elderid + " and address.person_id=" + elderid + " join main.grampa on grampa.id=" + elderid + " join main.base_station on grampa.base_station_id=base_station.id join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id";
         } else if (!(basestationid == null) && (healthissueid >0)) {
-            System.out.println("B");
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum,grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + elderid + " and address.person_id=" + elderid + " join main.grampa on grampa.id=" + elderid + " join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id";
         } else if (!(basestationid == null) && !(healthissueid >0)) {
-            System.out.println("C");
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum,grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + elderid + " and address.person_id=" + elderid + " join main.grampa on grampa.id=" + elderid + " join main.city on address.city= city.id join main.base_station on grampa.base_station_id=base_station.id";
         } else if ((basestationid == null) && !(healthissueid >0)) {
-            System.out.println("D");
             sql = "select person.id as id , person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id=" + elderid + " and address.person_id=" + elderid + " join main.grampa on grampa.id=" + elderid + " join main.city on address.city= city.id";
         }
         System.out.println(sql);

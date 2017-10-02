@@ -12,7 +12,7 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
      
 Activity Graph Data API
 ----------------
-    * User enter ambient-temperature Graph Data API "http://ec2-54-76-61-210.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/graph-data/ambient-temperature"
+    * User enter ambient-temperature Graph Data API "/api/"<version>"/graph-data/ambient-temperature"
     * User enter parameter values ambient-temperature Graph Data API <elderId><fromTime><toTime><startIndex><resultCount><tableName>
     * User call the ambient-temperature Graph Data API
     * Validate Status Code <status_code>

@@ -15,7 +15,7 @@ LogIn API
 
 Country API
 ----------------
-    * User enter Country API2 "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/countries/"<country-id>"/cities/partial"
+    * User enter Country API2 "/api/"<version>"/countries/"<country-id>"/cities/partial"
     * User call the Country API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

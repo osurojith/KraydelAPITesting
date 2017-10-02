@@ -14,9 +14,9 @@ import java.util.Map;
 public class UserAPI04Steps extends BaseClass {
 
 
-    @Step("User Enter Create User API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></users>")
+    @Step("User Enter Create User API </api/><version></users>")
     public void Enter_API(String part1, String version, String part2) {
-        this.api = part1 + version + part2;
+        this.api =System.getenv("URI")+ part1 + version + part2;
     }
 
     @Step("User enter User Details Create User API <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>")

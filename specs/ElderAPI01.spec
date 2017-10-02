@@ -1,7 +1,7 @@
 Elder Search API By ID
 =====================
 
-  
+
     |TestCaseId |elder-ID|version|username      |password|logout_status|response_code|status_code|status |
     |-----------|--------|-------|--------------|--------|-------------|-------------|-----------|-------|
     |ELDER-01/03|13      |v1     |darshana      |letmein |OK           |200          |20000      |Success|
@@ -17,7 +17,7 @@ LogIn API
 
 Elder Search API By ID
 ----------------
-    * User enter Elder Search API By ID "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders/"<elder-ID>
+    * User enter Elder Search API By ID "/api/"<version>"/elders/"<elder-ID>
     * User call the Elder Search API By ID
     * Validate HTTP Response <response_code>
     * Validate Status Code <status_code>

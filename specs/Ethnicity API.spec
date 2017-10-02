@@ -13,7 +13,7 @@ LogIn API
 
 Ethnicity API
 ----------------
-    * User enter Ethnicity API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/ethnicities/partial"
+    * User enter Ethnicity API "/api/"<version>"/ethnicities/partial"
     * User call the Ethnicity API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

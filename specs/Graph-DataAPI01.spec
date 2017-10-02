@@ -12,7 +12,7 @@ Every heading in this file denotes a scenario. Every bulleted point denotes a st
      
 Activity Graph Data API
 ----------------
-    * User enter Activity Graph Data API "http://ec2-54-76-61-210.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/graph-data/activity"
+    * User enter Activity Graph Data API "/api/"<version>"/graph-data/activity"
     * User enter parameter values Activity Graph Data API <elderId><fromTime><toTime><startIndex><resultCount><tableName>
     * User call the Activity Graph Data API
     * Validate Status Code <status_code>

@@ -14,9 +14,9 @@ import java.util.Map;
 public class CountryAPI01Steps extends BaseClass {
 
 
-    @Step("User enter Country API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></countries/partial>")
+    @Step("User enter Country API </api/><version></countries/partial>")
     public void User_enter_Country_API(String part1, String version, String part2) {
-        this.api = part1 + version + part2;
+        this.api = System.getenv("URI")+part1 + version + part2;
     }
 
     @Step("User call the Country API")

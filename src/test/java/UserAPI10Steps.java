@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserAPI10Steps extends BaseClass {
-    @Step("User enter User API view unassigned carer <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></users/elders/><elderid></unassigned>")
+    @Step("User enter User API view unassigned carer </api/><version></users/elders/><elderid></unassigned>")
     public void enter_api(String arg0, String arg1, String arg2, long arg3, String arg4) throws Exception {
-        api = arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
+        api = System.getenv("URI")+arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
     }
 
     @Step("User call the User API view unassigned carer")

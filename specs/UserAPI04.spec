@@ -18,7 +18,7 @@ LogIn API
 
 Create User API
 ----------------
-    * User Enter Create User API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/users"
+    * User Enter Create User API "/api/"<version>"/users"
     * User enter User Details Create User API <usernameC> <passwordC> <firstname> <lastname> <email> <status> <gender>
     * User enter List: addresses Create User API <postalCode> <doorNumber> <street> <cityId> <addressType>
     * User enter locations: id Create User API <locationId>

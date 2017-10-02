@@ -17,7 +17,7 @@ LogIn API
 
 Update Elder API
 ----------------
-    * User Enter Update Elder API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders/"<elderid>
+    * User Enter Update Elder API "/api/"<version>"/elders/"<elderid>
     * User enter Elder Details Update Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>
     * User enter List: addresses Update Elder API <countryId> <addressID> <postalCode> <doorNumber> <street> <cityId> <addressType>
     * User enter phoneNumber: Update Elder API <phoneID> <phoneNumber> <phoneType>

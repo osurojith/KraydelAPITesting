@@ -19,7 +19,7 @@ LogIn API
 
 Update Status API
 ----------------
-    * User enter Update Status API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/users/"<id>"/status"
+    * User enter Update Status API "/api/"<version>"/users/"<id>"/status"
     * Update API Body <Userstatus>
     * User call the Update Status API
     * Validate Status Code <status_code>

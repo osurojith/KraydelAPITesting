@@ -11,9 +11,9 @@ import java.util.Map;
 public class GraphDataAPISteps extends BaseClass {
 
 
-    @Step("User Enter Graph-Data API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></graph-data>")
+    @Step("User Enter Graph-Data API </api/><version></graph-data>")
     public void Enter_API(String part1, String part2, String part3) {
-        this.api = part1 + part2 + part3;
+        this.api =System.getenv("URI")+ part1 + part2 + part3;
 
     }
 

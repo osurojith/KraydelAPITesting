@@ -14,9 +14,9 @@ import java.util.Map;
 public class BaseStationAPI04 extends BaseClass {
 
 
-    @Step("User enter Update Base Station API by ID <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></base-stations/><id>")
+    @Step("User enter Update Base Station API by ID </api/><version></base-stations/><id>")
     public void User_enter_Update_Status_API(String part1, String part2, String part3, long part4) throws Exception {
-        this.api = part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4);
+        this.api = System.getenv("URI")+part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4);
     }
 
     @Step("Update Base Station API by ID Body <elderID>")

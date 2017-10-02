@@ -11,9 +11,9 @@ import java.util.Map;
 public class LogInAPISteps extends BaseClass {
 
 
-    @Step("User enter API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8081/kraydel-oauth-server/oauth/token>")
+    @Step("User enter API </oauth/token>")
     public void User_enter_API(String api) {
-        this.api = api;
+        this.api =System.getenv("LOGIN_URI")+ api;
     }
 
     @Step("User enter credentials <username>,<password>")

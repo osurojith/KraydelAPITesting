@@ -14,9 +14,9 @@ import java.util.Map;
 public class ElderAPI07Steps extends BaseClass {
 
 
-    @Step("User Enter Unassign-carer API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></elders/><elderid></unassign-carer>")
+    @Step("User Enter Unassign-carer API </api/><version></elders/><elderid></unassign-carer>")
     public void Call_API(String arg0, String arg1, String arg2, long arg3, String arg4) throws Exception {
-        this.api = arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
+        this.api =System.getenv("URI")+ arg0 + arg1 + arg2 + EncryptionServiceImpl.encryptToString(arg3) + arg4;
     }
 
     @Step("User enter Elder Details Unassign-carer API <userID> <userRoleID>")

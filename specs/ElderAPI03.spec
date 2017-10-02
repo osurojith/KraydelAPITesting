@@ -16,7 +16,7 @@ LogIn API
 
 Elder Search API
 ----------------
-    * User enter Elder Search API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders/search"
+    * User enter Elder Search API "/api/"<version>"/elders/search"
     * User call the Elder Search API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

@@ -14,9 +14,9 @@ import java.util.Map;
 public class UserAPI07Steps extends BaseClass {
 
 
-    @Step("User enter View Elders Assigned API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></user/elders>")
+    @Step("User enter View Elders Assigned API </api/><version></user/elders>")
     public void User_enter_View_Elders_Assigned_API(String part1, String part2, String part3) {
-        this.api = part1 + part2 + part3;
+        this.api =System.getenv("URI")+ part1 + part2 + part3;
     }
 
     @Step("User call the View Elders Assigned API")

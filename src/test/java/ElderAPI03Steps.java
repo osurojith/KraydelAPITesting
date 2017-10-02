@@ -14,9 +14,9 @@ import java.util.Map;
 public class ElderAPI03Steps extends BaseClass {
 
     int totalRecords=0;
-    @Step("User enter Elder Search API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></elders/search>")
+    @Step("User enter Elder Search API </api/><version></elders/search>")
     public void implementation1(String part1, String version, String part2) {
-        this.api = part1 + version + part2;
+        this.api = System.getenv("URI")+part1 + version + part2;
     }
 
     @Step("User call the Elder Search API")

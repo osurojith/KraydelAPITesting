@@ -14,9 +14,9 @@ import java.util.Map;
 public class ElderAPI04Steps extends BaseClass {
     int elder_id;
 
-    @Step("User Enter Create Elder API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></elders>")
+    @Step("User Enter Create Elder API </api/><version></elders>")
     public void Enter_API(String part1, String version, String part2) {
-        this.api = part1 + version + part2;
+        this.api =System.getenv("URI")+ part1 + version + part2;
     }
 
     @Step("User enter Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")

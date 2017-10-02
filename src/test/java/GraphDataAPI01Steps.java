@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GraphDataAPI01Steps extends BaseClass {
-    @Step("User enter Activity Graph Data API <http://ec2-54-76-61-210.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></graph-data/activity>")
+    @Step("User enter Activity Graph Data API </api/><version></graph-data/activity>")
     public void enter_api(String arg0,String arg1,String arg2) {
-        api=arg0+arg1+arg2;
+        api=System.getenv("URI")+arg0+arg1+arg2;
     }
 
     @Step("User enter parameter values Activity Graph Data API <elderId><fromTime><toTime><startIndex><resultCount><tableName>")

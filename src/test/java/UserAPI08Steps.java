@@ -12,9 +12,9 @@ import java.util.Map;
 
 public class UserAPI08Steps extends BaseClass {
 
-    @Step("User enter Update Status API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></users/><id></status>")
+    @Step("User enter Update Status API </api/><version></users/><id></status>")
     public void User_enter_Update_Status_API(String part1, String part2, String part3, long part4, String part5) throws Exception {
-        this.api = part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4) + part5;
+        this.api = System.getenv("URI")+part1 + part2 + part3 + EncryptionServiceImpl.encryptToString(part4) + part5;
     }
 
     @Step("Update API Body <Userstatus>")

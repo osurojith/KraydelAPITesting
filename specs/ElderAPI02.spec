@@ -16,7 +16,7 @@ LogIn API
 Elder Search API view carers
 ----------------
 
-    * User enter Elder Search API view carers "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/elders/"<elder-ID>"/carers"
+    * User enter Elder Search API view carers "/api/"<version>"/elders/"<elder-ID>"/carers"
     * User call the Elder Search API view carers
     * Validate HTTP Response <response_code>
     * Validate Status Code <status_code>

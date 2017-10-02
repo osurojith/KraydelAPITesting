@@ -16,7 +16,7 @@ LogIn API
 
 Alert API PUT
 ----------------
-    * User Enter Alert Update Status API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/alerts/"<sentalertid>"/user-alerts/status"
+    * User Enter Alert Update Status API "/api/"<version>"/alerts/"<sentalertid>"/user-alerts/status"
     * Update request body Alert Update Status API <status>
     * User Call Alert Update Status API
     * Validate Status Code <status_code>

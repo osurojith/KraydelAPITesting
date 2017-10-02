@@ -15,7 +15,7 @@ LogIn API
 
 User API
 ----------------
-   * User enter User API view unassigned carer "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/users/elders/"<elderid>"/unassigned"
+   * User enter User API view unassigned carer "/api/"<version>"/users/elders/"<elderid>"/unassigned"
    * User call the User API view unassigned carer
    * Validate Status Code <status_code>
    * Validate HTTP Response <response_code>

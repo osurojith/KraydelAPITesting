@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AlertAPI01 extends BaseClass {
-    @Step("User Enter Alert Search API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></alerts/search>")
+    @Step("User Enter Alert Search API </api/><version></alerts/search>")
     public void enter_api(String arg0, String arg1, String arg2) {
-        this.api=arg0+arg1+arg2;
+        this.api=System.getenv("URI")+arg0+arg1+arg2;
         System.out.println(api);
     }
 

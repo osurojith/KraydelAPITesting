@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AlertAPI02Steps extends BaseClass {
-    @Step("User Enter Alert Update Status API <http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/><version></alerts/><sentalertid></user-alerts/status>")
+    @Step("User Enter Alert Update Status API </api/><version></alerts/><sentalertid></user-alerts/status>")
     public void call_api(String arg0, String arg1, String arg2, long arg3, String arg4) throws Exception {
-        this.api=arg0+arg1+arg2+ EncryptionServiceImpl.encryptToString(arg3)+arg4;
+        this.api=System.getenv("URI")+arg0+arg1+arg2+ EncryptionServiceImpl.encryptToString(arg3)+arg4;
     }
 
     @Step("Update request body Alert Update Status API <status>")

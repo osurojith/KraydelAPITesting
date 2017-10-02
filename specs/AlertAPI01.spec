@@ -15,7 +15,7 @@ LogIn API
 
 Alert API GET
 ----------------
-    * User Enter Alert Search API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8080/kraydel-server/api/"<version>"/alerts/search"
+    * User Enter Alert Search API "/api/"<version>"/alerts/search"
     * User Call Alert Search API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>

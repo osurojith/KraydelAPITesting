@@ -11,7 +11,7 @@ API Test LogIn
 
 LogIn API (Get refresh token)
 ----------------
-    * User enter API "http://ec2-52-212-72-231.eu-west-1.compute.amazonaws.com:8081/kraydel-oauth-server/oauth/token"
+    * User enter API "/oauth/token"
     * User enter credentials <username>,<password>
     * User call the get token API
     * Validate Status Code <status_code>
