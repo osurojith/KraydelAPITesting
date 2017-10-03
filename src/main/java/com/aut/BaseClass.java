@@ -40,12 +40,20 @@ public class BaseClass {
     private String doorNum;
     private String street;
     private String addressType;
+    private String addressTypeRaw;
     private String cityId;
     private String cointryId;
     private String healthIssueId;
     private String healthIssueName;
     private String roleId;
     private String roleName;
+    private String ethnicityId;
+    private String religionId;
+    private String elderStatus;
+    private String phoneNumber;
+    private String phoneType;
+    private String deviceStatus;
+
 
 
 
@@ -312,5 +320,61 @@ public class BaseClass {
 
     public void setDeviceIdCount(int deviceIdCount) {
         this.deviceIdCount = deviceIdCount;
+    }
+
+    public String getEthnicityId() {
+        return ethnicityId;
+    }
+
+    public void setEthnicityId(String ethnicityId) {
+        this.ethnicityId = ethnicityId;
+    }
+
+    public String getReligionId() {
+        return religionId;
+    }
+
+    public void setReligionId(String religionId) {
+        this.religionId = religionId;
+    }
+
+    public String getElderStatus() {
+        return elderStatus;
+    }
+
+    public void setElderStatus(String elderStatus) {
+        this.elderStatus = elderStatus;
+    }
+
+    public String getAddressTypeRaw() {
+        return addressTypeRaw;
+    }
+
+    public void setAddressTypeRaw(String addressTypeRaw) {
+        this.addressTypeRaw = addressTypeRaw;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneType() {
+        return phoneType;
+    }
+
+    public void setPhoneType(String phoneType) {
+        this.phoneType = phoneType;
+    }
+
+    public String getDeviceStatus() {
+        return deviceStatus;
+    }
+
+    public void setDeviceStatus(String deviceStatus) {
+        this.deviceStatus = deviceStatus;
     }
 }
