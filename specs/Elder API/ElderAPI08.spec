@@ -21,7 +21,7 @@ View Assigned API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
     * User gets data from kraydel database View Assigned API
-    * Validate Content View Assigned API
+    * Validate Elder Content View Assigned API with backend Data
 
 LogOut API
 ----------------

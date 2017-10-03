@@ -48,6 +48,7 @@ public class ElderAPI04Steps extends ElderAPIFactory {
         setStreet(street);
         setCityId(cityId);
         setAddressTypeRaw(addressType);
+        setAddressType(addressType);
     }
 
 
@@ -111,70 +112,70 @@ public class ElderAPI04Steps extends ElderAPIFactory {
         setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
-    @Step("User gets data from kraydel database Create Elder API <baseStationid><healthIssueid><email>")
-    public void get_ElderDB_Data(int basestationid, int healthissueid, String email) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
+    @Step("User gets data from kraydel database Create Elder API <email>")
+    public void get_ElderDB_Data(String email) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
         getElderDBDataByEmail(email);
     }
 
-    @Step("Validate Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
-    public void enter_User_Details_Validating(String firstName, String lastName, String email, String gender, String ethnicityId, String religionId, String dateOfBirth, String locationId, String elderstatus) throws SQLException, ClassNotFoundException {
+    @Step("Validate Elder Details Create Elder API")
+    public void enter_User_Details_Validating() throws SQLException, ClassNotFoundException {
 
         while (getResults().next()) {
-            Assert.assertEquals("Validate person.last_name", getResults().getString("lname"), lastName);
-            Assert.assertEquals("Validate person.first_name", getResults().getString("fname"), firstName);
-            Assert.assertEquals("Validate grampa.date_of_birth", getResults().getString("dob"), dateOfBirth);
-            Assert.assertEquals("Validate person.email", getResults().getString("email"), email);
-            Assert.assertEquals("Validate person.gender", getResults().getString("gender"), gender);
-            Assert.assertEquals("Validate person.email", getResults().getString("ethnicityid"), (ethnicityId));
-            Assert.assertEquals("Validate person.gender", getResults().getString("religionid"), (religionId));
+            Assert.assertEquals("Validate person.last_name", getResults().getString("lname"), getLname());
+            Assert.assertEquals("Validate person.first_name", getResults().getString("fname"), getFname());
+            Assert.assertEquals("Validate grampa.date_of_birth", getResults().getString("dob"), getDob());
+            Assert.assertEquals("Validate person.email", getResults().getString("email"), getEmail());
+            Assert.assertEquals("Validate person.gender", getResults().getString("gender"), getGender());
+            Assert.assertEquals("Validate person.email", getResults().getString("ethnicityid"), (getEthnicityId()));
+            Assert.assertEquals("Validate person.gender", getResults().getString("religionid"), (getReligionId()));
         }
     }
 
 
-    @Step("Validate addresses Create Elder API <postalCode> <doorNumber> <street> <cityId> <addressType>")
-    public void enter_Address_Details_validating(String postalCode, String doorNumber, String street, String cityId, String addressType) throws SQLException, ClassNotFoundException {
+    @Step("Validate addresses Create Elder API")
+    public void enter_Address_Details_validating() throws SQLException, ClassNotFoundException {
         while (getResults().previous()) {
 
-            Assert.assertEquals("Validate address.postal_code", getResults().getString("postalcode"), postalCode);
-            Assert.assertEquals("Validate address.door_number", getResults().getString("doornum"), doorNumber);
-            Assert.assertEquals("Validate address.street", getResults().getString("street"), street);
-            Assert.assertEquals("Validate address.address_type", getResults().getString("addresstype"), addressType.replace("PRIMARY", "1"));
-            Assert.assertEquals("Validate address.city", getResults().getString("cityId"), (cityId));
+            Assert.assertEquals("Validate address.postal_code", getResults().getString("postalcode"), getPostalCode());
+            Assert.assertEquals("Validate address.door_number", getResults().getString("doornum"), getDoorNum());
+            Assert.assertEquals("Validate address.street", getResults().getString("street"), getStreet());
+            Assert.assertEquals("Validate address.address_type", getResults().getString("addresstype"), getAddressType());
+            Assert.assertEquals("Validate address.city", getResults().getString("cityId"), getCityId());
         }
 
     }
 
 
-    @Step("Validate phoneNumber: Create Elder API <phoneNumber> <phoneType>")
-    public void enter_PhoneNumber_Validating(String phoneNumber, String phoneType) throws SQLException, ClassNotFoundException {
+    @Step("Validate phoneNumber: Create Elder API")
+    public void enter_PhoneNumber_Validating() throws SQLException, ClassNotFoundException {
 
         while (getResults().next()) {
 
-            Assert.assertEquals("Validate phone_number.number", getResults().getString("phonenumber"), phoneNumber);
-            Assert.assertEquals("Validate phone_number.type", getResults().getString("phonenumbertype"), phoneType);
+            Assert.assertEquals("Validate phone_number.number", getResults().getString("phonenumber"), getPhoneNumber());
+            Assert.assertEquals("Validate phone_number.type", getResults().getString("phonenumbertype"), getPhoneType());
         }
 
     }
 
-    @Step("Validate healthIssues: Create Elder API <healthIssueid>")
-    public void enter_HealthIssues_validating(String healthIssueid) throws SQLException, ClassNotFoundException {
+    @Step("Validate healthIssues: Create Elder API")
+    public void enter_HealthIssues_validating() throws SQLException, ClassNotFoundException {
 
-        if (!(healthIssueid.equalsIgnoreCase("0"))) {//check health issue availability
+        if (!(getHealthIssueId().equalsIgnoreCase("0"))) {//check health issue availability
             while (getResults().previous()) {
-                Assert.assertEquals("Validate grampa_health_issues.health_issue_id", getResults().getString("healthissueid"), (healthIssueid));
+                Assert.assertEquals("Validate grampa_health_issues.health_issue_id", getResults().getString("healthissueid"), getHealthIssueId());
             }
         }
 
     }
 
-    @Step("Validate baseStation: Create Elder API <baseStationid> <tvBrandId> <baseStationstatus>")
-    public void enter_BaseStation_Validating(String baseStationid, String tvBrandId, String baseStationstatus) throws SQLException, ClassNotFoundException {
+    @Step("Validate baseStation: Create Elder API")
+    public void enter_BaseStation_Validating() throws SQLException, ClassNotFoundException {
 
-        if (!(baseStationid.equalsIgnoreCase("0"))) {
+        if (!(getDeviceid().equalsIgnoreCase("0"))) {
             while (getResults().next()) {
 
-                Assert.assertEquals("Validate grampa.base_station_id", getResults().getString("deviceid"), (baseStationid));
-                Assert.assertEquals("Validate base_station.tv_brand_id", getResults().getString("devicebrandid"), (tvBrandId));
+                Assert.assertEquals("Validate grampa.base_station_id", getResults().getString("deviceid"), getDeviceid());
+                Assert.assertEquals("Validate base_station.tv_brand_id", getResults().getString("devicebrandid"), getDevicebrandid());
             }
         }
 

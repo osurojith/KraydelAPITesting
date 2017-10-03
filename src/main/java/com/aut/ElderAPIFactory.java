@@ -88,8 +88,7 @@ public class ElderAPIFactory extends BaseClass {
 
     }
     public void getElderDBDataByEmail(String elderEmail) throws SQLException, ClassNotFoundException {
-        System.out.println("AA "+getDeviceIdCount());
-        System.out.println("BB "+getHealthIssueIdCount());
+
         if (!(getDeviceIdCount() == 0) && !(getHealthIssueIdCount() == 0)) {
             sql = "select person.id as id,phone_number.phone_number as phonenumber, phone_number.phone_type as phonenumbertype,person.ethnicity_id as ethnicityid,person.religion_id as religionid, person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId, grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename from main.person join main.address on person.id= address.person_id and person.email='" + elderEmail + "' join main.grampa on grampa.id=person.id join main.base_station on grampa.base_station_id=base_station.id join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id join main.phone_number on phone_number.person_id=grampa.id";
         } else if ((getDeviceIdCount() == 0) && !(getHealthIssueIdCount() == 0)) {
@@ -144,6 +143,17 @@ public class ElderAPIFactory extends BaseClass {
             validateResultSet("select * from main.health_issues where health_issues.id= (select health_issue_id from main.grampa_health_issues where grampa_id=" + elderid + ")");
         }
     }
-
+    public void getElder_CarerAssignedStatusDB() throws SQLException, ClassNotFoundException {
+        sql = "select count(*) as status from main.grampa_user where grampa_id=" + getElderId() + " and user_id=" + getCarerId() + " and grampa_role_id=" + getCarerRoleId() + "";
+        validateResultSet(sql);
+        System.out.println(sql);
+        setResults(DatabaseFactory.getDBData(sql));
+    }
+    public void getEldersNotAssignedToDeviceDB() throws SQLException, ClassNotFoundException {
+        sql = "select person.id as id , person.last_name as lname , person.first_name as fname,grampa.location_id as locationid from main.person join main.grampa on grampa.id=person.id and grampa.base_station_id is null";
+        validateResultSet(sql);
+        System.out.println(sql);
+        setResults(DatabaseFactory.getDBData(sql));
+    }
 
 }

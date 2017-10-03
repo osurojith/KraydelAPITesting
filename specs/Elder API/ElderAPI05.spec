@@ -21,17 +21,18 @@ Update Elder API
     * User enter Elder Details Update Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>
     * User enter List: addresses Update Elder API <countryId> <addressID> <postalCode> <doorNumber> <street> <cityId> <addressType>
     * User enter phoneNumber: Update Elder API <phoneID> <phoneNumber> <phoneType>
-    * User enter healthIssues: Create Elder API <healthIssueid>
+    * User enter healthIssues: Update Elder API <healthIssueid>
     * User enter baseStation: Update Elder API <baseStationid> <tvBrandId>
+    * User create user update method request body
     * User Call Update Elder API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
-    * User gets data from kraydel database Update Elder API <baseStationid><healthIssueid><email>
-    * Validate Elder Details Update Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>
-    * Validate addresses Update Elder API <postalCode> <doorNumber> <street> <cityId> <addressType>
-    * Validate phoneNumber: Update Elder API <phoneNumber> <phoneType>
-    * Validate healthIssues: Update Elder API <healthIssueid>
-    * Validate baseStation: Update Elder API <baseStationid> <tvBrandId>
+    * User gets data from kraydel database Update Elder API <email>
+    * Validate Elder Details Update Elder API
+    * Validate addresses Update Elder API
+    * Validate phoneNumber: Update Elder API
+    * Validate healthIssues: Update Elder API
+    * Validate baseStation: Update Elder API
 
 LogOut API
 ----------------

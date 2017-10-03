@@ -27,12 +27,12 @@ Create Elder API
     * User Call Create Elder API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
-    * User gets data from kraydel database Create Elder API <baseStationid><healthIssueid><email>
-    * Validate Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>
-    * Validate addresses Create Elder API <postalCode> <doorNumber> <street> <cityId> <addressType>
-    * Validate phoneNumber: Create Elder API <phoneNumber> <phoneType>
-    * Validate healthIssues: Create Elder API <healthIssueid>
-    * Validate baseStation: Create Elder API <baseStationid> <tvBrandId> <baseStationstatus>
+    * User gets data from kraydel database Create Elder API <email>
+    * Validate Elder Details Create Elder API
+    * Validate addresses Create Elder API
+    * Validate phoneNumber: Create Elder API
+    * Validate healthIssues: Create Elder API
+    * Validate baseStation: Create Elder API
 
 LogOut API
 ----------------

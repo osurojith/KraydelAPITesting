@@ -13,8 +13,8 @@ public class DatabaseFactory extends BaseClass {
         Connection connection = null;
         Class.forName("org.postgresql.Driver");
         connection = DriverManager.getConnection(
-                "jdbc:postgresql://ec2-52-31-57-4.eu-west-1.compute.amazonaws.com:25421/kraydel", "kraydel",
-                "M!tr@!Kr@ydelQa");
+                System.getenv("DATABASE_URL"), System.getenv("DB_USER"),
+                System.getenv("DB_PASSWORD"));
         return connection;
     }
 

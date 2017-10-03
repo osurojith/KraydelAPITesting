@@ -19,6 +19,7 @@ public class BaseClass {
 
     private String elderId;
     private String carerId;
+    private String carerRoleId;
     private int elderIdCount;
     private int carerIdCount;
     private String lname;
@@ -53,6 +54,7 @@ public class BaseClass {
     private String phoneNumber;
     private String phoneType;
     private String deviceStatus;
+    private String phoneId;
 
 
 
@@ -376,5 +378,21 @@ public class BaseClass {
 
     public void setDeviceStatus(String deviceStatus) {
         this.deviceStatus = deviceStatus;
+    }
+
+    public String getPhoneId() {
+        return phoneId;
+    }
+
+    public void setPhoneId(String phoneId) {
+        this.phoneId = phoneId;
+    }
+
+    public String getCarerRoleId() {
+        return carerRoleId;
+    }
+
+    public void setCarerRoleId(String carerRoleId) {
+        this.carerRoleId = carerRoleId;
     }
 }

@@ -19,11 +19,12 @@ Unassign-carer API
 ----------------
     * User Enter Unassign-carer API "/api/"<version>"/elders/"<elderid>"/unassign-carer"
     * User enter Elder Details Unassign-carer API <userID> <userRoleID>
+    * User create Unassign-carer method request body
     * User Call Unassign-carer API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
-    * User gets data from kraydel database Unassign-carer API <userID> <elderid> <userRoleID>
-    * Validate back end Unassign-carer API <userID> <elderid> <userRoleID>
+    * User gets data from kraydel database Unassign-carer API
+    * Validate back end Unassign-carer API
 
 LogOut API
 ----------------
