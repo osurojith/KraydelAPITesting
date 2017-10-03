@@ -20,7 +20,7 @@ public class LogInAPISteps extends BaseClass {
     @Step("User enter credentials <username>,<password>")
     public void user_enter_credentials(String user, String pass) {
 
-        this.username = user;
+        this.setUsername(user);
         this.password = pass;
 
     }
@@ -28,7 +28,7 @@ public class LogInAPISteps extends BaseClass {
     @Step("User call the get token API")
     public void User_call_the_get_token_API() {
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("username", username);
+        parameters.put("username", getUsername());
         parameters.put("password", password);
         parameters.put("grant_type", "password");
 

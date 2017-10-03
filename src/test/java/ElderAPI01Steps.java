@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.aut.DatabaseFactory.resetDB;
+
 public class ElderAPI01Steps extends ElderAPIFactory {
 
 
@@ -40,21 +42,16 @@ public class ElderAPI01Steps extends ElderAPIFactory {
     }
 
 
-    public void resetDB() throws SQLException {
-        while (getResults().previous()) {
-            System.out.println();
-        }
-    }
+
 
     @Step("Validate Elder Search API By ID Users")
-    public void Validate_Search_API_Users() throws SQLException, ClassNotFoundException {
+    public void Validate_Elder_Details_WIthBackend() throws SQLException, ClassNotFoundException {
 
-            int count = 0;
-
+            int tableRow = 0;
             resetDB();
             while (getResults().next()) {
-                count++;
-                Assert.assertEquals("Validate person.id", getResults().getString("id"), EncryptionServiceImpl.decryptToLong(getId()).toString());
+                tableRow++;
+                Assert.assertEquals("Validate person.id", getResults().getString("id"), EncryptionServiceImpl.decryptToLong(getElderId()).toString());
                 Assert.assertEquals("Validate person.last_name", getResults().getString("lname"), getLname());
                 Assert.assertEquals("Validate person.first_name", getResults().getString("fname"), getFname());
                 Assert.assertEquals("Validate person.status", getResults().getString("status"), getStatus());
@@ -62,7 +59,7 @@ public class ElderAPI01Steps extends ElderAPIFactory {
                 Assert.assertEquals("Validate person.email", getResults().getString("email"), getEmail());
                 Assert.assertEquals("Validate person.gender", getResults().getString("gender"), getGender());
             }
-            Assert.assertEquals("Invalid data count", 1, count);
+            Assert.assertEquals("Invalid data count", 1, tableRow);
 
             if (!(getDeviceid() == null)) {
                 resetDB();
@@ -78,10 +75,10 @@ public class ElderAPI01Steps extends ElderAPIFactory {
 
 
     @Step("Validate Elder Search API By ID Address")
-    public void Validate_address() throws SQLException, ClassNotFoundException {
+    public void validate_Address_WIthBackend() throws SQLException, ClassNotFoundException {
 
             int tableRow = 0;
-            Assert.assertEquals("No elders found", true, getJsonPath().getList("content.elder.addresses").size() >= 1);
+            Assert.assertEquals("No elders found", true, getAddressIdCount() >= 1);
             resetDB();
             while (getResults().next()) {
                 tableRow++;
@@ -102,7 +99,7 @@ public class ElderAPI01Steps extends ElderAPIFactory {
     }
 
     @Step("Validate Health Issues")
-    public void Validate_health_issues() throws SQLException {
+    public void validate_Health_Issues_WIthBackend() throws SQLException {
 
             if ((getHealthIssueIdCount() > 0)) {
                 int tableRow = 0;

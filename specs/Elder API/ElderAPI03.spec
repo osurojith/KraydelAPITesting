@@ -5,7 +5,7 @@ Search Elder API
     |TestCaseId |version|username      |password|logout_status|response_code|status_code|status |
     |-----------|-------|--------------|--------|-------------|-------------|-----------|-------|
     |ELDER-07/09|v1     |darshana      |letmein |OK           |200          |20000      |Success|
-    |ELDER-08/09|v1     |apit@gmail.com|letmein |OK           |200          |20000      |Success|
+  //  |ELDER-08/09|v1     |apit@gmail.com|letmein |OK           |200          |20000      |Success|
 
 
 
@@ -20,7 +20,7 @@ Elder Search API
     * User call the Elder Search API
     * Validate Status Code <status_code>
     * Validate HTTP Response <response_code>
-    * Get data from database and Validate Elder Search API Users
+    * Get data from database and Validate With Elder Search API Elder Details
     * Validate Elder Search API Pagination
 
 LogOut API

@@ -1,8 +1,5 @@
 
-import com.aut.BaseClass;
-import com.aut.DatabaseFactory;
-import com.aut.EncryptionServiceImpl;
-import com.aut.HttpMethodsFactory;
+import com.aut.*;
 import com.thoughtworks.gauge.Step;
 import io.restassured.path.json.JsonPath;
 import org.junit.Assert;
@@ -12,17 +9,14 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ElderAPI04Steps extends BaseClass {
-    int elder_id;
-
+public class ElderAPI04Steps extends ElderAPIFactory {
     @Step("User Enter Create Elder API </api/><version></elders>")
-    public void Enter_API(String part1, String version, String part2) {
-        this.api = System.getenv("URI") + part1 + version + part2;
-        System.out.println("API: " + api);
+    public void enter_API(String part1, String version, String part2) {
+        setApi(part1 + version + part2);
     }
 
     @Step("User enter Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
-    public void Enter_user_details(String firstName, String lastName, String email, String gender, long ethnicityId, long religionId, String dateOfBirth, long locationId, String elderstatus) throws Exception {
+    public void enter_User_Details(String firstName, String lastName, String email, String gender, long ethnicityId, long religionId, String dateOfBirth, long locationId, String elderstatus) throws Exception {
         body = "{\n" +
                 "\"firstName\":\"" + firstName + "\",\n" +
                 "\"lastName\":\"" + lastName + "\",\n" +
@@ -38,94 +32,50 @@ public class ElderAPI04Steps extends BaseClass {
 
 
     @Step("User enter List: addresses Create Elder API <postalCode> <doorNumber> <street> <cityId> <addressType>")
-    public void Enter_Address_Details(String postalCode, String doorNumber, String street, long cityId, String addressType) throws Exception {
+    public void enter_Address_Details(String postalCode, String doorNumber, String street, long cityId, String addressType) throws Exception {
         body = body + "\"addresses\":[{\"doorNumber\":\"" + doorNumber + "\",\"street\":\"" + street + "\",\"postalCode\":\"" + postalCode + "\",\"cityId\":\"" + EncryptionServiceImpl.encryptToString(cityId) + "\",\"addressType\":\"" + addressType + "\"}],";
     }
 
 
     @Step("User enter phoneNumber: Create Elder API <phoneNumber> <phoneType>")
-    public void Enter_phoneNumber(String phoneNumber, String phoneType) {
+    public void enter_PhoneNumber(String phoneNumber, String phoneType) {
         body = body + "\"phoneNumbers\":[{\"phoneNumber\":\"" + phoneNumber + "\",\"phoneType\":\"" + phoneType + "\"}]";
     }
 
     @Step("User enter healthIssues: Create Elder API <healthIssueid>")
-    public void Enter_healthIssues(long healthIssueid) throws Exception {
-        if (!(healthIssueid == 0))
-
-            body = body + ",\"healthIssues\":[{\"id\":\"" + EncryptionServiceImpl.encryptToString(healthIssueid) + "\"}]";
+    public void enter_HealthIssuesDetails(long healthIssueId) throws Exception {
+        setHealthIssueIdCount((int)healthIssueId);
+        if (!(healthIssueId == 0))
+            body = body + ",\"healthIssues\":[{\"id\":\"" + EncryptionServiceImpl.encryptToString(healthIssueId) + "\"}]";
     }
 
     @Step("User enter baseStation: Create Elder API <baseStationid> <tvBrandId> <baseStationstatus>")
-    public void Enter_baseStation(long baseStationid, long tvBrandId, String baseStationstatus) throws Exception {
-        if (!(baseStationid == 0))
-            body = body + ",\"baseStation\":{\"id\":\"" + EncryptionServiceImpl.encryptToString(baseStationid) + "\",\"tvBrandId\":\"" + EncryptionServiceImpl.encryptToString(tvBrandId) + "\",\"status\":\"" + baseStationstatus + "\"";
+    public void enter_BaseStationDetails(long baseStationId, long tvBrandId, String baseStationStatus) throws Exception {
+        setDeviceIdCount((int)baseStationId);
+        if (!(baseStationId == 0))
+            body = body + ",\"baseStation\":{\"id\":\"" + EncryptionServiceImpl.encryptToString(baseStationId) + "\",\"tvBrandId\":\"" + EncryptionServiceImpl.encryptToString(tvBrandId) + "\",\"status\":\"" + baseStationStatus + "\"";
         body = body + "}}";
         System.out.println("Body: " + body);
     }
 
     @Step("User Call Create Elder API")
-    public void Call_create_user_API() {
+    public void call_Create_User_API() {
 
         Map<String, String> header = new HashMap();
         header.put("headername", "Authorization");
         header.put("headervalue", "bearer " + LogInAPISteps.token);
         this.response = HttpMethodsFactory.postMethodBody(this.api, header, body);
-        this.setJsonPath(new JsonPath(this.response.getBody().asString()));
+        setJsonPath(new JsonPath(this.response.getBody().asString()));
     }
 
     @Step("User gets data from kraydel database Create Elder API <baseStationid><healthIssueid><email>")
-    public void get_db_data(long basestationid, long healthissueid, String email) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
-        if (status_code.equals("20000")) {
-            String sql = null;
-
-            if (!(basestationid == 0) && !(healthissueid == 0)) {
-                sql = "select person.id as id,phone_number.phone_number as phonenumber, phone_number.phone_type as phonenumbertype,person.ethnicity_id as ethnicityid,person.religion_id as religionid, person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId, grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename from main.person join main.address on person.id= address.person_id and person.email='" + email + "' join main.grampa on grampa.id=person.id join main.base_station on grampa.base_station_id=base_station.id join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id join main.phone_number on phone_number.person_id=grampa.id";
-            } else if ((basestationid == 0) && !(healthissueid == 0)) {
-                sql = "select person.id as id ,phone_number.phone_number as phonenumber, phone_number.phone_type as phonenumbertype,person.ethnicity_id as ethnicityid,person.religion_id as religionid, person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum,grampa_health_issues.health_issue_id as healthissueid, health_issues.issue as healthissuename, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id= address.person_id and person.email='" + email + "' join main.grampa on grampa.id=person.id join main.city on address.city= city.id join main.grampa_health_issues on grampa_health_issues.grampa_id=grampa.id join main.health_issues on health_issues.id=grampa_health_issues.health_issue_id join main.phone_number on phone_number.person_id=grampa.id";
-            } else if (!(basestationid == 0) && (healthissueid == 0)) {
-                sql = "select person.id as id ,phone_number.phone_number as phonenumber, phone_number.phone_type as phonenumbertype,person.ethnicity_id as ethnicityid,person.religion_id as religionid, person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum,grampa.base_station_id as deviceid, base_station.device_key as devicekey, base_station.tv_brand_id as devicebrandid, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id= address.person_id and person.email='" + email + "' join main.grampa on grampa.id=person.id join main.base_station on grampa.base_station_id=base_station.id join main.city on address.city= city.id join main.phone_number on phone_number.person_id=grampa.id";
-            } else if ((basestationid == 0) && (healthissueid == 0)) {
-                sql = "select person.id as id ,phone_number.phone_number as phonenumber, phone_number.phone_type as phonenumbertype,person.ethnicity_id as ethnicityid,person.religion_id as religionid, person.last_name as lname , person.first_name as fname, grampa.status as status, grampa.date_of_birth as dob, person.email as email, person.gender as gender, address.id as addressid, address.postal_code as postalcode, address.door_number as doornum, address.street as street, address.address_type as addresstype, address.city as cityId, city.country_id as cointryId from main.person join main.address on person.id= address.person_id and person.email='" + email + "' join main.grampa on grampa.id=person.id join main.city on address.city= city.id join main.phone_number on phone_number.person_id=grampa.id";
-            }
-
-            System.out.println(sql);
-            setResults(DatabaseFactory.getDBData(sql));
-
-            if (!getResults().next()) {
-                sql = "select * from main.person where main.person.email=" + email + "";
-                setResults(DatabaseFactory.getDBData(sql));
-
-                Assert.assertEquals("No record found: main.person. User email: " + email, true, getResults().next());
-
-                sql = "select * from main.address where person_id='(select id from main.person where email=" + email + ")'";
-                setResults(DatabaseFactory.getDBData(sql));
-                Assert.assertEquals("No record found: main.address User email: " + email, true, getResults().next());
-
-
-                sql = "select * from main.grampa where id='(select id from main.person where email=" + email + ")'";
-                setResults(DatabaseFactory.getDBData(sql));
-                Assert.assertEquals("No record found: main.grampa User email: " + email, true, getResults().next());
-
-                if (!(basestationid == 0)) {
-                    sql = "select * from main.base_station where base_station.id= (select base_station_id from main.grampa where id=(select id from main.person where email='" + email + "'))";
-                    setResults(DatabaseFactory.getDBData(sql));
-                    Assert.assertEquals("No record found: main.BaseStation User email: " + email, true, getResults().next());
-                }
-                if (!(healthissueid == 0)) {
-                    sql = "select * from main.health_issues where health_issues.id= (select health_issue_id from main.grampa_health_issues where grampa_id=(select id from main.person where email='" + email + "'))";
-                    setResults(DatabaseFactory.getDBData(sql));
-                    Assert.assertEquals("No record found: main.health_issues email: " + email, true, getResults().next());
-                }
-
-            } else {
-                getResults().previous();
-            }
-        }
+    public void get_ElderDB_Data(int basestationid, int healthissueid, String email) throws SQLException, ClassNotFoundException, java.lang.NullPointerException {
+        getElderDBDataByEmail(email);
     }
 
     @Step("Validate Elder Details Create Elder API <firstName> <lastName> <email> <gender> <ethnicityId> <religionId><dateOfBirth> <locationId> <elderstatus>")
-    public void Enter_user_details_validating(String firstName, String lastName, String email, String gender, String ethnicityId, String religionId, String dateOfBirth, String locationId, String elderstatus) throws SQLException, ClassNotFoundException {
-        if (status_code.equals("20000")) {
+    public void enter_User_Details_Validating(String firstName, String lastName, String email, String gender, String ethnicityId, String religionId, String dateOfBirth, String locationId, String elderstatus) throws SQLException, ClassNotFoundException {
+
             while (getResults().next()) {
                 Assert.assertEquals("Validate person.last_name", getResults().getString("lname"), lastName);
                 Assert.assertEquals("Validate person.first_name", getResults().getString("fname"), firstName);
@@ -135,17 +85,11 @@ public class ElderAPI04Steps extends BaseClass {
                 Assert.assertEquals("Validate person.email", getResults().getString("ethnicityid"), (ethnicityId));
                 Assert.assertEquals("Validate person.gender", getResults().getString("religionid"), (religionId));
             }
-
-
-        }
-
-
     }
 
 
     @Step("Validate addresses Create Elder API <postalCode> <doorNumber> <street> <cityId> <addressType>")
-    public void Enter_Address_Details_validating(String postalCode, String doorNumber, String street, String cityId, String addressType) throws SQLException, ClassNotFoundException {
-        if (status_code.equals("20000")) {
+    public void enter_Address_Details_validating(String postalCode, String doorNumber, String street, String cityId, String addressType) throws SQLException, ClassNotFoundException {
             while (getResults().previous()) {
 
                 Assert.assertEquals("Validate address.postal_code", getResults().getString("postalcode"), postalCode);
@@ -154,36 +98,36 @@ public class ElderAPI04Steps extends BaseClass {
                 Assert.assertEquals("Validate address.address_type", getResults().getString("addresstype"), addressType.replace("PRIMARY", "1"));
                 Assert.assertEquals("Validate address.city", getResults().getString("cityId"), (cityId));
             }
-        }
+
     }
 
 
     @Step("Validate phoneNumber: Create Elder API <phoneNumber> <phoneType>")
-    public void Enter_phoneNumber_validating(String phoneNumber, String phoneType) throws SQLException, ClassNotFoundException {
-        if (status_code.equals("20000")) {
+    public void enter_PhoneNumber_Validating(String phoneNumber, String phoneType) throws SQLException, ClassNotFoundException {
+
             while (getResults().next()) {
 
                 Assert.assertEquals("Validate phone_number.number", getResults().getString("phonenumber"), phoneNumber);
                 Assert.assertEquals("Validate phone_number.type", getResults().getString("phonenumbertype"), phoneType);
             }
-        }
+
     }
 
     @Step("Validate healthIssues: Create Elder API <healthIssueid>")
-    public void Enter_healthIssues_validating(String healthIssueid) throws SQLException, ClassNotFoundException {
-        if (status_code.equals("20000")) {
+    public void enter_HealthIssues_validating(String healthIssueid) throws SQLException, ClassNotFoundException {
+
             if (!(healthIssueid.equalsIgnoreCase("0"))) {
                 while (getResults().previous()) {
 
                     Assert.assertEquals("Validate grampa_health_issues.health_issue_id", getResults().getString("healthissueid"), (healthIssueid));
                 }
             }
-        }
+
     }
 
     @Step("Validate baseStation: Create Elder API <baseStationid> <tvBrandId> <baseStationstatus>")
-    public void Enter_baseStation_validating(String baseStationid, String tvBrandId, String baseStationstatus) throws SQLException, ClassNotFoundException {
-        if (status_code.equals("20000")) {
+    public void enter_BaseStation_Validating(String baseStationid, String tvBrandId, String baseStationstatus) throws SQLException, ClassNotFoundException {
+
             if (!(baseStationid.equalsIgnoreCase("0"))) {
                 while (getResults().next()) {
 
@@ -191,7 +135,7 @@ public class ElderAPI04Steps extends BaseClass {
                     Assert.assertEquals("Validate base_station.tv_brand_id", getResults().getString("devicebrandid"), (tvBrandId));
                 }
             }
-        }
+
     }
 
 
